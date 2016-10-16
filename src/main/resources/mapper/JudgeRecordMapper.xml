@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyfz.dao.JudgeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zyfz.domain.JudgeRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="help_info_id" property="helpInfoId" jdbcType="VARCHAR" />
+    <result column="require_user_id" property="requireUserId" jdbcType="VARCHAR" />
+    <result column="server_user_id" property="serverUserId" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="DOUBLE" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, help_info_id, require_user_id, server_user_id, score
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hh_judge_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hh_judge_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyfz.domain.JudgeRecord" >
+    insert into hh_judge_record (id, help_info_id, require_user_id, 
+      server_user_id, score)
+    values (#{id,jdbcType=INTEGER}, #{helpInfoId,jdbcType=VARCHAR}, #{requireUserId,jdbcType=VARCHAR}, 
+      #{serverUserId,jdbcType=VARCHAR}, #{score,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyfz.domain.JudgeRecord" >
+    insert into hh_judge_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="helpInfoId != null" >
+        help_info_id,
+      </if>
+      <if test="requireUserId != null" >
+        require_user_id,
+      </if>
+      <if test="serverUserId != null" >
+        server_user_id,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="helpInfoId != null" >
+        #{helpInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="requireUserId != null" >
+        #{requireUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="serverUserId != null" >
+        #{serverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.JudgeRecord" >
+    update hh_judge_record
+    <set >
+      <if test="helpInfoId != null" >
+        help_info_id = #{helpInfoId,jdbcType=VARCHAR},
+      </if>
+      <if test="requireUserId != null" >
+        require_user_id = #{requireUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="serverUserId != null" >
+        server_user_id = #{serverUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.JudgeRecord" >
+    update hh_judge_record
+    set help_info_id = #{helpInfoId,jdbcType=VARCHAR},
+      require_user_id = #{requireUserId,jdbcType=VARCHAR},
+      server_user_id = #{serverUserId,jdbcType=VARCHAR},
+      score = #{score,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

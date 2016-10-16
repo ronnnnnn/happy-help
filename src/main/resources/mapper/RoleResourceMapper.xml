@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyfz.dao.RoleResourceMapper" >
+  <resultMap id="BaseResultMap" type="com.zyfz.domain.RoleResourceKey" >
+    <id column="hh_role_id" property="hhRoleId" jdbcType="INTEGER" />
+    <id column="hh_resource_id" property="hhResourceId" jdbcType="INTEGER" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    hh_role_id, hh_resource_id
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.zyfz.domain.RoleResourceKey" >
+    delete from hh_role_resource
+    where hh_role_id = #{hhRoleId,jdbcType=INTEGER}
+      and hh_resource_id = #{hhResourceId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyfz.domain.RoleResourceKey" >
+    insert into hh_role_resource (hh_role_id, hh_resource_id)
+    values (#{hhRoleId,jdbcType=INTEGER}, #{hhResourceId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyfz.domain.RoleResourceKey" >
+    insert into hh_role_resource
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="hhRoleId != null" >
+        hh_role_id,
+      </if>
+      <if test="hhResourceId != null" >
+        hh_resource_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="hhRoleId != null" >
+        #{hhRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="hhResourceId != null" >
+        #{hhResourceId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>
