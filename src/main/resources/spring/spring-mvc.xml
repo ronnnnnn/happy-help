@@ -14,14 +14,14 @@
 
     <mvc:annotation-driven/>
     <!-- 静态资源解析 包括 ：js、css、img、.. -->
-	<!--<mvc:resources location="/js/" mapping="/js/**" />-->
+	<mvc:resources location="/js/" mapping="/js/**" />
 	<!--<mvc:resources location="/images/" mapping="/images/**" />-->
 	<!--<mvc:resources location="/productImages/" mapping="/productImages/**" />-->
-	<!--<mvc:resources location="/css/" mapping="/css/**" />-->
+	<mvc:resources location="/css/" mapping="/css/**" />
 	<!--mvc:resources location="/font/" mapping="/font/**" /-->
-	<!--<mvc:resources location="/jslib/" mapping="/jslib/**" />-->
-	<!--<mvc:resources location="/ueditor/" mapping="/ueditor/**" />-->
-	<!--<mvc:resources location="/jquery-treetable/" mapping="/jquery-treetable/**" />-->
+	<mvc:resources location="/jslib/" mapping="/jslib/**" />
+	<mvc:resources location="/ueditor/" mapping="/ueditor/**" />
+	<mvc:resources location="/jquery-treetable/" mapping="/jquery-treetable/**" />
 	<!--<mvc:resources location="/icons/" mapping="/icons/**" />-->
 	<!--<mvc:resources location="/bootstrap-3.3.5-dist/" mapping="/bootstrap-3.3.5-dist/**" />-->
     <!--避免IE执行AJAX时，返回JSON出现下载文件 -->  

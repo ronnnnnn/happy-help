@@ -14,4 +14,6 @@ public interface IResourceService extends IBaseService<Resources>{
     Set<String> findPermissions(Set<Integer> resourceIds); //得到资源对应的权限字符串
 
     List<Resources> findMenus(Set<String> permissions); //根据用户权限得到菜单
+
+    List<Resources> finaRootMenu();
 }

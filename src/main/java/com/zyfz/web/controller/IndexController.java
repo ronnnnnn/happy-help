@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by ron on 16-9-20.
@@ -30,8 +29,18 @@ public class IndexController {
     public String index(HttpServletRequest request, Model model){
         Set<String> perssions = userservice.findPermissions(((User)request.getAttribute("user")).getUsername());
         List<Resources> menus = resourceService.findMenus(perssions);
-
-        model.addAttribute("menus",menus);
+        List<Resources> rootMenus = resourceService.finaRootMenu();
+        Map<String,List<Resources>> menuMap = new HashMap<String, List<Resources>>();
+        for (Resources rootResource : rootMenus){
+            List<Resources> childMenus = new ArrayList<Resources>();
+            for (Resources childResource : menus){
+                 if(childResource.getParentId() == rootResource.getId().longValue()){
+                      childMenus.add(childResource);
+                 }
+            }
+            menuMap.put(rootResource.getName(),childMenus);
+        }
+        model.addAttribute("menus",menuMap);
         return "admin/index";
     }
 }

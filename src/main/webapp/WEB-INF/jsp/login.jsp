@@ -12,7 +12,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>书享</title>
+    <title>乐助</title>
 
     <!-- Bootstrap -->
     <link
@@ -132,7 +132,7 @@
                         <div class="col-xs-12  ">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                                <input type="text" id="password" name="password" class="form-control" placeholder="密码">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="密码">
                             </div>
                         </div>
                     </div>

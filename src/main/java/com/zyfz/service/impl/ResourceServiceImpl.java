@@ -96,4 +96,9 @@ public class ResourceServiceImpl implements IResourceService {
         }
         return false;
     }
+
+    @Override
+    public List<Resources> finaRootMenu() {
+        return resourceMapper.selectRootMenu();
+    }
 }

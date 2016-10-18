@@ -115,6 +115,11 @@
         </property>
         <property name="filterChainDefinitions">
             <value>
+                /js/** = anon
+                /css/** = anon
+                /jslib/** = anon
+                /ueditor/** = anon
+                /jquery-treetable/** = anon
                 /test = anon
                 /login = authc
                 /logout = logout
