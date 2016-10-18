@@ -20,6 +20,10 @@ public interface UserMapper {
 
     List<User> selectAll();
 
+    List<User> selectAllSuperUser();
+
+    List<User> selectAllNormalUser();
+
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);

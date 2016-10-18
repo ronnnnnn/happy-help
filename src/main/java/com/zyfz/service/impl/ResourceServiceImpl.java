@@ -1,7 +1,12 @@
 package com.zyfz.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.ResourceMapper;
 import com.zyfz.domain.Resources;
+import com.zyfz.domain.User;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 import com.zyfz.service.IResourceService;
 import org.apache.shiro.authz.permission.WildcardPermission;
 import org.springframework.stereotype.Service;
@@ -32,8 +37,14 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
-    public List<Resources> getAll() {
-        return resourceMapper.selectAll();
+    public Datagrid getAll(PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<Resources> users = resourceMapper.selectAll();
+        PageInfo pageInfo = new PageInfo(users);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
     }
 
 

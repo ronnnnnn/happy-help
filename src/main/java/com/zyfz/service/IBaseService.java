@@ -1,5 +1,8 @@
 package com.zyfz.service;
 
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
+
 import java.util.List;
 
 /**
@@ -11,7 +14,7 @@ public interface IBaseService<T> {
 
     public Integer update(T t);
 
-    public List<T> getAll();
+    public Datagrid getAll(PageModel pageModel);
 
     public T getOneById(T t);
 

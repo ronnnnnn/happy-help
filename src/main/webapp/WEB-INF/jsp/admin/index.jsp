@@ -93,6 +93,15 @@
 				t.tabs('add', optis);
 			}
 		}
+
+		$(document).ready(function () {
+			$("#orderedlist li").hover(function () {
+				$(this).addClass("blue");
+			}, function () {
+				$(this).removeClass("blue");
+			});
+		});
+
 	</script>
 
 
@@ -123,12 +132,12 @@
 			<div class="easyui-accordion" data-options="fit:true,border:false">
 				<c:forEach items="${menus}" var="rootMenu">
 					<div title="${rootMenu.key}">
-
+						<ul id="orderedlist" style="margin: 0 0 0 30px; padding: 0px; font-size: 12px; color: #436EEE; line-height: 30px; whitewhite-space: nowrap; ">
 							<c:forEach items="${rootMenu.value}" var="childMenu">
-								<button style="border: 0px;width: 100%" onclick="menuOnclick('${childMenu.name}','${childMenu.url}')">${childMenu.name}</button>
+								<li style="cursor:pointer;list-style-type: none; display: inline;width: 100% " onclick="menuOnclick('${childMenu.name}','${childMenu.url}')">${childMenu.name}</li>
 								<br/>
 							</c:forEach>
-
+						</ul>
 					</div>
 				</c:forEach>
 			</div>

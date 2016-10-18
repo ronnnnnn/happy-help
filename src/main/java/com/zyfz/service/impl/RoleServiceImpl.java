@@ -1,8 +1,12 @@
 package com.zyfz.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.RoleMapper;
 import com.zyfz.domain.Role;
 import com.zyfz.domain.User;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 import com.zyfz.service.IResourceService;
 import com.zyfz.service.IRoleService;
 import org.springframework.stereotype.Service;
@@ -35,8 +39,15 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public List<Role> getAll() {
-        return roleMapper.selectAll();
+    public Datagrid getAll(PageModel pageModel)
+    {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<Role> roles = roleMapper.selectAll();
+        PageInfo pageInfo = new PageInfo(roles);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(roles);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
     }
 
     @Override

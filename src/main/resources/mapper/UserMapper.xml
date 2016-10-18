@@ -74,6 +74,19 @@
     from hh_user
   </select>
 
+  <select id="selectAllSuperUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_user
+    where is_admin = 1
+  </select>
+
+  <select id="selectAllNormalUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_user = 0
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hh_user
     where id = #{id,jdbcType=INTEGER}

@@ -1,6 +1,8 @@
 package com.zyfz.service;
 
 import com.zyfz.domain.User;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 
 import java.util.Set;
 
@@ -20,5 +22,9 @@ public interface IUserservice extends IBaseService<User>{
     public Set<String> findPermissions(String username);// 根据用户名查找其权限
 
     public Integer deleteByIds(String ids);
+
+    public Datagrid getAllSuperUser(PageModel pageModel);
+
+    public Datagrid getAllNormalUser(PageModel pageModel);
 }
 

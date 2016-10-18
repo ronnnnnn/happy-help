@@ -1,9 +1,13 @@
 package com.zyfz.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.RoleMapper;
 import com.zyfz.dao.UserMapper;
 import com.zyfz.domain.Role;
 import com.zyfz.domain.User;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 import com.zyfz.service.IRoleService;
 import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Service;
@@ -39,7 +43,7 @@ public class UserServiceImpl implements IUserservice{
 
     @Override
     public Integer update(User user) {
-        return userMapper.updateByPrimaryKey(user);
+        return userMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
@@ -51,8 +55,38 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
-    public List<User> getAll() {
-        return userMapper.selectAll();
+    public Datagrid getAll(PageModel pageModel)
+    {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<User> users = userMapper.selectAll();
+        PageInfo pageInfo = new PageInfo(users);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
+    }
+
+
+    @Override
+    public Datagrid getAllSuperUser(PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<User> users = userMapper.selectAllSuperUser();
+        PageInfo pageInfo = new PageInfo(users);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
+    }
+
+    @Override
+    public Datagrid getAllNormalUser(PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<User> users = userMapper.selectAllNormalUser();
+        PageInfo pageInfo = new PageInfo(users);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
     }
 
     @Override
