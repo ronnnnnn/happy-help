@@ -78,6 +78,7 @@ public class RoleServiceImpl implements IRoleService {
         for(int roleId : roleIds){
             Role role = roleMapper.selectByPrimaryKey(roleId);
             String[] mpermissionIds = role.getResourceIds().split(",");
+
             for(String mpermissionId:mpermissionIds){
                 permissionIds.add(Integer.valueOf(mpermissionId));
             }

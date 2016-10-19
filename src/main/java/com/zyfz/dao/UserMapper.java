@@ -18,6 +18,10 @@ public interface UserMapper {
 
     User selectByPhone(String phone);
 
+    List<User> selectByUsernameLike(String username);
+
+    List<User> selectByPhoneLike(String phone);
+
     List<User> selectAll();
 
     List<User> selectAllSuperUser();

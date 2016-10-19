@@ -118,10 +118,10 @@
 	function passwordEdit() {
 		var rows = $('#admin_user_datagrid').datagrid('getChecked');
 		if (rows.length == 1) {
-			var d = $('#mydialog-p').dialog({
+			var dp = $('<div/>').dialog({
 				width : 270,
 				height : 135,
-				href : '${pageContext.request.contextPath}/admin/user/password/panel',
+				href : '${pageContext.request.contextPath}/user/password/panel',
 				modal : true,
 				align : 'center',
 				title : '修改密码',
@@ -131,16 +131,16 @@
 						var id = $('#id-p').val();
 						var newPWD = $('#password-n').val();
 						$.ajax({
-							type: 'POST',
+							type: 'patch',
 							contentType: 'application/json',
-							url: '${pageContext.request.contextPath}/admin/user/password/reset',
+							url: '${pageContext.request.contextPath}/user/password',
 							processData: false,
 							dataType: 'json',
-							data : '{"id":\"'+id+'\","newPWD":\"'+newPWD+'\"}',
+							data : '{"id":\"'+id+'\","password":\"'+newPWD+'\"}',
 							success: function(data) {
 								if(data){
 									$('#admin_user_datagrid').datagrid('load');
-									$('#mydialog-p').dialog('close');
+									dp.dialog('close');
 								}else{
 									alert("修改失败!");
 								}
@@ -152,7 +152,7 @@
 					}
 				} ],
 				onClose : function() {
-					$(this).dailog('destroy');
+					$(this).dialog('destroy');
 				},
 				onLoad : function() {
 					$('#admin_password_editForm').form('load', rows[0]);
@@ -184,15 +184,16 @@
 						var userIdentify = $('#userIdentity-e').val();
 						var id = $('#id-e').val();
 						$.ajax({
-							type: 'post',
+							type: 'PATCH',
 							contentType: 'application/json',
-							url: '${pageContext.request.contextPath}/user/superuser',
+							url: '${pageContext.request.contextPath}/user',
 							processData: false,
 							dataType: 'json',
 							data : '{"username":\"'+username+'\","roleIds":\"'+roleIds+'\","isLocked":\"'+locked+'\","phone":\"'+phone+'\","realName":\"'+realName+'\","userIdentify":\"'+userIdentify+'\","id":\"'+id+'\"}',
 							success: function(data) {
 								if(data){
 									$('#admin_user_datagrid').datagrid('load');
+									$('#admin_user_datagrid').datagrid('unselectAll');
 									d.dialog('destroy');
 								}else{
 									alert("修改失败!");
@@ -223,14 +224,14 @@
 		$.ajax({
 			type: 'get',
 			contentType: 'application/json',
-			url: '${pageContext.request.contextPath}/admin/role/all/list',
+			url: '${pageContext.request.contextPath}/role/all/list',
 			processData: false,
 			dataType: 'json',
 			async:false,
 			success: function(data) {
-				$("#role-select").empty();
+				$("#role-select-a").empty();
 				$.each(data, function (index, value) {
-					$("#role-select").append("<option value='"+value.id+"'>"+value.description+"</option>");
+					$("#role-select-a").append("<option value='"+value.id+"'>"+value.description+"</option>");
 				});
 			},
 			error: function() {
@@ -238,40 +239,16 @@
 			}
 		});
 
-		$.ajax({
-			type: 'get',
-			contentType: 'application/json',
-			url: '${pageContext.request.contextPath}/admin/org/all/list',
-			processData: false,
-			dataType: 'json',
-			async:false,
-			success: function(data) {
-				$("#org-select").empty();
-				$.each(data, function (index, value) {
-					$("#org-select").append("<option value='"+value.id+"'>"+value.name+"</option>");
-				});
-			},
-			error: function() {
-				alert('Err...');
-			}
-		});
+
 
 		$('#admin_user_addForm input').val('');
 		$('#admin_user_addForm select').val('');
 		$('#admin_user_addDialog').dialog('open');
 
-		$('#org-select').combobox({
-			onChange: function() {
-				var value = $('#org-select').combobox('getValues');
-				console.log(value);
-				console.log(value.join(','));
-				$('#org-select').val(value);
-			}
-		});
 
-		$('#role-select').combobox({
+		$('#role-select-a').combobox({
 			onChange: function() {
-				var value = $('#role-select').combobox('getValues');
+				var value = $('#role-select-a').combobox('getValues');
 				console.log(value);
 				console.log(value.join(','));
 
@@ -294,7 +271,7 @@
 					}
 					$.ajax({
 						type: 'delete',
-						url : '${pageContext.request.contextPath}/admin/user/'+ids,
+						url : '${pageContext.request.contextPath}/user/'+ids,
 						data : {
 							ids : ids.join(',')
 						},
@@ -329,21 +306,21 @@
 	}
 
 	function registerUser() {
-		var username = $("input[name='username']").val();
-		var password = $("input[name='password']").val();
-		var roleIds = $('#role-select').combobox('getValues');
-		var locked = $("input[name='locked']").val();
-		var email = $("input[name='email']").val();
-		var nickname = $("input[name='nickname']").val();
-		var account = $("input[name='account']").val();
-		var organization =  $('#org-select').combobox('getValues');
+		var username = $('#username-a').val();
+		var password = $('#password-a').val();
+		var userIdentify = $('#userIdentity-a').val();
+		var realName = $('#realname-a').val();
+		var roleIds = $('#role-select-a').combobox('getValues');
+		var phone = $('#phone-a').val();
+		var isLocked = $('#locked-a').val();
+		var isAdmin = true;
 		$.ajax({
 			type: 'POST',
 			contentType: 'application/json',
-			url: '${pageContext.request.contextPath}/admin/user/register',
+			url: '${pageContext.request.contextPath}/user',
 			processData: false,
 			dataType: 'json',
-			data : '{"username":\"'+username+'\","password":\"'+password+'\","roleIds":\"'+roleIds+'\","locked":\"'+locked+'\","email":\"'+email+'\","nickname":\"'+nickname+'\","account":\"'+account+'\","organization":\"'+organization+'\"}',
+			data : '{"username":\"'+username+'\","password":\"'+password+'\","roleIds":\"'+roleIds+'\","isLocked":\"'+isLocked+'\","phone":\"'+phone+'\","realName":\"'+realName+'\","userIdentify":\"'+userIdentify+'\","isAdmin":\"'+isAdmin+'\"}',
 			success: function(data) {
 				if(data){
 					$('#admin_user_datagrid').datagrid('load');
@@ -357,12 +334,131 @@
 			}
 		});
 	}
+
+	function UserSearchFun() {
+
+		$('#admin_user_datagrid').datagrid({
+			url : '${pageContext.request.contextPath}/user/key',
+			fit : true,
+			pagination : true,
+			idField : 'id',
+			checkOnSelect : false,
+			selectOnCheck : false,
+			fitColumns : true,
+			nowrap : false,
+			rownumbers : true,
+			queryParams: {
+				key : $("input[name$='key']").val()
+			},
+			frozenColumns : [ [ {
+				field : 'id',
+				title : '编号',
+				width : 150,
+				align : 'center',
+				//hidden : true,
+				checkbox : true
+			}, {
+				field : 'username',
+				title : '用户名',
+				width : 120,
+				align : 'center',
+			},{
+				field : 'realName',
+				title : '名字',
+				width : 110,
+				align : 'center',
+			},{
+				field : 'userIdentify',
+				title : '生份证',
+				width : 150,
+				align : 'center',
+			},{
+				field : 'roleIds',
+				title : '角色列表',
+				width : 300,
+				align : 'center',
+				formatter : function(value, row, index) {
+					var rolename = "";
+					if (value != null && value != undefined && value != '') {
+
+						$.ajax({
+							type: 'get',
+							url: '${pageContext.request.contextPath}/role/' + value,
+							dataType: 'json',
+							async:false,
+							success: function (data) {
+								$.each(data, function (index, value) {
+									rolename += value.description + ",";
+								});
+							},
+							error: function (data) {
+								alert("err");
+							}
+						});
+					}else{
+						return rolename;
+					}
+					return rolename;
+				},
+			},{
+				field : 'phone',
+				title : '电话',
+				width : 150,
+				align : 'center',
+			},{
+				field : 'isLocked',
+				title : '状态',
+				width : 100,
+				align : 'center',
+				formatter : function(value, row, index) {
+					if (value == true) {
+						return '锁定';
+					} else {
+						return '活动';
+					}
+				},
+			} ] ],
+			toolbar : [{
+				text : '添加',
+				iconCls : 'icon-remove',
+				handler : function() {
+					userAddFun();
+				}
+			}, '-', {
+				text : '删除',
+				iconCls : 'icon-remove',
+				handler : function() {
+					userRemove();
+				}
+			}, '-', {
+				text : '修改',
+				iconCls : 'icon-edit',
+				handler : function() {
+					userEditFun();
+				}
+			},'-', {
+				text : '修改密码',
+				iconCls : 'icon-edit',
+				handler : function() {
+					passwordEdit();
+				}
+			}]
+		});
+
+
+		//$('#admin_zjgl_zjgl_datagrid').datagrid('load', serializeObject($('#admin_zjgl_zjgl_searchForm')));
+	}
+
+	function UserSearchFun1() {
+		$('#admin_book_layout input[name=key]').val('');
+		$('#admin_user_datagrid').datagrid('load', {});
+	}
 </script>
 
 <div id="admin_book_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
 		<form id="admin_product_searchForm">
-			检索用户(可模糊查询):<input name="sectionName" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="proSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="proClearFun()">清空</a>
+			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="UserSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="proClearFun()">清空</a>
 		</form>
 	</div>
 	<div data-options="region:'center',border:false">
@@ -382,38 +478,38 @@
 	<form id="admin_user_addForm" method="post">
 		<table>
 			<tr>
+				<input id="id-a" name="id" type="hidden"/>
 				<th>用户名</th>
-				<td><input name="username" class="easyui-validatebox"
-						   data-options="required:true" style="width: 100%" /></td>
+				<td><input id="username-a" name="username" class="easyui-validatebox" data-options="required:true" style="width: 100%"/></td>
 			</tr>
 			<tr>
 				<th>密码</th>
-				<td><input name="password" class="easyui-validatebox"
-						   data-options="required:true" style="width: 100%" /></td>
-			</tr>
-			<tr>
-				<th>所属组织</th>
-				<td><select id="org-select" data-options="multiple:true,panelHeight:'auto'" class="esayui-combobox"  name="organization" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>角色列表</th>
-				<td><select  id="role-select" data-options="multiple:true,panelHeight:'auto'" class="esayui-combobox"  name="roleIds" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>邮箱</th>
-				<td><input name="email" class="easyui-validatebox" style="width: 100%"/></td>
+				<td><input type="password" id="password-a" name="password" class="easyui-validatebox" data-options="required:true" style="width: 100%"/></td>
 			</tr>
 			<tr>
 				<th>名字</th>
-				<td><input name="nickname" class="easyui-validatebox" style="width: 100%"/></td>
+				<td><input id="realname-a" name="realName" class="easyui-validatebox" style="width: 100%"/></td>
 			</tr>
 			<tr>
-				<th>账户金额</th>
-				<td><input name="account" class="easyui-validatebox" style="width: 100%"/></td>
+				<th>身份证</th>
+				<td><input id="userIdentity-a" name="userIdentify" class="easyui-validatebox" style="width: 100%"/></td>
 			</tr>
 			<tr>
-				<th>是否启用</th>
-				<td><input name="locked" class="easyui-validatebox" style="width: 100%"/></td>
+				<th>角色列表</th>
+				<td><select  id="role-select-a" data-options="multiple:true,panelHeight:'auto'" class="esayui-combobox"  name="roleIds" style="width: 100%"></select></td>
+			</tr>
+			<tr>
+				<th>电话</th>
+				<td><input id="phone-a" name="phone" class="easyui-validatebox" style="width: 100%"/></td>
+			</tr>
+			<tr>
+				<th>是否锁定</th>
+				<td>
+					<select  id="locked-a" data-options="multiple:false,panelHeight:'auto'" class="esayui-combobox"  name="isLocked" style="width: 100%">
+						<option id="true" value='true'>锁定</option>
+						<option id="false" value='false'>活动</option>
+					</select>
+				</td>
 			</tr>
 
 			<tr align="center">

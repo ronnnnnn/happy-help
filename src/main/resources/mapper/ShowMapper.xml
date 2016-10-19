@@ -3,13 +3,16 @@
 <mapper namespace="com.zyfz.dao.ShowMapper" >
   <resultMap id="BaseResultMap" type="com.zyfz.domain.Show" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="mtype" property="mtype" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="is_use" property="isUse" jdbcType="BIT" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, name, image_url, create_time
+    id, mname, image_url, create_time,mtype,sort,is_use
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -24,10 +27,10 @@
   </delete>
 
   <insert id="insert" parameterType="com.zyfz.domain.Show" >
-    insert into hh_show (id, name, image_url, 
-      create_time)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP})
+    insert into hh_show (id, mname, image_url,
+      create_time,mtype,sort,is_use)
+    values (#{id,jdbcType=INTEGER}, #{mname,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP},#{mtype,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{isUse,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.Show" >
     insert into hh_show
@@ -35,8 +38,8 @@
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
+      <if test="mname != null" >
+        mname,
       </if>
       <if test="imageUrl != null" >
         image_url,
@@ -44,13 +47,22 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="mtype != null" >
+        mtype,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="isUse != null" >
+        is_use,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
       </if>
       <if test="imageUrl != null" >
         #{imageUrl,jdbcType=VARCHAR},
@@ -58,14 +70,23 @@
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="mtype != null" >
+        #{mtype,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isUse != null" >
+        #{isUse,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.Show" >
     update hh_show
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
+      <if test="mname != null" >
+        mname = #{mname,jdbcType=VARCHAR},
       </if>
       <if test="imageUrl != null" >
         image_url = #{imageUrl,jdbcType=VARCHAR},
@@ -73,14 +94,26 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="mtype != null" >
+        mtype = #{mtype,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort =  #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="isUse != null" >
+        is_use = #{isUse,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.Show" >
     update hh_show
-    set name = #{name,jdbcType=VARCHAR},
+    set mname = #{mname,jdbcType=VARCHAR},
       image_url = #{imageUrl,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      mtype = #{mtype,jdbcType=VARCHAR},
+      sort =  #{sort,jdbcType=INTEGER},
+      is_use = #{isUse,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

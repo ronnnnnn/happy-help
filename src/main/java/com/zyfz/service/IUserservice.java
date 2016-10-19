@@ -1,5 +1,6 @@
 package com.zyfz.service;
 
+import com.sun.javafx.sg.prism.NGShape;
 import com.zyfz.domain.User;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
@@ -15,16 +16,18 @@ public interface IUserservice extends IBaseService<User>{
 
     public User findByUsername(String username); //根据用户名查找用户
 
-    public User findByPhone(String phone); //根据用户名查找用户
+    public User findByPhone(String phone); //根据手机号查找用户
 
     public Set<String> findRoles(String username);// 根据用户名查找其角色
 
     public Set<String> findPermissions(String username);// 根据用户名查找其权限
 
-    public Integer deleteByIds(String ids);
+    public Integer deleteByIds(String ids);  //批量删除用户
 
     public Datagrid getAllSuperUser(PageModel pageModel);
 
     public Datagrid getAllNormalUser(PageModel pageModel);
+
+    public Datagrid getUserLike(PageModel model, String likeString);
 }
 

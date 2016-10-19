@@ -32,15 +32,6 @@
 		}
 	});
 
-	$('#locked-e').combobox({
-		onChange: function() {
-			var value = $('#locked-e').combobox('getValues');
-			$('#locked-e').combobox('select',value);
-			console.log(value);
-			console.log(value.join(','));
-		}
-	});
-
 
 </script>
 
@@ -72,9 +63,9 @@
 		<tr>
 			<th>是否锁定</th>
 			<td>
-				<select  id="locked-e"  class="esayui-combobox"  name="isLocked"   style="width: 100%">
-					<option id="true" value='true'>true</option>
-					<option id="false" value='false'>false</option>
+				<select  id="locked-e"  class="esayui-combobox"  name="isLocked"   style="width: 100%" data-options="required:true">
+					<option id="true" value='true'>锁定</option>
+					<option id="false" value='false' selected = "selected" >活动</option>
 			    </select>
 			</td>
 		</tr>

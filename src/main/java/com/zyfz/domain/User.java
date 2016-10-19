@@ -26,7 +26,13 @@ public class User {
 
     private String userIdentify;
 
+    private String country;
+    private String province;
+    private String city;
+
     private String area;
+
+    private String street;
 
     private String currentArea;
 
@@ -66,6 +72,13 @@ public class User {
         this.roles = roles;
     }
 
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
 
     public Integer getId() {
         return id;
@@ -153,6 +166,30 @@ public class User {
 
     public void setUserIdentify(String userIdentify) {
         this.userIdentify = userIdentify;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getArea() {

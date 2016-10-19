@@ -13,10 +13,7 @@ import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by ron on 16-10-15.
@@ -38,6 +35,7 @@ public class UserServiceImpl implements IUserservice{
 
     @Override
     public Integer save(User user) {
+
         return userMapper.insertSelective(user);
     }
 
@@ -149,5 +147,20 @@ public class UserServiceImpl implements IUserservice{
         return count;
     }
 
-
+    @Override
+    public Datagrid getUserLike(PageModel model,String likeString) {
+        PageHelper.startPage(model.getPage(),model.getRows());
+        String queryString = likeString + "%";
+        List<User> users = userMapper.selectByPhoneLike(queryString);
+        if(users.size() == 0){
+            users = userMapper.selectByUsernameLike(queryString);
+        }else if(users.size() == 0){
+            return new Datagrid();
+        }
+        PageInfo pageInfo = new PageInfo(users);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        datagrid.setTotal(pageInfo.getTotal());
+        return  datagrid;
+    }
 }

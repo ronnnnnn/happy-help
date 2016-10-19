@@ -13,7 +13,11 @@
     <result column="nickname" property="nickname" jdbcType="VARCHAR" />
     <result column="real_name" property="realName" jdbcType="VARCHAR" />
     <result column="user_identify" property="userIdentify" jdbcType="VARCHAR" />
+    <result column="country" property="country" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
     <result column="area" property="area" jdbcType="VARCHAR" />
+    <result column="street" property="street" jdbcType="VARCHAR" />
     <result column="current_area" property="currentArea" jdbcType="VARCHAR" />
     <result column="is_admin" property="isAdmin" jdbcType="BIT" />
     <result column="is_new" property="isNew" jdbcType="BIT" />
@@ -42,7 +46,7 @@
 
   <sql id="Base_Column_List" >
     id, username, phone, password, salt, is_locked, role_ids, organization, nickname, 
-    real_name, user_identify, area, current_area, is_admin, is_new, create_time, account, 
+    real_name, user_identify,country,province,city, area,street, current_area, is_admin, is_new, create_time, account,
     contribute_score, honer_score, grade_total, grade_times, withdraw_account, wirhdraw_accont_type, 
     regId, alias, topic
   </sql>
@@ -54,20 +58,34 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+
   <select id="selectByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from hh_user
-    where username = #{username,jdbcType=INTEGER}
+    where username = #{username,jdbcType=VARCHAR}
   </select>
 
   <select id="selectByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select
     <include refid="Base_Column_List" />
     from hh_user
-    where phone = #{phone,jdbcType=INTEGER}
+    where phone = #{phone,jdbcType=VARCHAR}
   </select>
 
+  <select id="selectByUsernameLike" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_user
+    where username like #{username,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPhoneLike" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_user
+    where phone like #{phone,jdbcType=VARCHAR}
+  </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -84,7 +102,8 @@
   <select id="selectAllNormalUser" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from hh_user = 0
+    from hh_user
+    where is_admin = 0
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -96,7 +115,7 @@
     insert into hh_user (id, username, phone, 
       password, salt, is_locked, 
       role_ids, organization, nickname, 
-      real_name, user_identify, area, 
+      real_name, user_identify, country,province,city, area,street,
       current_area, is_admin, is_new, 
       create_time, account, contribute_score, 
       honer_score, grade_total, grade_times, 
@@ -105,7 +124,7 @@
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{isLocked,jdbcType=BIT}, 
       #{roleIds,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
-      #{realName,jdbcType=VARCHAR}, #{userIdentify,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{userIdentify,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR},
       #{currentArea,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, #{isNew,jdbcType=BIT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{account,jdbcType=DOUBLE}, #{contributeScore,jdbcType=DOUBLE}, 
       #{honerScore,jdbcType=DOUBLE}, #{gradeTotal,jdbcType=VARCHAR}, #{gradeTimes,jdbcType=INTEGER}, 
@@ -148,8 +167,20 @@
       <if test="userIdentify != null" >
         user_identify,
       </if>
+      <if test="country != null" >
+        country,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
       <if test="area != null" >
         area,
+      </if>
+      <if test="street != null" >
+        street,
       </if>
       <if test="currentArea != null" >
         current_area,
@@ -228,8 +259,20 @@
       <if test="userIdentify != null" >
         #{userIdentify,jdbcType=VARCHAR},
       </if>
+      <if test="country != null" >
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
       <if test="area != null" >
         #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        #{street,jdbcType=VARCHAR},
       </if>
       <if test="currentArea != null" >
         #{currentArea,jdbcType=VARCHAR},
@@ -309,8 +352,20 @@
       <if test="userIdentify != null" >
         user_identify = #{userIdentify,jdbcType=VARCHAR},
       </if>
+      <if test="country != null" >
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
       <if test="area != null" >
         area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null" >
+        street = #{street,jdbcType=VARCHAR},
       </if>
       <if test="currentArea != null" >
         current_area = #{currentArea,jdbcType=VARCHAR},
@@ -369,7 +424,11 @@
       nickname = #{nickname,jdbcType=VARCHAR},
       real_name = #{realName,jdbcType=VARCHAR},
       user_identify = #{userIdentify,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
       area = #{area,jdbcType=VARCHAR},
+      street = #{street,jdbcType=VARCHAR},
       current_area = #{currentArea,jdbcType=VARCHAR},
       is_admin = #{isAdmin,jdbcType=BIT},
       is_new = #{isNew,jdbcType=BIT},

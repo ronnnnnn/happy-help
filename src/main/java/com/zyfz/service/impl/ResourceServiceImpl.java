@@ -62,14 +62,14 @@ public class ResourceServiceImpl implements IResourceService {
     @Override
     public Set<String> findPermissions(Set<Integer> resourceIds) {
 
-        Set<String> permissions = new HashSet<String>();
-        for(int resourceId : resourceIds){
-            Resources sysResource = resourceMapper.selectByPrimaryKey(resourceId);
-            if(sysResource != null){
-                permissions.add(sysResource.getPermission());
+            Set<String> permissions = new HashSet<String>();
+            for(int resourceId : resourceIds){
+                Resources sysResource = resourceMapper.selectByPrimaryKey(resourceId);
+                if(sysResource != null){
+                    permissions.add(sysResource.getPermission());
+                }
             }
-        }
-        return permissions;
+            return permissions;
     }
 
     @Override
