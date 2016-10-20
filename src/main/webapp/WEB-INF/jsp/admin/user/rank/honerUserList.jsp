@@ -2,13 +2,13 @@
 <body>
 <script type="text/javascript">
 	$(function() {
-		init();
+		honerinit();
 	});
 
 
-	function init(){
-		$('#admin_user_datagrid').datagrid({
-			url : '${pageContext.request.contextPath}/user/superuser/all',
+	function honerinit(){
+		$('#user_honer_datagrid').datagrid({
+			url : '${pageContext.request.contextPath}/user/normaluser/all',
 			fit : true,
 			pagination : true,
 			idField : 'id',
@@ -17,6 +17,10 @@
 			fitColumns : true,
 			nowrap : false,
 			rownumbers : true,
+			queryParams: {
+				order : "honer_score",
+				sort : "desc"
+			},
 			frozenColumns : [ [ {
 				field : 'id',
 				title : '编号',
@@ -27,7 +31,7 @@
 			}, {
 				field : 'username',
 				title : '用户名',
-				width : fixWidth(0.1),
+				width : fixWidth(0.2),
 				align : 'center',
 			},{
 				field : 'realName',
@@ -35,55 +39,15 @@
 				width : fixWidth(0.1),
 				align : 'center',
 			},{
-				field : 'userIdentify',
-				title : '生份证',
-				width : fixWidth(0.15),
+				field : 'honerScore',
+				title : '荣誉值',
+				width : fixWidth(0.1),
 				align : 'center',
-			},{
-				field : 'roleIds',
-				title : '角色列表',
-				width : fixWidth(0.2),
-				align : 'center',
-				formatter : function(value, row, index) {
-					var rolename = "";
-					if (value != null && value != undefined && value != '') {
-
-						$.ajax({
-							type: 'get',
-							url: '${pageContext.request.contextPath}/role/' + value,
-							dataType: 'json',
-							async:false,
-							success: function (data) {
-								$.each(data, function (index, value) {
-									rolename += value.description + ",";
-								});
-							},
-							error: function (data) {
-								alert("err");
-							}
-						});
-					}else{
-						return rolename;
-					}
-					return rolename;
-				},
 			},{
 				field : 'phone',
 				title : '电话',
-				width : fixWidth(0.1),
+				width : fixWidth(0.2),
 				align : 'center',
-			},{
-				field : 'isLocked',
-				title : '状态',
-				width : fixWidth(0.1),
-				align : 'center',
-				formatter : function(value, row, index) {
-					if (value == true) {
-						return '锁定';
-					} else {
-						return '活动';
-					}
-				},
 			} ] ],
 			toolbar : [{
 				text : '添加',
@@ -98,16 +62,10 @@
 					userRemove();
 				}
 			}, '-', {
-				text : '修改',
+				text : '修改荣誉值',
 				iconCls : 'icon-edit',
 				handler : function() {
-					userEditFun();
-				}
-			},'-', {
-				text : '修改密码',
-				iconCls : 'icon-edit',
-				handler : function() {
-					passwordEdit();
+					honerScoreEdit();
 				}
 			}]
 		});
@@ -115,8 +73,8 @@
 
 
 
-	function passwordEdit() {
-		var rows = $('#admin_user_datagrid').datagrid('getChecked');
+	function honerScoreEdit() {
+		var rows = $('#user_honer_datagrid').datagrid('getChecked');
 		if (rows.length == 1) {
 			var dp = $('<div/>').dialog({
 				width : 270,
@@ -139,7 +97,7 @@
 							data : '{"id":\"'+id+'\","password":\"'+newPWD+'\"}',
 							success: function(data) {
 								if(data){
-									$('#admin_user_datagrid').datagrid('load');
+									$('#user_honer_datagrid').datagrid('load');
 									dp.dialog('close');
 								}else{
 									alert("修改失败!");
@@ -164,7 +122,7 @@
 	}
 
 	function userEditFun() {
-		var rows = $('#admin_user_datagrid').datagrid('getChecked');
+		var rows = $('#user_honer_datagrid').datagrid('getChecked');
 		if (rows.length == 1) {
 			var d = $('<div/>').dialog({
 				width : 270,
@@ -192,8 +150,8 @@
 							data : '{"username":\"'+username+'\","roleIds":\"'+roleIds+'\","isLocked":\"'+locked+'\","phone":\"'+phone+'\","realName":\"'+realName+'\","userIdentify":\"'+userIdentify+'\","id":\"'+id+'\"}',
 							success: function(data) {
 								if(data){
-									$('#admin_user_datagrid').datagrid('load');
-									$('#admin_user_datagrid').datagrid('unselectAll');
+									$('#user_honer_datagrid').datagrid('load');
+									$('#user_honer_datagrid').datagrid('unselectAll');
 									d.dialog('destroy');
 								}else{
 									alert("修改失败!");
@@ -258,9 +216,9 @@
 	}
 
 	function userRemove() {
-		var rows = $('#admin_user_datagrid').datagrid('getChecked');
-		//	var rows=$('#admin_user_datagrid').datagrid('getSelected');
-		//	var rows=$('#admin_user_datagrid').datagrid('getSelecteds');
+		var rows = $('#user_honer_datagrid').datagrid('getChecked');
+		//	var rows=$('#user_honer_datagrid').datagrid('getSelected');
+		//	var rows=$('#user_honer_datagrid').datagrid('getSelecteds');
 		var ids = [];
 		if (rows.length > 0) {
 			$.messager.confirm('确认', '您是否要删除当前选中的选项？', function(r) {
@@ -277,7 +235,7 @@
 						},
 						dataType : 'json',
 						success : function(d) {
-							var v = $('#admin_user_datagrid');
+							var v = $('#user_honer_datagrid');
 							v.datagrid('reload');
 							v.datagrid('unselectAll');
 							v.datagrid('clearChecked');
@@ -300,9 +258,9 @@
 
 	}
 
-	function proClearFun() {
-		$('#admin_user_datagrid input[name=name]').val('');
-		$('#admin_user_datagrid').datagrid('load', {});
+	function userHonerClearFun() {
+		$('#user_honer_datagrid input[name=name]').val('');
+		$('#user_honer_datagrid').datagrid('load', {});
 	}
 
 	function registerUser() {
@@ -323,7 +281,7 @@
 			data : '{"username":\"'+username+'\","password":\"'+password+'\","roleIds":\"'+roleIds+'\","isLocked":\"'+isLocked+'\","phone":\"'+phone+'\","realName":\"'+realName+'\","userIdentify":\"'+userIdentify+'\","isAdmin":\"'+isAdmin+'\"}',
 			success: function(data) {
 				if(data){
-					$('#admin_user_datagrid').datagrid('load');
+					$('#user_honer_datagrid').datagrid('load');
 					$('#admin_user_addDialog').dialog('close');
 				}else{
 					alert("用户已经存在");
@@ -335,9 +293,9 @@
 		});
 	}
 
-	function UserSearchFun() {
+	function userHonerSearchFun() {
 
-		$('#admin_user_datagrid').datagrid({
+		$('#user_honer_datagrid').datagrid({
 			url : '${pageContext.request.contextPath}/user/key',
 			fit : true,
 			pagination : true,
@@ -353,29 +311,29 @@
 			frozenColumns : [ [ {
 				field : 'id',
 				title : '编号',
-				width : fixWidth(0.1),
+				width : 150,
 				align : 'center',
 				//hidden : true,
 				checkbox : true
 			}, {
 				field : 'username',
 				title : '用户名',
-				width : fixWidth(0.1),
+				width : 120,
 				align : 'center',
 			},{
 				field : 'realName',
 				title : '名字',
-				width : fixWidth(0.1),
+				width : 110,
 				align : 'center',
 			},{
 				field : 'userIdentify',
 				title : '生份证',
-				width : fixWidth(0.15),
+				width : 150,
 				align : 'center',
 			},{
 				field : 'roleIds',
 				title : '角色列表',
-				width : fixWidth(0.2),
+				width : 300,
 				align : 'center',
 				formatter : function(value, row, index) {
 					var rolename = "";
@@ -403,12 +361,12 @@
 			},{
 				field : 'phone',
 				title : '电话',
-				width : fixWidth(0.1),
+				width : 150,
 				align : 'center',
 			},{
 				field : 'isLocked',
 				title : '状态',
-				width : fixWidth(0.1),
+				width : 100,
 				align : 'center',
 				formatter : function(value, row, index) {
 					if (value == true) {
@@ -440,7 +398,7 @@
 				text : '修改密码',
 				iconCls : 'icon-edit',
 				handler : function() {
-					passwordEdit();
+					honerScoreEdit();
 				}
 			}]
 		});
@@ -449,78 +407,24 @@
 		//$('#admin_zjgl_zjgl_datagrid').datagrid('load', serializeObject($('#admin_zjgl_zjgl_searchForm')));
 	}
 
-	function UserSearchFun2() {
-		$('#admin_book_layout input[name=key]').val('');
-		init();
+	function userHonerClearFun() {
+		$('#user_honer_layout input[name=key]').val('');
+		$('#user_honer_datagrid').datagrid('load', {});
 	}
 </script>
 
-<div id="admin_book_layout" class="easyui-layout" data-options="fit:true,border:false">
+<div id="user_honer_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
-		<form id="admin_product_searchForm">
-			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="UserSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="UserSearchFun2()">清空</a>
+		<form id="user_honer_searchForm">
+			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="userHonerSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="userHonerClearFun()">清空</a>
 		</form>
 	</div>
 	<div data-options="region:'center',border:false">
-		<table id="admin_user_datagrid" data-options="border:false" style="width: auto"></table>
+		<table id="user_honer_datagrid" data-options="border:false" style="width: auto"></table>
 	</div>
 
 </div>
 
-<div id="admin_user_addDialog" class="easyui-dialog"
-	 data-options="closed:true,modal:true,title:'添加用户',buttons:[{
-					text : '添加',
-					iconCls : 'icon-add',
-					handler : function() {
-                        registerUser();
-					}}]"
-	 style="width: 280px; height: 315px;" title="添加用户">
-	<form id="admin_user_addForm" method="post">
-		<table>
-			<tr>
-				<input id="id-a" name="id" type="hidden"/>
-				<th>用户名</th>
-				<td><input id="username-a" name="username" class="easyui-validatebox" data-options="required:true" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>密码</th>
-				<td><input type="password" id="password-a" name="password" class="easyui-validatebox" data-options="required:true" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>名字</th>
-				<td><input id="realname-a" name="realName" class="easyui-validatebox" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>身份证</th>
-				<td><input id="userIdentity-a" name="userIdentify" class="easyui-validatebox" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>角色列表</th>
-				<td><select  id="role-select-a" data-options="multiple:true,panelHeight:'auto'" class="esayui-combobox"  name="roleIds" style="width: 100%"></select></td>
-			</tr>
-			<tr>
-				<th>电话</th>
-				<td><input id="phone-a" name="phone" class="easyui-validatebox" style="width: 100%"/></td>
-			</tr>
-			<tr>
-				<th>是否锁定</th>
-				<td>
-					<select  id="locked-a" data-options="multiple:false,panelHeight:'auto'" class="esayui-combobox"  name="isLocked" style="width: 100%">
-						<option id="true" value='true'>锁定</option>
-						<option id="false" value='false'>活动</option>
-					</select>
-				</td>
-			</tr>
 
-			<tr align="center">
-
-			</tr>
-
-		</table>
-	</form>
-</div>
-
-<div id="mydialog-e"></div>
-<div id="mydialog-p"></div>
 </body>
 </html>

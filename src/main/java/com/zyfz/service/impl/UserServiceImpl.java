@@ -79,6 +79,9 @@ public class UserServiceImpl implements IUserservice{
     @Override
     public Datagrid getAllNormalUser(PageModel pageModel) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        if(pageModel.getOrder() != null){
+            PageHelper.orderBy(pageModel.getOrder()+" "+pageModel.getSort());
+        }
         List<User> users = userMapper.selectAllNormalUser();
         PageInfo pageInfo = new PageInfo(users);
         Datagrid datagrid = new Datagrid();

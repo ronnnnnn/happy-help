@@ -57,6 +57,16 @@ public class UserController extends BaseController{
         return "admin/user/normalUserEditPanel";
     }
 
+    @RequestMapping(value = "/rank/honer")
+    public String toHonerRank(){
+        return "admin/user/rank/honerUserList";
+    }
+
+    @RequestMapping(value = "/rank/contribute")
+    public String toHonerContribute(){
+        return "admin/user/rank/contributeUserList";
+    }
+
     @RequestMapping(value = "/superuser/all")
     public void getAllSuperUser(PageModel pageModel, HttpServletResponse response){
         super.writeJson(userservice.getAllSuperUser(pageModel),response);

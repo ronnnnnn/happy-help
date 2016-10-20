@@ -107,4 +107,8 @@ public class Resources {
     public boolean isRootNode() {
         return parentId == 0;
     }
+
+    public String makeSelfAsParentIds() {
+        return getParentIds() + getId() + "/";
+    }
 }

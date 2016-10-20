@@ -14,12 +14,14 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/jquery-easyui-1.4.4/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/jquery-easyui-1.4.4/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/syUtils.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/jslib/myfit.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/ajaxfileupload.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/jslib/jquery-easyui-1.4.4/themes/bootstrap/easyui.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/jslib/jquery-easyui-1.4.4/themes/icon.css" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/ueditor/themes/default/css/ueditor.css">
+	<script src="${pageContext.request.contextPath}/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-treetable/stylesheets/jquery.treetable.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-treetable/stylesheets/jquery.treetable.theme.default.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tablecss.css">
@@ -67,6 +69,7 @@
 
 	<script type="text/javascript">
 
+
         $(function() {
             $('#admin_index_east_calendar').calendar({
                 fit : true,
@@ -76,6 +79,16 @@
                     $(this).calendar('moveTo', new Date());
                 }
             });
+
+
+			$("#orderedlist li").hover(function () {
+				$(this).addClass("blue");
+			}, function () {
+				$(this).removeClass("blue");
+			});
+
+
+
         })
 
 		function menuOnclick(name,url) {
@@ -85,22 +98,25 @@
 			}
 		}
 
+
 		function addTabs(optis) {
-			var t = $('#lyout_center_tabs');
-			if (t.tabs('exists', optis.title)) {
-				t.tabs('select', optis.title);
-			} else {
-				t.tabs('add', optis);
-			}
+
+				var t = $('#lyout_center_tabs');
+				if (t.tabs('exists', optis.title)) {
+					t.tabs('select', optis.title);
+				} else {
+					t.tabs('add', optis);
+				}
+
 		}
 
-		$(document).ready(function () {
-			$("#orderedlist li").hover(function () {
-				$(this).addClass("blue");
-			}, function () {
-				$(this).removeClass("blue");
-			});
-		});
+//		$(document).ready(function () {
+//			$("#orderedlist li").hover(function () {
+//				$(this).addClass("blue");
+//			}, function () {
+//				$(this).removeClass("blue");
+//			});
+//		});
 
 	</script>
 
@@ -108,15 +124,14 @@
 </head>
 
 <body class="easyui-layout">
-	<div data-options="region:'north'" style="height: 50px;background-color: #0081C2">
+	<div data-options="region:'north'" style="height: 70px;background-color: #0081C2">
 		<div  style="float: left">
-			<h2 align="center" style="margin-left: 22px;margin-bottom: 30%;color: #d9edf7">乐助后台管理</h2>
+			<h1 align="center" style="margin-left: 20px;color: #d9edf7;">乐助后台管理</h1>
 		</div>
 
 		<div style="float: right">
-			<h3 align="center" style="margin-right: 15px;color: #d9edf7"><a href="${pageContext.request.contextPath}/logout" style="color: #d9edf7">退出</a></h3>
+			<h3 align="center"  style="margin-right: 15px;color: #d9edf7"><a href="${pageContext.request.contextPath}/logout" style="color: #d9edf7">退出</a></h3>
 		</div>
-
 	</div>
 	<div data-options="region:'south'" style="height: 30px;">
 		<div align="center">

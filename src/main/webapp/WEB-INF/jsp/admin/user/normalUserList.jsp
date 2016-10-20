@@ -2,11 +2,11 @@
 <body>
 <script type="text/javascript">
 	$(function() {
-		init();
+		normalinit();
 	});
 
 
-	function init(){
+	function normalinit(){
 		$('#admin_normal_user_datagrid').datagrid({
 			url : '${pageContext.request.contextPath}/user/normaluser/all',
 			fit : true,
@@ -20,69 +20,69 @@
 			frozenColumns : [ [ {
 				field : 'id',
 				title : '编号',
-				width : 150,
+				width : fixWidth(0.06),
 				align : 'center',
 				//hidden : true,
 				checkbox : true
 			}, {
 				field : 'username',
 				title : '用户名',
-				width : 70,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'nickname',
 				title : '昵称',
-				width : 70,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'realName',
 				title : '名字',
-				width : 70,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'userIdentify',
 				title : '生份证',
-				width : 130,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'phone',
 				title : '电话',
-				width : 100,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'currentArea',
 				title : '当前常用地',
-				width : 100,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'contributeScore',
 				title : '贡献值',
-				width : 60,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'honerScore',
 				title : '荣誉值',
-				width : 60,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'gradeTotal',
 				title : '评星总分',
-				width : 65,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'gradeTimes',
 				title : '评星次数',
-				width : 60,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'withdrawAccount',
 				title : '提现账户',
-				width : 100,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'isLocked',
 				title : '状态',
-				width : 50,
+				width : fixWidth(0.06),
 				align : 'center',
 				formatter : function(value, row, index) {
 					if (value == true) {
@@ -370,74 +370,73 @@
 			rownumbers : true,
 			queryParams: {
 				key : $("input[name$='key']").val()
-				isAdmin : false
 			},
 			frozenColumns : [ [ {
 				field : 'id',
 				title : '编号',
-				width : 150,
+				width : fixWidth(0.06),
 				align : 'center',
 				//hidden : true,
 				checkbox : true
 			}, {
 				field : 'username',
 				title : '用户名',
-				width : 70,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'nickname',
 				title : '昵称',
-				width : 70,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'realName',
 				title : '名字',
-				width : 70,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'userIdentify',
 				title : '生份证',
-				width : 130,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'phone',
 				title : '电话',
-				width : 100,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'currentArea',
 				title : '当前常用地',
-				width : 100,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'contributeScore',
 				title : '贡献值',
-				width : 60,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'honerScore',
 				title : '荣誉值',
-				width : 60,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'gradeTotal',
 				title : '评星总分',
-				width : 65,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'gradeTimes',
 				title : '评星次数',
-				width : 60,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'withdrawAccount',
 				title : '提现账户',
-				width : 100,
+				width : fixWidth(0.06),
 				align : 'center',
 			},{
 				field : 'isLocked',
 				title : '状态',
-				width : 50,
+				width : fixWidth(0.06),
 				align : 'center',
 				formatter : function(value, row, index) {
 					if (value == true) {
@@ -480,14 +479,14 @@
 
 	function nUserSearchFun1() {
 		$('#admin_book_layout input[name=key]').val('');
-		$('#admin_normal_user_datagrid').datagrid('load', {});
+		normalinit();
 	}
 </script>
 
 <div id="admin_book_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
 		<form id="admin_product_searchForm">
-			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="nUserSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="proClearFun()">清空</a>
+			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="nUserSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="nUserSearchFun1()">清空</a>
 		</form>
 	</div>
 	<div data-options="region:'center',border:false">

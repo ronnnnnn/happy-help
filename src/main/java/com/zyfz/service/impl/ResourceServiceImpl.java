@@ -112,4 +112,9 @@ public class ResourceServiceImpl implements IResourceService {
     public List<Resources> finaRootMenu() {
         return resourceMapper.selectRootMenu();
     }
+
+    @Override
+    public List<Resources> findAll() {
+        return resourceMapper.selectAll();
+    }
 }
