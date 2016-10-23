@@ -62,6 +62,14 @@ public class UserController extends BaseController{
         return "admin/user/rank/honerUserList";
     }
 
+    @RequestMapping(value = "/honer/panel")
+    public String toHonerEditPanel(){
+        return "admin/user/rank/superUserHonerEdit";
+    }
+    @RequestMapping(value = "/contribute/panel")
+    public String toContributeEditPanel(){
+        return "admin/user/rank/UserContributeEdit";
+    }
     @RequestMapping(value = "/rank/contribute")
     public String toHonerContribute(){
         return "admin/user/rank/contributeUserList";
@@ -146,4 +154,35 @@ public class UserController extends BaseController{
     public void getUserByKey(String key,PageModel pageModel,HttpServletResponse response){
         super.writeJson(userservice.getUserLike(pageModel,key),response);
     }
+    //修改荣誉值
+
+    @RequestMapping(value="/honer",method = RequestMethod.PATCH)
+    @ResponseBody
+    public Object updateUserHoner(@RequestBody User user){
+        try{
+            userservice.changeHoner(user.getId(),user.getHonerScore());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //修改贡献值
+
+    @RequestMapping(value="/contribute",method = RequestMethod.PATCH)
+    @ResponseBody
+    public Object updateUserContribute(@RequestBody User user){
+        try{
+            userservice.changeContribute(user.getId(),user.getContributeScore());
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
 }
