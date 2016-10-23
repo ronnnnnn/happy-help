@@ -3,9 +3,9 @@ package com.zyfz.domain;
 public class Resources {
     private Integer id;
 
-    private String name;
+    private String mname;
 
-    private String type;
+    private String mtype;
 
     private String priority;
 
@@ -40,20 +40,20 @@ public class Resources {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getMname() {
+        return mname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMname(String mname) {
+        this.mname = mname;
     }
 
-    public String getType() {
-        return type;
+    public String getMtype() {
+        return mtype;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setMtype(String mtype) {
+        this.mtype = mtype;
     }
 
     public String getPriority() {

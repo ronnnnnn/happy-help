@@ -4,14 +4,11 @@ import java.util.Date;
 
 public class Show {
     private Integer id;
-
     private String mname;
-
     private String imageUrl;
     private String  mtype;
     private Integer sort;
     private Boolean isUse;
-
     private Date createTime;
 
     public String getMtype() {

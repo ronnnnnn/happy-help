@@ -3,6 +3,8 @@
 <script type="text/javascript">
 	$(function () {
 
+
+
 		$.ajax({
 			type: 'get',
 			contentType: 'application/json',
@@ -32,6 +34,9 @@
 		}
 	});
 
+	$('#locked-e').combobox({
+
+	});
 
 </script>
 
@@ -63,10 +68,8 @@
 		<tr>
 			<th>是否锁定</th>
 			<td>
-				<select  id="locked-e"  class="esayui-combobox"  name="isLocked"   style="width: 100%" data-options="required:true">
-					<option id="true" value='true'>锁定</option>
-					<option id="false" value='false' selected = "selected" >活动</option>
-			    </select>
+				<input type="radio" name="isLocked" value="true" />锁定
+				<input type="radio" name="isLocked" value="false" />活动
 			</td>
 		</tr>
 

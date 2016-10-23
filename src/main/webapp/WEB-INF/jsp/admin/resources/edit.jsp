@@ -11,16 +11,16 @@
                 <input id="rse-parentId"  type="hidden" <c:if test="${!empty resource.parentId}">value="${resource.parentId}"</c:if>/>
                 <input id="rse-parentIds"  type="hidden" <c:if test="${!empty resource.parentIds}">value="${resource.parentIds}"</c:if>/>
                 <th>父节点名称</th>
-                <td><input name="parent-name" class="easyui-validatebox" data-options="required:true" style="width: 100%" value=" ${parent.name}" readonly="readonly"/></td>
+                <td><input name="parent-name" class="easyui-validatebox" data-options="required:true" style="width: 100%" value=" ${parent.mname}" readonly="readonly"/></td>
             </tr>
             <tr>
                 <th>名称</th>
-                <td><input id="rse-name" name="name" class="easyui-validatebox" style="width: 100%" <c:if test="${!empty resource.name}">value="${resource.name}"</c:if>/></td>
+                <td><input id="rse-name" name="name" class="easyui-validatebox" style="width: 100%" <c:if test="${!empty resource.mname}">value="${resource.mname}"</c:if>/></td>
             </tr>
             <tr>
                 <th>类别</th>
                 <td>
-                    <select  id="rse-type"  class="esayui-combobox"  name="type"   style="width: 100%" data-options="required:true" <c:if test="${!empty resource.type}">value="${resource.type}"</c:if>>
+                    <select  id="rse-type"  class="esayui-combobox"  name="type"   style="width: 100%" data-options="required:true" <c:if test="${!empty resource.mtype}">value="${resource.mtype}"</c:if>>
                         <option  value='menu'>menu</option>
                         <option  value='button'  >button</option>
                     </select>

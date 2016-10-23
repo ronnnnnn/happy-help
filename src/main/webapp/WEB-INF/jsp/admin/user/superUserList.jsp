@@ -178,7 +178,8 @@
 					handler : function() {
 						var username = $('#username-e').val();
 						var roleIds = $('#role-select-e').combobox('getValues');
-						var locked = $('#locked-e').val();
+
+						var locked = $('input[type="radio"][name="isLocked"]:checked').val();
 						var phone = $('#phone-e').val();
 						var realName = $('#realname-e').val();
 						var userIdentify = $('#userIdentity-e').val();

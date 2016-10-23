@@ -195,7 +195,7 @@
 						var gradeTotal = $('#gradeTotal-ne').val();
 						var gradeTimes = $('#gradeTimes-ne').val();
 						var withdrawAccount = $('#withdrawAccount-ne').val();
-						var locked = $('#locked-ne').val();
+						var locked = $('input[type="radio"][name="isLocked"]:checked').val();
 
 						$.ajax({
 							type: 'PATCH',

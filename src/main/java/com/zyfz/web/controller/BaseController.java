@@ -31,7 +31,8 @@ public class BaseController {
 			return "";
 		
 		//SimpleDateFormat sdf = new SimpleDateFormat("\\yyyy\\MM\\dd\\");
-		String basePath = request.getSession().getServletContext().getRealPath("");
+		String basePath = request.getServletContext().getRealPath("");
+//		String basePath = "/home/ron/桌面/乐助";
 		logger.info("==============" + basePath);
 		String subPath = "//productImages//";
 		File dir = new File(basePath + subPath);
@@ -41,6 +42,7 @@ public class BaseController {
 		String imageName =  UUID.randomUUID().toString() + "."+type;
 		String path = basePath + subPath + imageName ;
         File myfile = new File(path);
+		logger.info("==============" + path);
 		try {
 			upload.transferTo(myfile);
 		} catch (IllegalStateException | IOException e) {

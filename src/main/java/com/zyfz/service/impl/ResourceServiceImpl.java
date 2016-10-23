@@ -83,7 +83,7 @@ public class ResourceServiceImpl implements IResourceService {
             }
 
             String str2 = "menu";
-            if(resource.getType().intern() != str2) {
+            if(resource.getMtype().intern() != str2) {
                 continue;
             }
             if(!hasPermission(permissions, resource)) {

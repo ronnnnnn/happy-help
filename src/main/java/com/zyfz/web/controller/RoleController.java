@@ -1,11 +1,14 @@
 package com.zyfz.web.controller;
 
+import com.zyfz.domain.Resources;
 import com.zyfz.domain.Role;
+import com.zyfz.model.PageModel;
+import com.zyfz.model.ResourceModel;
+import com.zyfz.service.IResourceService;
 import com.zyfz.service.IRoleService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +24,81 @@ public class RoleController extends BaseController {
     @Resource
     IRoleService roleService;
 
+    @Resource
+    IResourceService resourceService;
+
+    /**
+     * 页面跳转
+     * @return 页面
+     */
+    @RequestMapping(method = RequestMethod.GET)
+    public String getRolePanel(){
+        return "admin/role/list";
+    }
+
+    @RequestMapping(value = "/baseedit",method = RequestMethod.GET)
+    public String getBaseeditPanel(){
+        return "admin/role/baseedit";
+    }
+
+    /**
+     * 资源管理跳转
+     * @return
+     */
+    @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
+    public String getRoleEditPanel(@PathVariable Integer id, Model model){
+        List<ResourceModel> resourceList = new ArrayList<ResourceModel>();
+        List<Resources> resources = resourceService.findAll();
+        Role role = new Role();
+        role.setId(id);
+        String checkResourceIds[] = new String[]{};
+        if(roleService.getOneById(role).getResourceIds() != null){
+             checkResourceIds = roleService.getOneById(role).getResourceIds().split(",");
+        }else {
+            String temp = "99999999,11111111";
+            checkResourceIds = temp.split(",");
+        }
+
+        for (Resources myresource : resources){
+            ResourceModel resourceModel = new ResourceModel();
+            resourceModel.setId(myresource.getId());
+            resourceModel.setName(myresource.getMname());
+            resourceModel.setParentId(myresource.getParentId());
+            resourceModel.setCheck(false);
+            for (String cid : checkResourceIds){
+
+               if(Integer.valueOf(cid) == myresource.getId()){
+                   resourceModel.setCheck(true);
+               }
+
+            }
+            resourceList.add(resourceModel);
+        }
+        model.addAttribute("resourceList",resourceList);
+        return "admin/role/edit";
+    }
+    /**
+     * 添加角色
+     * @param role
+     * @return true 或 错误信息
+     */
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseBody
+    public Object addRole(@RequestBody Role role){
+        try{
+            roleService.save(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            return e.toString();
+        }
+        return true;
+    }
+
+    /**
+     * 用于将角色的资源id集合装化为资源名字集合
+     * @param value 角色对应下的资源id
+     * @param response  资源集合
+     */
     @RequestMapping(value = "/{value}",method = RequestMethod.GET)
     public void getRoleByIds(@PathVariable String value, HttpServletResponse response){
         String[] ids = value.split(",");
@@ -30,13 +108,62 @@ public class RoleController extends BaseController {
             Role mRole = new Role();
             mRole.setId(mid);
             Role sysRole = roleService.getOneById(mRole);
-            roles.add(sysRole);
+            if(sysRole != null){
+               roles.add(sysRole);
+            }
         }
         super.writeJson(roles,response);
     }
 
+    /**
+     * 批量删除角色
+     * @param ids id集合
+     */
+    @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public Object deleteByIds(@PathVariable String ids){
+        String mids[] = ids.split(",");
+        for (String id : mids){
+            Role role = new Role();
+            role.setId(Integer.valueOf(id));
+            roleService.deleteOneById(role);
+        }
+        return mids.length;
+    }
+
+    /**
+     * 获得所有角色 不分页
+     * @param response
+     */
     @RequestMapping(value = "/all/list",method = RequestMethod.GET)
     public void getAllRoles(HttpServletResponse response){
        super.writeJson(roleService.getAllRoles(),response);
+    }
+
+    /**
+     * 获得所有角色 分页
+     * @param pageModel
+     * @param response
+     */
+    @RequestMapping(value = "/list")
+    public void getRoleList(PageModel pageModel,HttpServletResponse response){
+        super.writeJson(roleService.getAll(pageModel),response);
+    }
+
+    /**
+     * 修改角色
+     * @param role
+     * @return
+     */
+
+    @RequestMapping(method = RequestMethod.PATCH)
+    @ResponseBody
+    public Object updateRoleResource(@RequestBody  Role role){
+        try {
+            roleService.update(role);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 }

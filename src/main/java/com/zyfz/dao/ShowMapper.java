@@ -2,6 +2,8 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.Show;
 
+import java.util.List;
+
 public interface ShowMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -10,6 +12,8 @@ public interface ShowMapper {
     int insertSelective(Show record);
 
     Show selectByPrimaryKey(Integer id);
+
+    List<Show> selectAll();
 
     int updateByPrimaryKeySelective(Show record);
 

@@ -11,7 +11,7 @@
                 <input id="rs-parentId"  type="hidden" value="${resource.parentId}"/>
                 <input id="rs-parentIds"  type="hidden" value="${resource.parentIds}"/>
                 <th>父节点名称</th>
-                <td><input name="parent-name" class="easyui-validatebox" data-options="required:true" style="width: 100%" value=" ${parent.name}" readonly="readonly"/></td>
+                <td><input name="parent-name" class="easyui-validatebox" data-options="required:true" style="width: 100%" value=" ${parent.mname}" readonly="readonly"/></td>
             </tr>
             <tr>
                 <th>名称</th>

@@ -26,13 +26,13 @@
     <tbody>
         <c:forEach items="${resourceList}" var="resource">
             <tr  data-tt-id='${resource.id}' <c:if test="${not resource.rootNode}">data-tt-parent-id='${resource.parentId}'</c:if>>
-                <td style="font-size: 14px; padding : 8px;">${resource.name}</td>
-                <td style="font-size: 14px; padding : 8px;">${resource.type}</td>
+                <td style="font-size: 14px; padding : 8px;">${resource.mname}</td>
+                <td style="font-size: 14px; padding : 8px;">${resource.mtype}</td>
                 <td style="font-size: 14px; padding : 8px;">${resource.url}</td>
                 <td style="font-size: 14px; padding : 8px;">${resource.permission}</td>
                 <td style="font-size: 14px; padding : 8px;">
                     <shiro:hasPermission name="resource:create">
-                        <c:if test="${resource.type ne 'button'}">
+                        <c:if test="${resource.mtype ne 'button'}">
                             <button onclick="addChild(${resource.id})">添加子节点</button>
                         <%--<a href="${pageContext.request.contextPath}/resource/${resource.id}/appendChild">添加子节点</a>--%>
                         </c:if>
@@ -93,8 +93,8 @@
 
                     var parentId = $('#rs-parentId').val();
                     var parentIds = $('#rs-parentIds').val();
-                    var name = $('#rs-name').val();
-                    var type = $('#rs-type').val();
+                    var mname = $('#rs-name').val();
+                    var mtype = $('#rs-type').val();
                     var url = $('#rs-url').val();
                     var permission = $('#rs-permission').val();
                     var priority = $('#rs-priority').val();
@@ -104,7 +104,7 @@
                         url: '${pageContext.request.contextPath}/resources/'+resourceId+'/appendChild',
                         processData: false,
                         dataType: 'json',
-                        data : '{"parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","name":\"'+name+'\","type":\"'+type+'\","url":\"'+url+'\","permission":\"'+permission+'\","priority":\"'+priority+'\"}',
+                        data : '{"parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","mname":\"'+mname+'\","mtype":\"'+mtype+'\","url":\"'+url+'\","permission":\"'+permission+'\","priority":\"'+priority+'\"}',
                         success: function(data) {
                             d.dialog('destroy');
                             var currTab =  $('#lyout_center_tabs').tabs('getSelected'); //获得当前tab
@@ -140,8 +140,8 @@
                     var id = $('#rse-id').val();
                     var parentId = $('#rse-parentId').val();
                     var parentIds = $('#rse-parentIds').val();
-                    var name = $('#rse-name').val();
-                    var type = $('#rse-type').val();
+                    var mname = $('#rse-name').val();
+                    var mtype = $('#rse-type').val();
                     var url = $('#rse-url').val();
                     var permission = $('#rse-permission').val();
                     var priority = $('#rse-priority').val();
@@ -151,7 +151,7 @@
                         url: '${pageContext.request.contextPath}/resources/'+resourceId+'/update',
                         processData: false,
                         dataType: 'json',
-                        data : '{"id":\"'+id+'\","parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","name":\"'+name+'\","type":\"'+type+'\","url":\"'+url+'\","permission":\"'+permission+'\","priority":\"'+priority+'\"}',
+                        data : '{"id":\"'+id+'\","parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","mname":\"'+mname+'\","mtype":\"'+mtype+'\","url":\"'+url+'\","permission":\"'+permission+'\","priority":\"'+priority+'\"}',
                         success: function(data) {
                             d.dialog('destroy');
                             var currTab =  $('#lyout_center_tabs').tabs('getSelected'); //获得当前tab

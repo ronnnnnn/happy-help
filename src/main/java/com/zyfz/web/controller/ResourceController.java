@@ -1,6 +1,7 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.Resources;
+import com.zyfz.model.PageModel;
 import com.zyfz.service.IResourceService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
@@ -8,13 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ron on 16-10-20.
  */
 @RequestMapping("/resources")
 @Controller
-public class ResourceController {
+public class ResourceController extends BaseController{
     @Resource
     IResourceService resourceService;
 
@@ -23,11 +27,33 @@ public class ResourceController {
         return Resources.ResourceType.values();
     }
 
+    /**
+     * 页面跳转
+     * @param model
+     * @return  资源列表
+     */
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model){
         model.addAttribute("resourceList",resourceService.findAll());
         return  "admin/resources/list";
     }
+
+    /**
+     * 获取资源数据
+     * @param pageModel
+     * @param response
+     */
+    @RequestMapping(value = "/datagrid",method = RequestMethod.GET)
+    public void getResourcesDatagrid(PageModel pageModel,HttpServletResponse response){
+        super.writeJson(resourceService.getAll(pageModel),response);
+    }
+
+    /**
+     * 子节点添加页面
+     * @param parentId
+     * @param model
+     * @return
+     */
     @RequiresPermissions("resource:create")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
     public String showAppendChildForm(@PathVariable("parentId") Integer parentId, Model model) {
@@ -43,6 +69,11 @@ public class ResourceController {
         return "admin/resources/add";
     }
 
+    /**
+     * 保存子节点
+     * @param resources
+     * @return
+     */
     @RequiresPermissions("resource:create")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.POST)
     @ResponseBody
@@ -51,6 +82,12 @@ public class ResourceController {
         return true;
     }
 
+    /**
+     * 更新子节点页面
+     * @param id
+     * @param model
+     * @return
+     */
     @RequiresPermissions("resource:update")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
@@ -64,6 +101,11 @@ public class ResourceController {
         return "admin/resources/edit";
     }
 
+    /**
+     * 更新子节点
+     * @param resource
+     * @return
+     */
     @RequiresPermissions("resource:update")
     @ResponseBody
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
@@ -72,6 +114,11 @@ public class ResourceController {
         return true;
     }
 
+    /**
+     * 删除资源
+     * @param id
+     * @return
+     */
     @RequiresPermissions("resource:delete")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
@@ -80,6 +127,35 @@ public class ResourceController {
         resources.setId(id);
         resourceService.deleteOneById(resources);
         return true;
+    }
+
+    /**
+     * 根据id字符串集合获得资源
+     * @param value
+     * @param response
+     */
+    @RequestMapping(value = "/{value}", method = RequestMethod.GET)
+    public void getResoucesNameByValue(@PathVariable String value, HttpServletResponse response){
+        String ids[] = value.split(",");
+        List<Resources> resourcesList = new ArrayList<Resources>();
+        for (String id : ids){
+            Resources resources = new Resources();
+            resources.setId(Integer.valueOf(id));
+            Resources myresources = resourceService.getOneById(resources);
+            if(myresources != null){
+                resourcesList.add(myresources);
+            }
+        }
+        super.writeJson(resourcesList,response);
+    }
+
+    /**
+     * 获取所有资源
+     * @param response
+     */
+    @RequestMapping(value = "/all/list",method = RequestMethod.GET)
+    public void getAllResources(HttpServletResponse response){
+        super.writeJson(resourceService.findAll(),response);
     }
 
 }

@@ -5,10 +5,11 @@
     color:#333333;
     text-align:center;
     border-collapse:collapse;
+    border: none;
 }
 .table td,.table th{
     border:1px solid #333333;
-    padding: 10px;
+        padding: 10px;
 
 }
 

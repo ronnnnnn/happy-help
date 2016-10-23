@@ -25,47 +25,55 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-treetable/stylesheets/jquery.treetable.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-treetable/stylesheets/jquery.treetable.theme.default.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tablecss.css">
-    <style type="text/css">
-        .button {
-            display: inline-block;
-            zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
-            *display: inline;
-            vertical-align: baseline;
-            margin: 0 0px;
-            outline: none;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            font: 14px/100% Arial, Helvetica, sans-serif;
-            padding: .5em 2em .55em;
-            text-shadow: 0 1px 1px rgba(0,0,0,.3);
-            -webkit-border-radius: .5em;
-            -moz-border-radius: .5em;
-            border-radius: .5em;
-            -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-            -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
-            box-shadow: 0 1px 2px rgba(0,0,0,.2);
-            margin-top: 0px;
-            margin-bottom: 0px;
-        }
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/css/demo.css" type="text/css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/js/jquery-1.4.4.min.js"></script>--%>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/js/jquery.ztree.core-3.5.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/static/JQuery zTree v3.5.15/js/jquery.ztree.excheck-3.5.js"></script>
+    <%--<style type="text/css">--%>
+        <%--.button {--%>
+            <%--display: inline-block;--%>
+            <%--zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */--%>
+            <%--*display: inline;--%>
+            <%--vertical-align: baseline;--%>
+            <%--margin: 0 0px;--%>
+            <%--outline: none;--%>
+            <%--cursor: pointer;--%>
+            <%--text-align: center;--%>
+            <%--text-decoration: none;--%>
+            <%--font: 14px/100% Arial, Helvetica, sans-serif;--%>
+            <%--padding: .5em 2em .55em;--%>
+            <%--text-shadow: 0 1px 1px rgba(0,0,0,.3);--%>
+            <%---webkit-border-radius: .5em;--%>
+            <%---moz-border-radius: .5em;--%>
+            <%--border-radius: .5em;--%>
+            <%---webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);--%>
+            <%---moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);--%>
+            <%--box-shadow: 0 1px 2px rgba(0,0,0,.2);--%>
+            <%--margin-top: 0px;--%>
+            <%--margin-bottom: 0px;--%>
+        <%--}--%>
 
-        .blue {
-            color: #E0ECFF;
-            border: solid 1px #0076a3;
-            background: #0095cd;
-            background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));
-            background: -moz-linear-gradient(top,  #00adee,  #0078a5);
-            filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');
-        }
+        <%--.blue {--%>
+            <%--color: #E0ECFF;--%>
+            <%--border: solid 1px #0076a3;--%>
+            <%--background: #0095cd;--%>
+            <%--background: -webkit-gradient(linear, left top, left bottom, from(#00adee), to(#0078a5));--%>
+            <%--background: -moz-linear-gradient(top,  #00adee,  #0078a5);--%>
+            <%--filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#00adee', endColorstr='#0078a5');--%>
+        <%--}--%>
 
-        .hr4{ height:1px;border:none;border-top:1px groove skyblue;margin-top: 0px;  margin-bottom: 0px;}
+        <%--.hr4{ height:1px;border:none;border-top:1px groove skyblue;margin-top: 0px;  margin-bottom: 0px;}--%>
 
-		li{margin:0px;padding:0px;list-style:none;}
+		<%--li{margin:0px;padding:0px;list-style:none;}--%>
 
-		.mydiv{
-			font-size: 20px;
-		}
-    </style>
+		<%--.mydiv{--%>
+			<%--font-size: 20px;--%>
+		<%--}--%>
+    <%--</style>--%>
+
+
+
 
 	<script type="text/javascript">
 
@@ -125,7 +133,7 @@
 
 <body class="easyui-layout">
 	<div data-options="region:'north'" style="height: 70px;background-color: #0081C2">
-		<div  style="float: left">
+		<div  style="float: left;padding: 13px">
 			<h1 align="center" style="margin-left: 20px;color: #d9edf7;">乐助后台管理</h1>
 		</div>
 
@@ -149,7 +157,7 @@
 					<div title="${rootMenu.key}">
 						<ul id="orderedlist" style="margin: 0 0 0 30px; padding: 0px; font-size: 12px; color: #436EEE; line-height: 30px; whitewhite-space: nowrap; ">
 							<c:forEach items="${rootMenu.value}" var="childMenu">
-								<li style="cursor:pointer;list-style-type: none; display: inline;width: 100% " onclick="menuOnclick('${childMenu.name}','${childMenu.url}')">${childMenu.name}</li>
+								<li style="cursor:pointer;list-style-type: none; display: inline;width: 100% " onclick="menuOnclick('${childMenu.mname}','${childMenu.url}')">${childMenu.mname}</li>
 								<br/>
 							</c:forEach>
 						</ul>
