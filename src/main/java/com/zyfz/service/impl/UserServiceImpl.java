@@ -45,6 +45,20 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
+    public void changeContribute(int userId, Double newContribute) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        user.setContributeScore(newContribute);
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
+    public void changeHoner(int userId, Double newHoner) {
+        User user = userMapper.selectByPrimaryKey(userId);
+        user.setHonerScore(newHoner);
+        userMapper.updateByPrimaryKey(user);
+    }
+
+    @Override
     public void changePassword(int userId, String newPassword) {
          User user = userMapper.selectByPrimaryKey(userId);
          user.setPassword(newPassword);
