@@ -9,7 +9,11 @@ public class Prize {
 
     private Double prizeMoney;
 
+    private String userIds;
+
     private String userNames;
+
+    private String hhPhones;
 
     private Date createTime;
 
@@ -37,12 +41,28 @@ public class Prize {
         this.prizeMoney = prizeMoney;
     }
 
+    public String getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(String userIds) {
+        this.userIds = userIds;
+    }
+
     public String getUserNames() {
         return userNames;
     }
 
     public void setUserNames(String userNames) {
         this.userNames = userNames;
+    }
+
+    public String getHhPhones() {
+        return hhPhones;
+    }
+
+    public void setHhPhones(String hhPhones) {
+        this.hhPhones = hhPhones;
     }
 
     public Date getCreateTime() {

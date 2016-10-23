@@ -2,13 +2,13 @@
 <body>
 <script type="text/javascript">
 	$(function() {
-		showInit();
+		prizeInit();
 	});
 
 
-	function showInit(){
-		$('#admin_show_pic_datagrid').datagrid({
-			url : '${pageContext.request.contextPath}/show/list',
+	function prizeInit(){
+		$('#admin_prize_datagrid').datagrid({
+			url : '${pageContext.request.contextPath}/prize/list',
 			fit : true,
 			pagination : true,
 			idField : 'id',
@@ -25,63 +25,38 @@
 				//hidden : true,
 				checkbox : true
 			}, {
-				field : 'mname',
-				title : '名字',
+				field : 'prizeNum',
+				title : '开奖期数',
 				width : fixWidth(0.1),
 				align : 'center',
 			},{
-				field : 'mtype',
-				title : '类别',
+				field : 'prizeMoney',
+				title : '开奖金额',
 				width : fixWidth(0.1),
 				align : 'center',
 			},{
-				field : 'sort',
-				title : '排序',
+				field : 'typeDescription',
+				title : '描述',
 				width : fixWidth(0.10),
 				align : 'center',
-			},{
-				field : 'imageUrl',
-				title : '图片',
-				width : fixWidth(0.2),
-				align : 'center',
-				formatter : function(value, row, index) {
-					return '<img style=\"height: 300px;width: 200px;\" src="${pageContext.request.contextPath}/productImages/'+row.imageUrl+'" />';
-				},
-			},{
-				field : 'createTime',
-				title : '创建时间',
-				width : fixWidth(0.1),
-				align : 'center',
-			},{
-				field : 'isUse',
-				title : '状态',
-				width : fixWidth(0.1),
-				align : 'center',
-				formatter : function(value, row, index) {
-					if (value == true) {
-						return '使用';
-					} else {
-						return '未使用';
-					}
-				},
-			} ] ],
+			}] ],
 			toolbar : [{
 				text : '添加',
 				iconCls : 'icon-add',
 				handler : function() {
-					showAddFun();
+					prizeAddFun();
 				}
 			}, '-', {
 				text : '删除',
 				iconCls : 'icon-remove',
 				handler : function() {
-					showRemove();
+					prizeRemove();
 				}
 			}, '-', {
 				text : '修改',
 				iconCls : 'icon-edit',
 				handler : function() {
-					showEditFun();
+					prizeEditFun();
 				}
 			}]
 		});
@@ -91,26 +66,26 @@
 
 
 
-	function showEditFun() {
-		var rows = $('#admin_show_pic_datagrid').datagrid('getChecked');
+	function prizeEditFun() {
+		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
 		if (rows.length == 1) {
 			var d = $('<div/>').dialog({
-				width : 270,
-				height : 255,
-				href : '${pageContext.request.contextPath}/show/edit-panel',
+				width : 200,
+				height : 150,
+				href : '${pageContext.request.contextPath}/prize/add-panel',
 				modal : true,
 				align : 'center',
-				title : '修改用户',
+				title : '修改设置',
 				buttons : [ {
 					text : '修改',
 					handler : function() {
-						$('#admin_show_pic_editForm').form('submit', {
-							url : '${pageContext.request.contextPath}/show/update',
+						$('#admin_prize_addForm').form('submit', {
+							url : '${pageContext.request.contextPath}/prize/update',
 							success : function(data) {
 
 								if (data) {
 									d.dialog('destroy');
-									$('#admin_show_pic_datagrid').datagrid('load');
+									$('#admin_prize_datagrid').datagrid('load');
 									/*$('#admin_book_datagrid').datagrid('updateRow', {
 									 index : $('#admin_book_datagrid').datagrid('getRowIndex', rows[0]),
 									 row : obj.obj
@@ -130,7 +105,7 @@
 				},
 				onLoad : function() {
 
-					$('#admin_show_pic_editForm').form('load', rows[0]);
+					$('#admin_prize_addForm').form('load', rows[0]);
 
 				}
 			});
@@ -139,25 +114,25 @@
 		}
 	}
 
-	function showAddFun() {
+	function prizeAddFun() {
 
 		var d = $('<div/>').dialog({
-			width : 300,
-			height : 250,
-			href : '${pageContext.request.contextPath}/show/add-panel',
+			width : 200,
+			height : 150,
+			href : '${pageContext.request.contextPath}/prize/add-panel',
 			modal : true,
 			align : 'center',
-			title : '添加图片',
+			title : '添加属性',
 			buttons : [ {
 				text : '添加',
 				handler : function() {
-					$('#admin_show_pic_addForm').form('submit', {
-						url : '${pageContext.request.contextPath}/show',
+					$('#admin_prize_addForm').form('submit', {
+						url : '${pageContext.request.contextPath}/prize',
 						success : function(data) {
 
 							if (data) {
 								d.dialog('destroy');
-								$('#admin_show_pic_datagrid').datagrid('load');
+								$('#admin_prize_datagrid').datagrid('load');
 								/*$('#admin_book_datagrid').datagrid('updateRow', {
 								 index : $('#admin_book_datagrid').datagrid('getRowIndex', rows[0]),
 								 row : obj.obj
@@ -183,10 +158,10 @@
 
 	}
 
-	function showRemove() {
-		var rows = $('#admin_show_pic_datagrid').datagrid('getChecked');
-		//	var rows=$('#admin_show_pic_datagrid').datagrid('getSelected');
-		//	var rows=$('#admin_show_pic_datagrid').datagrid('getSelecteds');
+	function prizeRemove() {
+		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
+		//	var rows=$('#admin_prize_datagrid').datagrid('getSelected');
+		//	var rows=$('#admin_prize_datagrid').datagrid('getSelecteds');
 		var ids = [];
 		if (rows.length > 0) {
 			$.messager.confirm('确认', '您是否要删除当前选中的选项？', function(r) {
@@ -197,13 +172,13 @@
 					}
 					$.ajax({
 						type: 'delete',
-						url : '${pageContext.request.contextPath}/show/'+ids,
+						url : '${pageContext.request.contextPath}/prize/'+ids,
 						data : {
 							ids : ids.join(',')
 						},
 						dataType : 'json',
 						success : function(d) {
-							var v = $('#admin_show_pic_datagrid');
+							var v = $('#admin_prize_datagrid');
 							v.datagrid('reload');
 							v.datagrid('unselectAll');
 							v.datagrid('clearChecked');
@@ -233,14 +208,14 @@
 				msg : '请选择一个jpg文件',
 			});
 		} else {
-			$('#admin_show_pic_rollingDialog').dialog('open');
+			$('#admin_prize_rollingDialog').dialog('open');
 			$.ajaxFileUpload({
-				url : '${pageContext.request.contextPath}/show/image',//用于文件上传的服务器端请求地址
+				url : '${pageContext.request.contextPath}/prize/image',//用于文件上传的服务器端请求地址
 				secureuri : true,//是否启用安全提交，一般设置为false
 				fileElementId : 'uploadfile',//文件上传控件的id
 				dataType : 'text',//服务器返回的数据类型
 				success : function(data) {
-					$('#admin_show_pic_rollingDialog').dialog('close');
+					$('#admin_prize_rollingDialog').dialog('close');
 					var obj = jQuery.parseJSON(data);
 					if (obj.success) {
 						//$('#admin_bookManage_importDialog').dialog('close');
@@ -265,14 +240,10 @@
 
 </script>
 
-<div id="admin_show_pic_layout" class="easyui-layout" data-options="fit:true,border:false">
+<div id="admin_prize_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false">
-		<table id="admin_show_pic_datagrid" data-options="border:false" style="width: auto"></table>
+		<table id="admin_prize_datagrid" data-options="border:false" style="width: auto"></table>
 	</div>
-	<div id="admin_show_pic_rollingDialog" class="easyui-dialog" data-options="closed:true,modal:true,title:'提示'" style="width: 300px; height: 70px;" align="center">
-		<img alt="上传中。。。" src="${pageContext.request.contextPath}/jslib/imgs/rolling.gif"><br> <a>上传中,请等候...</a>
-	</div>
-
 </div>
 
 

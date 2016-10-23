@@ -1,99 +1,134 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zyfz.dao.PrizeMapper" >
-  <resultMap id="BaseResultMap" type="com.zyfz.domain.Prize" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="prize_num" property="prizeNum" jdbcType="VARCHAR" />
-    <result column="prize_money" property="prizeMoney" jdbcType="DOUBLE" />
-    <result column="user_names" property="userNames" jdbcType="VARCHAR" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyfz.dao.PrizeMapper">
+  <resultMap id="BaseResultMap" type="com.zyfz.domain.Prize">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="prize_num" jdbcType="VARCHAR" property="prizeNum" />
+    <result column="prize_money" jdbcType="DOUBLE" property="prizeMoney" />
+    <result column="user_ids" jdbcType="VARCHAR" property="userIds" />
+    <result column="user_names" jdbcType="VARCHAR" property="userNames" />
+    <result column="hh_phones" jdbcType="VARCHAR" property="hhPhones" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
 
-  <sql id="Base_Column_List" >
-    id, prize_num, prize_money, user_names, create_time
+  <sql id="Base_Column_List">
+    id, prize_num, prize_money, user_ids, user_names, hh_phones, create_time
   </sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from hh_prize
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hh_prize
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <insert id="insert" parameterType="com.zyfz.domain.Prize" >
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_prize
+
+  </select>
+
+  <insert id="insert" parameterType="com.zyfz.domain.Prize">
     insert into hh_prize (id, prize_num, prize_money, 
-      user_names, create_time)
+      user_ids, user_names, hh_phones, 
+      create_time)
     values (#{id,jdbcType=INTEGER}, #{prizeNum,jdbcType=VARCHAR}, #{prizeMoney,jdbcType=DOUBLE}, 
-      #{userNames,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+      #{userIds,jdbcType=VARCHAR}, #{userNames,jdbcType=VARCHAR}, #{hhPhones,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.zyfz.domain.Prize" >
+  <insert id="insertSelective" parameterType="com.zyfz.domain.Prize">
     insert into hh_prize
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="prizeNum != null" >
+      <if test="prizeNum != null">
         prize_num,
       </if>
-      <if test="prizeMoney != null" >
+      <if test="prizeMoney != null">
         prize_money,
       </if>
-      <if test="userNames != null" >
+      <if test="userIds != null">
+        user_ids,
+      </if>
+      <if test="userNames != null">
         user_names,
       </if>
-      <if test="createTime != null" >
+      <if test="hhPhones != null">
+        hh_phones,
+      </if>
+      <if test="createTime != null">
         create_time,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="prizeNum != null" >
+      <if test="prizeNum != null">
         #{prizeNum,jdbcType=VARCHAR},
       </if>
-      <if test="prizeMoney != null" >
+      <if test="prizeMoney != null">
         #{prizeMoney,jdbcType=DOUBLE},
       </if>
-      <if test="userNames != null" >
+      <if test="userIds != null">
+        #{userIds,jdbcType=VARCHAR},
+      </if>
+      <if test="userNames != null">
         #{userNames,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="hhPhones != null">
+        #{hhPhones,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.Prize" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.Prize">
     update hh_prize
-    <set >
-      <if test="prizeNum != null" >
+    <set>
+      <if test="prizeNum != null">
         prize_num = #{prizeNum,jdbcType=VARCHAR},
       </if>
-      <if test="prizeMoney != null" >
+      <if test="prizeMoney != null">
         prize_money = #{prizeMoney,jdbcType=DOUBLE},
       </if>
-      <if test="userNames != null" >
+      <if test="userIds != null">
+        user_ids = #{userIds,jdbcType=VARCHAR},
+      </if>
+      <if test="userNames != null">
         user_names = #{userNames,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="hhPhones != null">
+        hh_phones = #{hhPhones,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.Prize" >
+  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.Prize">
     update hh_prize
     set prize_num = #{prizeNum,jdbcType=VARCHAR},
       prize_money = #{prizeMoney,jdbcType=DOUBLE},
+      user_ids = #{userIds,jdbcType=VARCHAR},
       user_names = #{userNames,jdbcType=VARCHAR},
+      hh_phones = #{hhPhones,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
+
+
+
 </mapper>

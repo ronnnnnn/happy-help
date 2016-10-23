@@ -2,6 +2,8 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.Prize;
 
+import java.util.List;
+
 public interface PrizeMapper {
 
     int deleteByPrimaryKey(Integer id);
@@ -11,6 +13,8 @@ public interface PrizeMapper {
     int insertSelective(Prize record);
 
     Prize selectByPrimaryKey(Integer id);
+
+    List<Prize> selectAll();
 
     int updateByPrimaryKeySelective(Prize record);
 
