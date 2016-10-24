@@ -27,17 +27,39 @@
 			}, {
 				field : 'prizeNum',
 				title : '开奖期数',
-				width : fixWidth(0.1),
+				width : fixWidth(0.10),
 				align : 'center',
 			},{
 				field : 'prizeMoney',
 				title : '开奖金额',
-				width : fixWidth(0.1),
+				width : fixWidth(0.10),
 				align : 'center',
 			},{
-				field : 'typeDescription',
-				title : '描述',
-				width : fixWidth(0.10),
+				field : 'userIds',
+				title : '获奖人ID',
+				hidden : true,
+				align : 'center',
+			},{
+				field : 'hhPhones',
+				title : '获奖人号码',
+				width : fixWidth(0.2),
+				align : 'center',
+			},{
+				field : 'isLottery',
+				title : '状态',
+				width : fixWidth(0.1),
+				align : 'center',
+				formatter : function(value, row, index) {
+					if (value == true) {
+						return '开奖';
+					} else {
+						return '未开奖';
+					}
+				},
+			},{
+				field : 'createTime',
+				title : '时间',
+				width : fixWidth(0.2),
 				align : 'center',
 			}] ],
 			toolbar : [{
@@ -58,28 +80,216 @@
 				handler : function() {
 					prizeEditFun();
 				}
+			}, '-', {
+				text : '添加获奖人',
+				iconCls : 'icon-edit',
+				handler : function() {
+					prizeUserEditFun();
+				}
+			}, '-', {
+				text : '查看获奖人详情',
+				iconCls : 'icon-edit',
+				handler : function() {
+					userListFun();
+				}
+			}, '-', {
+				text : '开奖',
+				iconCls : 'icon-edit',
+				handler : function() {
+					lotteryFun();
+				}
 			}]
 		});
 	}
 
+	function lotteryFun() {
+
+		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
+		//	var rows=$('#admin_prize_datagrid').datagrid('getSelected');
+		//	var rows=$('#admin_prize_datagrid').datagrid('getSelecteds');
+		var ids = [];
+		if (rows.length > 0 && rows[0].isLottery == false) {
+			$.messager.confirm('确认', '您是否确认开奖？', function(r) {
+				if (r) {
+					for ( var i = 0; i < rows.length; i++) {
+						ids.push(rows[i].id);
+						ids.join(',')
+					}
+					$.ajax({
+						type: 'patch',
+						url : '${pageContext.request.contextPath}/prize/lottery/'+ids,
+						data : {
+							ids : ids.join(',')
+						},
+						dataType : 'json',
+						success : function(d) {
+							var v = $('#admin_prize_datagrid');
+							v.datagrid('reload');
+							v.datagrid('unselectAll');
+							v.datagrid('clearChecked');
+							$.messager.show({
+								title : '提示',
+								msg : '删除成功'
+							});
+						}
+					});
+
+				}
+			});
+
+		} else {
+			$.messager.show({
+				title : '提示',
+				msg : '请勾选要开奖的选项并确认改记录未开奖！'
+			});
+		}
+	}
+
+	function userListFun() {
+		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
+
+		if (rows.length == 1) {
+
+			var d = $('<div/>').dialog({
+				width : 1200,
+				height : 500,
+				href : '${pageContext.request.contextPath}/prize/user-panel/'+ rows[0].hhPhones,
+				modal : true,
+				align : 'center',
+				title : '当期中奖用户',
+				buttons : [ {
+					text : '确认',
+					handler : function() {
+						d.dialog('destroy');
+					}
+				} ],
+				onClose : function() {
+					$(this).dialog('destroy');
+				},
+				onLoad : function() {
+
+				}
+			});
+		} else {
+			$.messager.show({
+				title : '提示',
+				msg : '请选择开奖期数！'
+			});
+		}
+
+	}
+
+	function prizeUserEditFun() {
+		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
+
+		if (rows.length == 1 && rows[0].isLottery == false) {
+			var d = $('<div/>').dialog({
+				width : 950,
+				height : 400,
+				href : '${pageContext.request.contextPath}/prize/useredit-panel',
+				modal : true,
+				align : 'center',
+				title : '获奖人选择',
+				buttons : [ {
+					text : '随机选择',
+					handler : function() {
+
+						var options = $('#prizeUser_datagrid').datagrid('getPager').data("pagination").options;
+						var totalRowNum = options.total;
+                        var randomnum = Math.ceil(Math.random()*totalRowNum);
+						$('#prizeUser_datagrid').datagrid('checkRow',randomnum);
+						var selectSize = $('#prizeUser_datagrid').datagrid('getChecked').length;
+
+						$.messager.show({
+							title : '提示',
+							msg : "已随机选中：" + selectSize+"人",
+						});
+
+					}
+				} ,{
+					text : '设为中奖人',
+					handler : function() {
+						var userRows = $('#prizeUser_datagrid').datagrid('getChecked');
+						var userIds = [];
+						var userNames = [];
+						var hhPhones = [];
+						if (userRows.length > 0) {
+							$.messager.confirm('确认', '您是选择当前用户为中奖用户？', function(r) {
+								if (r) {
+									for ( var i = 0; i < userRows.length; i++) {
+										userIds.push(userRows[i].id);
+										userIds.join(',');
+										userNames.push(userRows[i].username);
+										userNames.join(',');
+										hhPhones.push(userRows[i].phone);
+										hhPhones.join(',');
+									}
+
+									$.ajax({
+										type: 'post',
+										url : '${pageContext.request.contextPath}/prize/update',
+										data : {
+											id: rows[0].id,
+											userIds : userIds.join(","),
+											userNames : userNames.join(","),
+											hhPhones : hhPhones.join(",")
+										},
+										dataType : 'json',
+										success : function(d) {
+											var v = $('#admin_prize_datagrid');
+											v.datagrid('reload');
+											v.datagrid('unselectAll');
+											v.datagrid('clearChecked');
+											d.dialog('destroy');
+											$.messager.show({
+												title : '提示',
+												msg : '选择成功'
+											});
+										}
+									});
+
+								}
+							});
+
+						} else {
+							$.messager.show({
+								title : '提示',
+								msg : '请选择中奖用户！'
+							});
+						}
 
 
+					}
+				}],
+				onClose : function() {
+					$(this).dialog('destroy');
+				},
+				onLoad : function() {
+
+					//$('#admin_prize_editForm').form('load', rows[0]);
+
+				}
+			});
+		} else {
+			$.messager.alert('提示', '请勾选一个要编辑的选项并确认该记录未开奖！');
+		}
+	}
 
 
 	function prizeEditFun() {
 		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
-		if (rows.length == 1) {
+		if (rows.length == 1 && rows[0].isLottery == false) {
 			var d = $('<div/>').dialog({
-				width : 200,
+				width : 250,
 				height : 150,
-				href : '${pageContext.request.contextPath}/prize/add-panel',
+				href : '${pageContext.request.contextPath}/prize/edit-panel',
 				modal : true,
 				align : 'center',
 				title : '修改设置',
 				buttons : [ {
 					text : '修改',
 					handler : function() {
-						$('#admin_prize_addForm').form('submit', {
+						$('#admin_prize_editForm').form('submit', {
 							url : '${pageContext.request.contextPath}/prize/update',
 							success : function(data) {
 
@@ -90,12 +300,18 @@
 									 index : $('#admin_book_datagrid').datagrid('getRowIndex', rows[0]),
 									 row : obj.obj
 									 });*/
+									$.messager.show({
+										title : '提示',
+										msg : "修改成功！",
+									});
+								}else {
+									$.messager.show({
+										title : '提示',
+										msg : "修改失败！",
+									});
 								}
 
-								$.messager.show({
-									title : '提示',
-									msg : obj.msg,
-								});
+
 							}
 						});
 					}
@@ -105,28 +321,28 @@
 				},
 				onLoad : function() {
 
-					$('#admin_prize_addForm').form('load', rows[0]);
+					$('#admin_prize_editForm').form('load', rows[0]);
 
 				}
 			});
 		} else {
-			$.messager.alert('提示', '请勾选一个要编辑的选项！');
+			$.messager.alert('提示', '请勾选一个要编辑的选项并确认该记录未开奖！');
 		}
 	}
 
 	function prizeAddFun() {
 
 		var d = $('<div/>').dialog({
-			width : 200,
+			width : 250,
 			height : 150,
-			href : '${pageContext.request.contextPath}/prize/add-panel',
+			href : '${pageContext.request.contextPath}/prize/edit-panel',
 			modal : true,
 			align : 'center',
-			title : '添加属性',
+			title : '添加期数',
 			buttons : [ {
 				text : '添加',
 				handler : function() {
-					$('#admin_prize_addForm').form('submit', {
+					$('#admin_prize_editForm').form('submit', {
 						url : '${pageContext.request.contextPath}/prize',
 						success : function(data) {
 
@@ -151,7 +367,7 @@
 				$(this).dailog('destroy');
 			},
 			onLoad : function() {
-				$('#admin_book_datagrid').form('load', '');
+				$('#admin_prize_datagrid').form('load', '');
 
 			}
 		});
@@ -163,7 +379,7 @@
 		//	var rows=$('#admin_prize_datagrid').datagrid('getSelected');
 		//	var rows=$('#admin_prize_datagrid').datagrid('getSelecteds');
 		var ids = [];
-		if (rows.length > 0) {
+		if (rows.length > 0 && rows[0].isLottery == false) {
 			$.messager.confirm('确认', '您是否要删除当前选中的选项？', function(r) {
 				if (r) {
 					for ( var i = 0; i < rows.length; i++) {
@@ -178,14 +394,26 @@
 						},
 						dataType : 'json',
 						success : function(d) {
-							var v = $('#admin_prize_datagrid');
-							v.datagrid('reload');
-							v.datagrid('unselectAll');
-							v.datagrid('clearChecked');
-							$.messager.show({
-								title : '提示',
-								msg : '删除成功'
-							});
+							if(d){
+								var v = $('#admin_prize_datagrid');
+								v.datagrid('reload');
+								v.datagrid('unselectAll');
+								v.datagrid('clearChecked');
+								$.messager.show({
+									title : '提示',
+									msg : '删除成功！'
+								});
+							}else{
+								var v = $('#admin_prize_datagrid');
+								v.datagrid('reload');
+								v.datagrid('unselectAll');
+								v.datagrid('clearChecked');
+								$.messager.show({
+									title : '提示',
+									msg : '无法删除已开奖的数据！'
+								});
+							}
+
 						}
 					});
 
@@ -195,48 +423,11 @@
 		} else {
 			$.messager.show({
 				title : '提示',
-				msg : '请勾选要删除的选项！'
+				msg : '请勾选要删除的选项并确认改记录未开奖！'
 			});
 		}
 
 	}
-
-	function xsImport() {
-		if ($('#uploadfile').val() == '') {
-			$.messager.show({
-				title : '提示',
-				msg : '请选择一个jpg文件',
-			});
-		} else {
-			$('#admin_prize_rollingDialog').dialog('open');
-			$.ajaxFileUpload({
-				url : '${pageContext.request.contextPath}/prize/image',//用于文件上传的服务器端请求地址
-				secureuri : true,//是否启用安全提交，一般设置为false
-				fileElementId : 'uploadfile',//文件上传控件的id
-				dataType : 'text',//服务器返回的数据类型
-				success : function(data) {
-					$('#admin_prize_rollingDialog').dialog('close');
-					var obj = jQuery.parseJSON(data);
-					if (obj.success) {
-						//$('#admin_bookManage_importDialog').dialog('close');
-						$('#sh-imageUrl').val(obj.obj);
-						//alert(obj.obj);
-					}
-					$.messager.show({
-						title : '提示',
-						msg : obj.msg,
-					});
-				},
-				error : function(data, status, e) {
-					$.messager.show({
-						title : '提示',
-						msg : '服务中断或连接超时导致通信失败！' ,
-					});
-				}
-			});
-		}
-	}
-
 
 </script>
 

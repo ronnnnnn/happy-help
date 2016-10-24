@@ -9,7 +9,7 @@
         </tr>
         <tr>
             <th>荣誉值</th>
-            <td><input id="honer-h" name="honer_score" class="easyui-validatebox" style="width: 100%"/></td>
+            <td><input id="honer-h" name="honerScore" class="easyui-validatebox" style="width: 100%"/></td>
         </tr>
         <tr align="center">
 

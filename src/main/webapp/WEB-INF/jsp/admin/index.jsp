@@ -137,7 +137,7 @@
 			<h1 align="center" style="margin-left: 20px;color: #d9edf7;">乐助后台管理</h1>
 		</div>
 
-		<div style="float: right">
+		<div style="float: right;padding: 17px">
 			<h3 align="center"  style="margin-right: 15px;color: #d9edf7"><a href="${pageContext.request.contextPath}/logout" style="color: #d9edf7">退出</a></h3>
 		</div>
 	</div>

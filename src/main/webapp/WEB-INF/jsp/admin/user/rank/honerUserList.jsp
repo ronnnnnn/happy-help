@@ -109,62 +109,6 @@
 		}
 	}
 
-	function userEditFun() {
-		var rows = $('#user_honer_datagrid').datagrid('getChecked');
-		if (rows.length == 1) {
-			var d = $('<div/>').dialog({
-				width : 270,
-				height : 255,
-				href : '${pageContext.request.contextPath}/user/superuser/editpanel',
-				modal : true,
-				align : 'center',
-				title : '修改用户',
-				buttons : [ {
-					text : '修改',
-					handler : function() {
-						var username = $('#username-e').val();
-						var roleIds = $('#role-select-e').combobox('getValues');
-						var locked = $('#locked-e').val();
-						var phone = $('#phone-e').val();
-						var realName = $('#realname-e').val();
-						var userIdentify = $('#userIdentity-e').val();
-						var id = $('#id-e').val();
-						$.ajax({
-							type: 'PATCH',
-							contentType: 'application/json',
-							url: '${pageContext.request.contextPath}/user',
-							processData: false,
-							dataType: 'json',
-							data : '{"username":\"'+username+'\","roleIds":\"'+roleIds+'\","isLocked":\"'+locked+'\","phone":\"'+phone+'\","realName":\"'+realName+'\","userIdentify":\"'+userIdentify+'\","id":\"'+id+'\"}',
-							success: function(data) {
-								if(data){
-									$('#user_honer_datagrid').datagrid('load');
-									$('#user_honer_datagrid').datagrid('unselectAll');
-									d.dialog('destroy');
-								}else{
-									alert("修改失败!");
-								}
-							},
-							error: function() {
-								alert('修改错误!');
-							}
-						});
-					}
-				} ],
-				onClose : function() {
-					$(this).dialog('destroy');
-				},
-				onLoad : function() {
-
-					$('#admin_user_editForm').form('load', rows[0]);
-
-				}
-			});
-		} else {
-			$.messager.alert('提示', '请勾选一个要编辑的选项！');
-		}
-	}
-
 
 
 

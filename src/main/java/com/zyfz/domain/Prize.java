@@ -17,6 +17,16 @@ public class Prize {
 
     private Date createTime;
 
+    private Boolean isLottery;
+
+    public Boolean getIsLottery() {
+        return isLottery;
+    }
+
+    public void setIsLottery(Boolean lottory) {
+        isLottery = lottory;
+    }
+
     public Integer getId() {
         return id;
     }

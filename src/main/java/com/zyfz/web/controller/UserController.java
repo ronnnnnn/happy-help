@@ -1,6 +1,7 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.User;
+import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ron on 16-10-18.
@@ -184,5 +187,19 @@ public class UserController extends BaseController{
 
 
 
+    @RequestMapping(value = "/{phones}",method = RequestMethod.POST)
+    public void getUsersByPhones(@PathVariable String phones,HttpServletResponse response){
+        String mphones[] = phones.split(",");
+        List<User> users = new ArrayList<User>();
+        for(String mphone : mphones){
+            User user = userservice.findByPhone(mphone);
+            users.add(user);
+        }
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        int sizes = users.size();
+        datagrid.setTotal(new Long(sizes));
+        super.writeJson(datagrid,response);
+    }
 
 }

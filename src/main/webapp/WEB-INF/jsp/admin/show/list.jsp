@@ -176,7 +176,7 @@
 				$(this).dailog('destroy');
 			},
 			onLoad : function() {
-				$('#admin_book_datagrid').form('load', '');
+				$('#admin_show_pic_datagrid').form('load', '');
 
 			}
 		});

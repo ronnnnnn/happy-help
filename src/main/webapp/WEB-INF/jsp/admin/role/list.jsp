@@ -318,12 +318,12 @@
 
 
 	function roleSearchFun2() {
-		$('#admin_book_layout input[name=key]').val('');
+		$('#admin_role_layout input[name=key]').val('');
 		roleinit();
 	}
 </script>
 
-<div id="admin_book_layout" class="easyui-layout" data-options="fit:true,border:false">
+<div id="admin_role_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'center',border:false">
 		<table id="admin_role_datagrid" data-options="border:false" style="width: auto"></table>
 	</div>

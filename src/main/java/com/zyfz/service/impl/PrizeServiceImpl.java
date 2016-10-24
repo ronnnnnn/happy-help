@@ -35,7 +35,7 @@ public class PrizeServiceImpl implements IPrizeService {
     public Datagrid getAll(PageModel pageModel) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
         List<Prize> prizes = prizeMapper.selectAll();
-        PageInfo pageInfo = new PageInfo();
+        PageInfo pageInfo = new PageInfo(prizes);
         Datagrid datagrid = new Datagrid();
         datagrid.setRows(prizes);
         datagrid.setTotal(pageInfo.getTotal());

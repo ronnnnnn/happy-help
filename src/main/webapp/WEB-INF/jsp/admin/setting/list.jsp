@@ -151,7 +151,7 @@
 				$(this).dailog('destroy');
 			},
 			onLoad : function() {
-				$('#admin_book_datagrid').form('load', '');
+				$('#admin_setting_datagrid').form('load', '');
 
 			}
 		});
