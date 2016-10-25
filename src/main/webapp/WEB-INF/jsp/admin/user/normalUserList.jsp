@@ -369,7 +369,7 @@
 			nowrap : false,
 			rownumbers : true,
 			queryParams: {
-				key : $("input[name$='key']").val()
+				key : $("input[name$='nkey']").val()
 			},
 			frozenColumns : [ [ {
 				field : 'id',
@@ -478,7 +478,7 @@
 	}
 
 	function nUserSearchFun1() {
-		$('#admin_book_layout input[name=key]').val('');
+		$('#admin_book_layout input[name=nkey]').val('');
 		normalinit();
 	}
 </script>
@@ -486,7 +486,7 @@
 <div id="admin_book_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
 		<form id="admin_product_searchForm">
-			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="nUserSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="nUserSearchFun1()">清空</a>
+			检索用户(可模糊查询):<input name="nkey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="nUserSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="nUserSearchFun1()">清空</a>
 		</form>
 	</div>
 	<div data-options="region:'center',border:false">

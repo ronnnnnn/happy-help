@@ -51,4 +51,10 @@ public class PrizeServiceImpl implements IPrizeService {
     public Integer deleteOneById(Prize prize) {
         return prizeMapper.deleteByPrimaryKey(prize.getId());
     }
+
+    @Override
+    public List<Prize> findByKeyLike(String prizeNum) {
+        String myKey = prizeNum + "%";
+        return prizeMapper.selectByKeyLike(myKey);
+    }
 }

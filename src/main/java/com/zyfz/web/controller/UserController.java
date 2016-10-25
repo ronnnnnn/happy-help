@@ -69,10 +69,12 @@ public class UserController extends BaseController{
     public String toHonerEditPanel(){
         return "admin/user/rank/superUserHonerEdit";
     }
+
     @RequestMapping(value = "/contribute/panel")
     public String toContributeEditPanel(){
         return "admin/user/rank/UserContributeEdit";
     }
+
     @RequestMapping(value = "/rank/contribute")
     public String toHonerContribute(){
         return "admin/user/rank/contributeUserList";

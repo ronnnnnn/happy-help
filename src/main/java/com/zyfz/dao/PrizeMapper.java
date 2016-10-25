@@ -19,4 +19,6 @@ public interface PrizeMapper {
     int updateByPrimaryKeySelective(Prize record);
 
     int updateByPrimaryKey(Prize record);
+
+    List<Prize> selectByKeyLike(String prizeNum);
 }

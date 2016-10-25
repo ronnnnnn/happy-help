@@ -131,7 +131,7 @@
 			nowrap : false,
 			rownumbers : true,
 			queryParams: {
-				key : $("input[name$='key']").val()
+				key : $("input[name$='rckey']").val()
 			},
 			frozenColumns : [ [ {
 				field : 'id',
@@ -175,7 +175,7 @@
 	}
 
 	function userHonerClearFun() {
-		$('#user_honer_layout input[name=key]').val('');
+		$('#user_honer_layout input[name=rckey]').val('');
 		$('#user_honer_datagrid').datagrid('load', {});
 	}
 </script>
@@ -183,7 +183,7 @@
 <div id="user_honer_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
 		<form id="user_honer_searchForm">
-			检索用户(可模糊查询):<input name="key" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="userHonerSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="userHonerClearFun()">清空</a>
+			检索用户(可模糊查询):<input name="rckey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="userHonerSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="userHonerClearFun()">清空</a>
 		</form>
 	</div>
 	<div data-options="region:'center',border:false">

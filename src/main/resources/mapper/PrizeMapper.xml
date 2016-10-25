@@ -23,6 +23,14 @@
     from hh_prize
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByKeyLike" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_prize
+    where prize_num LIKE #{prizeNum,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hh_prize
     where id = #{id,jdbcType=INTEGER}

@@ -2,13 +2,14 @@
 <body>
 <script type="text/javascript">
 	$(function() {
-		prizeInit();
+		var initurl = '${pageContext.request.contextPath}/prize/list';
+		prizeInit(initurl);
 	});
 
 
-	function prizeInit(){
+	function prizeInit(myurl){
 		$('#admin_prize_datagrid').datagrid({
-			url : '${pageContext.request.contextPath}/prize/list',
+			url : myurl,
 			fit : true,
 			pagination : true,
 			idField : 'id',
@@ -429,9 +430,27 @@
 
 	}
 
+
+	function prizeSearchFun() {
+		var mykey = $("input[name$='prizekey']").val();
+		var searchUrl = '${pageContext.request.contextPath}/prize/search/'+mykey;
+		prizeInit(searchUrl);
+	}
+
+	function prizeClearFun() {
+		$('#admin_prize_layout input[name=prizekey]').val('');
+		var initurl = '${pageContext.request.contextPath}/prize/list';
+		prizeInit(initurl);
+	}
+
 </script>
 
 <div id="admin_prize_layout" class="easyui-layout" data-options="fit:true,border:false">
+	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
+		<form id="user_honer_searchForm">
+			检索开奖记录(可模糊查询):<input name="prizekey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="prizeSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="prizeClearFun()">清空</a>
+		</form>
+	</div>
 	<div data-options="region:'center',border:false">
 		<table id="admin_prize_datagrid" data-options="border:false" style="width: auto"></table>
 	</div>

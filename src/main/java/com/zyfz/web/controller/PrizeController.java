@@ -1,7 +1,6 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.Prize;
-import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IPrizeService;
 import org.springframework.stereotype.Controller;
@@ -122,6 +121,11 @@ public class PrizeController extends BaseController {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @RequestMapping(value = "/search/{mykey}")
+    public void findByKey(@PathVariable String mykey,HttpServletResponse response){
+         super.writeJson(prizeService.findByKeyLike(mykey),response);
     }
 
 }
