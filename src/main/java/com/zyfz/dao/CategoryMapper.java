@@ -2,6 +2,8 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.Category;
 
+import java.util.List;
+
 public interface CategoryMapper {
 
     int deleteByPrimaryKey(Integer id);
@@ -11,6 +13,8 @@ public interface CategoryMapper {
     int insertSelective(Category record);
 
     Category selectByPrimaryKey(Integer id);
+
+    List<Category> selectAll();
 
     int updateByPrimaryKeySelective(Category record);
 

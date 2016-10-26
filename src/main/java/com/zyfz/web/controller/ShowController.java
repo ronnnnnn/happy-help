@@ -116,6 +116,12 @@ public class ShowController extends BaseController{
         }
     }
 
+    /**
+     * 上传图片到服务器均均经由此接口
+     * @param file
+     * @param response
+     * @param request
+     */
     @RequestMapping(value = "/image",method = RequestMethod.POST)
     public void importImage(MultipartFile file, HttpServletResponse response, HttpServletRequest request){
         Json json = new Json();

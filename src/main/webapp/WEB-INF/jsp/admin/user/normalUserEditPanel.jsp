@@ -61,6 +61,22 @@
 			<td><input id="phone-ne" name="phone" class="easyui-validatebox" style="width: 100%"/></td>
 		</tr>
 		<tr>
+			<th>邮箱</th>
+			<td><input id="email-ne" name="email" class="easyui-validatebox" style="width: 100%"/></td>
+		</tr>
+		<tr>
+			<th>头像</th>
+			<td><input id="photo-ne" name="photo" class="easyui-validatebox" style="width: 100%"/></td>
+		</tr>
+		<tr>
+			<td width="80px"></td>
+			<td style="word-break:break-all;padding-left: 10px;">
+				<form id="admin_show_pic_importDialog">
+					<input type="file" id="useruploadfilee" name="file" /><a id="btn" href="#" class="easyui-linkbutton" onclick="userxsImport()" data-options="iconCls:'icon-add'">导入</a>
+				</form>
+			</td>
+		</tr>
+		<tr>
 			<th>当前常用地</th>
 			<td><input id="currentArea-ne" name="currentArea" class="easyui-validatebox" style="width: 100%"/></td>
 		</tr>

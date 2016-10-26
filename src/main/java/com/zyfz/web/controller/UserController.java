@@ -2,13 +2,18 @@ package com.zyfz.web.controller;
 
 import com.zyfz.domain.User;
 import com.zyfz.model.Datagrid;
+import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +24,8 @@ import java.util.List;
 @RequestMapping("/user")
 @Controller
 public class UserController extends BaseController{
+
+    private static final Logger logger = LoggerFactory.getLogger(ShowController.class);
 
     @Resource
     IUserservice userservice;
@@ -203,5 +210,6 @@ public class UserController extends BaseController{
         datagrid.setTotal(new Long(sizes));
         super.writeJson(datagrid,response);
     }
+
 
 }
