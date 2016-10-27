@@ -71,7 +71,7 @@
 		<tr>
 			<td width="80px"></td>
 			<td style="word-break:break-all;padding-left: 10px;">
-				<form id="admin_show_pic_importDialog">
+				<form id="admin_user_pic_importDialog">
 					<input type="file" id="useruploadfilee" name="file" /><a id="btn" href="#" class="easyui-linkbutton" onclick="userxsImport()" data-options="iconCls:'icon-add'">导入</a>
 				</form>
 			</td>

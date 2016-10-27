@@ -117,7 +117,7 @@ public class ShowController extends BaseController{
     }
 
     /**
-     * 上传图片到服务器均均经由此接口
+     * 上传图片到服务器
      * @param file
      * @param response
      * @param request
@@ -126,7 +126,7 @@ public class ShowController extends BaseController{
     public void importImage(MultipartFile file, HttpServletResponse response, HttpServletRequest request){
         Json json = new Json();
         try {
-            String imageName = super.saveUploadFile(request,file, "EMPFILE", "jpg");
+            String imageName = super.saveUploadFile(request,file, "show", "jpg");
             logger.info(imageName);
             json.setObj(imageName);
             json.setSuccess(true);

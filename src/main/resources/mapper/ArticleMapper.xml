@@ -10,8 +10,20 @@
     <result column="visit_click" property="visitClick" jdbcType="VARCHAR" />
     <result column="is_checked" property="isChecked" jdbcType="BIT" />
     <result column="is_deleted" property="isDeleted" jdbcType="BIT" />
-    <result column="is_pass" property="isPass" jdbcType="VARCHAR" />
+    <result column="is_pass" property="isPass" jdbcType="BIT" />
     <result column="hh_user_id" property="hhUserId" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <resultMap id="articleUserMap" type="Article" extends="BaseResultMap" >
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+    </association>
   </resultMap>
 
 
@@ -26,6 +38,28 @@
     from hh_article
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByTitleLike" resultMap="articleUserMap" parameterType="java.lang.String" >
+    SELECT a.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
+    FROM happy_help.hh_article a left join happy_help.hh_user u
+    on a.hh_user_id = u.id
+    where title LIKE #{title,jdbcType=VARCHAR}
+
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_article
+  </select>
+
+  <select id="selectAllWithUser" resultMap="articleUserMap" parameterType="java.lang.Integer" >
+    SELECT a.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
+    FROM happy_help.hh_article a left join happy_help.hh_user u
+    on a.hh_user_id = u.id
+    ORDER BY a.create_time DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hh_article
     where id = #{id,jdbcType=INTEGER}
@@ -38,7 +72,7 @@
       hh_user_id)
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, 
       #{imageUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{visitClick,jdbcType=VARCHAR}, 
-      #{isChecked,jdbcType=BIT}, #{isDeleted,jdbcType=BIT}, #{isPass,jdbcType=VARCHAR}, 
+      #{isChecked,jdbcType=BIT}, #{isDeleted,jdbcType=BIT}, #{isPass,jdbcType=BIT},
       #{hhUserId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.Article" >
@@ -101,7 +135,7 @@
         #{isDeleted,jdbcType=BIT},
       </if>
       <if test="isPass != null" >
-        #{isPass,jdbcType=VARCHAR},
+        #{isPass,jdbcType=BIT},
       </if>
       <if test="hhUserId != null" >
         #{hhUserId,jdbcType=INTEGER},
@@ -134,7 +168,7 @@
         is_deleted = #{isDeleted,jdbcType=BIT},
       </if>
       <if test="isPass != null" >
-        is_pass = #{isPass,jdbcType=VARCHAR},
+        is_pass = #{isPass,jdbcType=BIT},
       </if>
       <if test="hhUserId != null" >
         hh_user_id = #{hhUserId,jdbcType=INTEGER},
@@ -151,7 +185,7 @@
       visit_click = #{visitClick,jdbcType=VARCHAR},
       is_checked = #{isChecked,jdbcType=BIT},
       is_deleted = #{isDeleted,jdbcType=BIT},
-      is_pass = #{isPass,jdbcType=VARCHAR},
+      is_pass = #{isPass,jdbcType=BIT},
       hh_user_id = #{hhUserId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

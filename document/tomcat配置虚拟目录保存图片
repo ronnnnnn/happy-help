@@ -1,0 +1,8 @@
+1.tomcat conf下server.conf在host前加上
+    <Context path="/pic" docBase="/opt/pic" reloadable="true" debug="0"/>
+
+2.web.xml下
+    <init-param>
+    <param-name>listings</param-name>
+    <param-value>true</param-value>
+    </init-param>

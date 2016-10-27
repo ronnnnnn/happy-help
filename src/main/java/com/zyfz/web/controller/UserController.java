@@ -211,5 +211,27 @@ public class UserController extends BaseController{
         super.writeJson(datagrid,response);
     }
 
+    /**
+     * 上传图片到服务器
+     * @param file
+     * @param response
+     * @param request
+     */
+    @RequestMapping(value = "/image",method = RequestMethod.POST)
+    public void importImage(MultipartFile file, HttpServletResponse response, HttpServletRequest request){
+        Json json = new Json();
+        try {
+            String imageName = super.saveUploadFile(request,file, "head", "jpg");
+            logger.info(imageName);
+            json.setObj(imageName);
+            json.setSuccess(true);
+            json.setMsg("导入成功！");
+        } catch (Exception e) {
+            json.setMsg(e.toString());
+        }
+
+        super.writeJson(json,response);
+    }
+
 
 }

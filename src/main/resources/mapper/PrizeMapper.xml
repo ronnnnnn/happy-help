@@ -40,7 +40,7 @@
     select
     <include refid="Base_Column_List" />
     from hh_prize
-
+    ORDER BY create_time DESC
   </select>
 
   <insert id="insert" parameterType="com.zyfz.domain.Prize">

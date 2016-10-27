@@ -9,17 +9,25 @@ public class Comment {
 
     private String imageUrl;
 
-    private String userName;
-
-    private String nickName;
-
     private Date createTime;
 
     private Boolean isDeleted;
 
-    private String type;
+    private String type; //"1"为好人好事文章的评论
 
     private Integer typeId;
+
+    private Integer hhUserId;
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;
@@ -43,22 +51,6 @@ public class Comment {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
     }
 
     public Date getCreateTime() {
@@ -91,5 +83,13 @@ public class Comment {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    public Integer getHhUserId() {
+        return hhUserId;
+    }
+
+    public void setHhUserId(Integer hhUserId) {
+        this.hhUserId = hhUserId;
     }
 }

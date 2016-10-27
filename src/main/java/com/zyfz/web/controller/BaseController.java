@@ -31,10 +31,10 @@ public class BaseController {
 			return "";
 		
 		//SimpleDateFormat sdf = new SimpleDateFormat("\\yyyy\\MM\\dd\\");
-		String basePath = request.getServletContext().getRealPath("");
+		String basePath = "/opt/pic";
 //		String basePath = "/home/ron/桌面/乐助";
 		logger.info("==============" + basePath);
-		String subPath = "//productImages//";
+		String subPath = "/Images/" + uploadpath +"/";
 		File dir = new File(basePath + subPath);
 		if (!dir.exists()) {
 			dir.mkdirs();
@@ -50,6 +50,6 @@ public class BaseController {
 			e.printStackTrace();
 		}
 	
-		return imageName;
+		return "/pic" + subPath+imageName;
 	}
 }

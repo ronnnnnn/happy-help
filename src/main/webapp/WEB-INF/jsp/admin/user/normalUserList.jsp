@@ -60,7 +60,7 @@
 				width : fixWidth(0.06),
 				align : 'center',
 				formatter : function(value, row, index) {
-					return '<img style=\"height: 40px;width: 40px;\" src="${pageContext.request.contextPath}/productImages/'+row.photo+'" />';
+					return '<img style=\"height: 40px;width: 40px;\" src="'+row.photo+'" />';
 				},
 			},{
 				field : 'currentArea',
@@ -429,7 +429,7 @@
 				width : fixWidth(0.06),
 				align : 'center',
 				formatter : function(value, row, index) {
-					return '<img style=\"height: 40px;width: 40px;\" src="${pageContext.request.contextPath}/productImages/'+row.photo+'" />';
+					return '<img style=\"height: 40px;width: 40px;\"  src="'+row.photo+'"  />';
 				},
 			},{
 				field : 'currentArea',
@@ -526,7 +526,7 @@
 		} else {
 			$('#admin_user_pic_rollingDialog').dialog('open');
 			$.ajaxFileUpload({
-				url : '${pageContext.request.contextPath}/show/image',//用于文件上传的服务器端请求地址
+				url : '${pageContext.request.contextPath}/user/image',//用于文件上传的服务器端请求地址
 				secureuri : true,//是否启用安全提交，一般设置为false
 				fileElementId : uploadId,//文件上传控件的id
 				dataType : 'text',//服务器返回的数据类型

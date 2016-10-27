@@ -82,10 +82,16 @@
 					prizeEditFun();
 				}
 			}, '-', {
-				text : '添加获奖人',
+				text : '添加获奖人(荣誉榜)',
 				iconCls : 'icon-edit',
 				handler : function() {
 					prizeUserEditFun();
+				}
+			}, '-', {
+				text : '添加获奖人(好人好事)',
+				iconCls : 'icon-edit',
+				handler : function() {
+					prizeArticleEditFun();
 				}
 			}, '-', {
 				text : '查看获奖人详情',
@@ -197,7 +203,7 @@
 
 						var options = $('#prizeUser_datagrid').datagrid('getPager').data("pagination").options;
 						var totalRowNum = options.total;
-                        var randomnum = Math.ceil(Math.random()*totalRowNum);
+                        var randomnum = Math.ceil(Math.random()*totalRowNum) - 1;
 						$('#prizeUser_datagrid').datagrid('checkRow',randomnum);
 						var selectSize = $('#prizeUser_datagrid').datagrid('getChecked').length;
 
@@ -242,6 +248,103 @@
 											v.datagrid('unselectAll');
 											v.datagrid('clearChecked');
 											d.dialog('destroy');
+											$.messager.show({
+												title : '提示',
+												msg : '选择成功'
+											});
+										}
+									});
+
+								}
+							});
+
+						} else {
+							$.messager.show({
+								title : '提示',
+								msg : '请选择中奖用户！'
+							});
+						}
+
+
+					}
+				}],
+				onClose : function() {
+					$(this).dialog('destroy');
+				},
+				onLoad : function() {
+
+					//$('#admin_prize_editForm').form('load', rows[0]);
+
+				}
+			});
+		} else {
+			$.messager.alert('提示', '请勾选一个要编辑的选项并确认该记录未开奖！');
+		}
+	}
+
+	function prizeArticleEditFun() {
+		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
+
+		if (rows.length == 1 && rows[0].isLottery == false) {
+			var myd = $('<div/>').dialog({
+				width : 1050,
+				height : 400,
+				href : '${pageContext.request.contextPath}/prize/article/edit-panel',
+				modal : true,
+				align : 'center',
+				title : '获奖文章选择',
+				buttons : [ {
+					text : '随机选择',
+					handler : function() {
+
+						var options = $('#admin_prizeArticle_datagrid').datagrid('getPager').data("pagination").options;
+						var totalRowNum = options.total - 1;
+						var randomnum = Math.ceil(Math.random()*totalRowNum);
+						$('#admin_prizeArticle_datagrid').datagrid('checkRow',randomnum);
+						var selectSize = $('#admin_prizeArticle_datagrid').datagrid('getChecked').length;
+
+						$.messager.show({
+							title : '提示',
+							msg : "已随机选中：" + selectSize+"人",
+						});
+
+					}
+				} ,{
+					text : '设为中奖人',
+					handler : function() {
+						var articleRows = $('#admin_prizeArticle_datagrid').datagrid('getChecked');
+						//alert(articleRows[0].user.username+"=="+articleRows[0].user.phone);
+						var userIds = [];
+						var userNames = [];
+						var hhPhones = [];
+						if (articleRows.length > 0) {
+							$.messager.confirm('确认', '您是选择当前用户为中奖用户？', function(r) {
+								if (r) {
+									for ( var i = 0; i < articleRows.length; i++) {
+										userIds.push(articleRows[i].user.id);
+										userIds.join(',');
+										userNames.push(articleRows[i].user.username);
+										userNames.join(',');
+										hhPhones.push(articleRows[i].user.phone);
+										hhPhones.join(',');
+									}
+
+									$.ajax({
+										type: 'post',
+										url : '${pageContext.request.contextPath}/prize/update',
+										data : {
+											id: rows[0].id,
+											userIds : userIds.join(","),
+											userNames : userNames.join(","),
+											hhPhones : hhPhones.join(",")
+										},
+										dataType : 'json',
+										success : function(d) {
+											var v = $('#admin_prize_datagrid');
+											v.datagrid('reload');
+											v.datagrid('unselectAll');
+											v.datagrid('clearChecked');
+											myd.dialog('destroy');
 											$.messager.show({
 												title : '提示',
 												msg : '选择成功'

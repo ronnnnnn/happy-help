@@ -19,9 +19,11 @@ public class Article {
 
     private Boolean isDeleted;
 
-    private String isPass;
+    private Boolean isPass;
 
     private Integer hhUserId;
+
+    private User user;
 
     public Integer getId() {
         return id;
@@ -87,11 +89,11 @@ public class Article {
         this.isDeleted = isDeleted;
     }
 
-    public String getIsPass() {
+    public Boolean getIsPass() {
         return isPass;
     }
 
-    public void setIsPass(String isPass) {
+    public void setIsPass(Boolean isPass) {
         this.isPass = isPass;
     }
 
@@ -101,5 +103,13 @@ public class Article {
 
     public void setHhUserId(Integer hhUserId) {
         this.hhUserId = hhUserId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

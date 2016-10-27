@@ -38,6 +38,11 @@ public class PrizeController extends BaseController {
         return "admin/prize/prizeUserEdit";
     }
 
+    @RequestMapping(value = "/article/edit-panel",method = RequestMethod.GET)
+    public String toprizeArticleEditPanel(){
+        return "admin/prize/prizeArticleEdit";
+    }
+
     @RequestMapping(value = "/user-panel/{hhPhones}",method = RequestMethod.GET)
     public String touserListPanel(@PathVariable String hhPhones, Model model){
         model.addAttribute("hhPhones",hhPhones);

@@ -45,7 +45,7 @@
 				width : fixWidth(0.2),
 				align : 'center',
 				formatter : function(value, row, index) {
-					return '<img style=\"height: 300px;width: 200px;\" src="${pageContext.request.contextPath}/productImages/'+row.imageUrl+'" />';
+					return '<img style=\"height: 300px;width: 200px;\" src="'+row.imageUrl+'" />';
 				},
 			},{
 				field : 'createTime',
