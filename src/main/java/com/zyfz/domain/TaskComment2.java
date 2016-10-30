@@ -1,5 +1,7 @@
 package com.zyfz.domain;
 
+import java.util.Date;
+
 public class TaskComment2 {
     private Integer id;
 
@@ -12,6 +14,16 @@ public class TaskComment2 {
     private String hhTaskInfoId;
 
     private Integer hhTaskCommentId;
+
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getId() {
         return id;

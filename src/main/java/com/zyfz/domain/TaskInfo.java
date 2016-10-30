@@ -29,11 +29,31 @@ public class TaskInfo {
 
     private Boolean isDeleted;
 
-    private String area;
-
     private Integer hhCategoryId;
 
     private Integer hhUserId;
+
+    private String country;
+
+    private String province;
+
+    private String city;
+
+    private String area;
+
+    private String street;
+
+    private String detailPosition;
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;
@@ -139,14 +159,6 @@ public class TaskInfo {
         this.isDeleted = isDeleted;
     }
 
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
-    }
-
     public Integer getHhCategoryId() {
         return hhCategoryId;
     }
@@ -161,5 +173,53 @@ public class TaskInfo {
 
     public void setHhUserId(Integer hhUserId) {
         this.hhUserId = hhUserId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getDetailPosition() {
+        return detailPosition;
+    }
+
+    public void setDetailPosition(String detailPosition) {
+        this.detailPosition = detailPosition;
     }
 }

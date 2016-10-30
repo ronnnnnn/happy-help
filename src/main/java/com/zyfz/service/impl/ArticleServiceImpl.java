@@ -3,7 +3,9 @@ package com.zyfz.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.ArticleMapper;
+import com.zyfz.dao.CommentMapper;
 import com.zyfz.domain.Article;
+import com.zyfz.domain.Comment;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IArticleService;
@@ -20,6 +22,9 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Resource
     ArticleMapper articleMapper;
+
+    @Resource
+    CommentMapper commentMapper;
 
     @Override
     public Integer save(Article article) {
@@ -54,6 +59,12 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public Integer deleteOneById(Article article) {
+        List<Comment> comments = commentMapper.selectCommentWithUserByArticle(article.getId());
+        if (comments.size() != 0) {
+            for (Comment comment : comments) {
+                commentMapper.deleteByPrimaryKey(comment.getId());
+            }
+        }
         return articleMapper.deleteByPrimaryKey(article.getId());
     }
 

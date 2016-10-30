@@ -11,8 +11,6 @@ public class HelpInfo {
 
     private String phome;
 
-    private String publishArea;
-
     private String areaRange;
 
     private Integer hhAreaRangeId;
@@ -32,6 +30,20 @@ public class HelpInfo {
     private Boolean isDeleted;
 
     private Integer hhCategoryId;
+
+    private Integer createTime;
+
+    private String country;
+
+    private String province;
+
+    private String city;
+
+    private String area;
+
+    private String street;
+
+    private String detailPosition;
 
     private Integer republishTimes;
 
@@ -73,14 +85,6 @@ public class HelpInfo {
 
     public void setPhome(String phome) {
         this.phome = phome;
-    }
-
-    public String getPublishArea() {
-        return publishArea;
-    }
-
-    public void setPublishArea(String publishArea) {
-        this.publishArea = publishArea;
     }
 
     public String getAreaRange() {
@@ -161,6 +165,62 @@ public class HelpInfo {
 
     public void setHhCategoryId(Integer hhCategoryId) {
         this.hhCategoryId = hhCategoryId;
+    }
+
+    public Integer getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Integer createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getDetailPosition() {
+        return detailPosition;
+    }
+
+    public void setDetailPosition(String detailPosition) {
+        this.detailPosition = detailPosition;
     }
 
     public Integer getRepublishTimes() {

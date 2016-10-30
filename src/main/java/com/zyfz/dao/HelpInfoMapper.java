@@ -2,6 +2,9 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.HelpInfo;
 
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+
 public interface HelpInfoMapper {
 
     int deleteByPrimaryKey(Integer id);

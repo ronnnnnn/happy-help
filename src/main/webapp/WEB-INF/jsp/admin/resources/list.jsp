@@ -20,6 +20,7 @@
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">类型</th>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">URL路径</th>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">权限字符串</th>
+            <th style="font-size: 14px; padding : 8px;background: #F4F4F4">层级编码</th>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">操作</th>
         </tr>
     </thead>
@@ -30,6 +31,7 @@
                 <td style="font-size: 14px; padding : 8px;">${resource.mtype}</td>
                 <td style="font-size: 14px; padding : 8px;">${resource.url}</td>
                 <td style="font-size: 14px; padding : 8px;">${resource.permission}</td>
+                <td style="font-size: 14px; padding : 8px;">${resource.priority}</td>
                 <td style="font-size: 14px; padding : 8px;">
                     <shiro:hasPermission name="resource:create">
                         <c:if test="${resource.mtype ne 'button'}">

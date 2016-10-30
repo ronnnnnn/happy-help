@@ -35,12 +35,8 @@
                 <td><input id="rse-permission" name="permission" class="easyui-validatebox" style="width: 100%" <c:if test="${!empty resource.permission}">value="${resource.permission}"</c:if>/></td>
             </tr>
             <tr>
-                <th>权限字符串</th>
+                <th>优先级</th>
                 <td><input id="rse-priority" name="priority" class="easyui-validatebox" style="width: 100%" <c:if test="${!empty resource.priority}">value="${resource.priority}"</c:if>/></td>
-            </tr>
-
-            <tr align="center">
-
             </tr>
         </table>
 </div>

@@ -8,10 +8,11 @@
     <result column="context" property="context" jdbcType="VARCHAR" />
     <result column="hh_task_info_id" property="hhTaskInfoId" jdbcType="VARCHAR" />
     <result column="hh_task_comment_id" property="hhTaskCommentId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, parent_user_id, child_user_id, context, hh_task_info_id, hh_task_comment_id
+    id, parent_user_id, child_user_id, context, hh_task_info_id, hh_task_comment_id,create_time
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -20,6 +21,20 @@
     from hh_task_comment2
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_task_comment2
+  </select>
+
+  <select id="selectByCommentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_task_comment2
+    where hh_task_comment2.hh_task_comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hh_task_comment2
     where id = #{id,jdbcType=INTEGER}
@@ -27,10 +42,10 @@
 
   <insert id="insert" parameterType="com.zyfz.domain.TaskComment2" >
     insert into hh_task_comment2 (id, parent_user_id, child_user_id, 
-      context, hh_task_info_id, hh_task_comment_id
+      context, hh_task_info_id, hh_task_comment_id,create_time
       )
     values (#{id,jdbcType=INTEGER}, #{parentUserId,jdbcType=INTEGER}, #{childUserId,jdbcType=INTEGER}, 
-      #{context,jdbcType=VARCHAR}, #{hhTaskInfoId,jdbcType=VARCHAR}, #{hhTaskCommentId,jdbcType=INTEGER}
+      #{context,jdbcType=VARCHAR}, #{hhTaskInfoId,jdbcType=VARCHAR}, #{hhTaskCommentId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.TaskComment2" >
@@ -54,6 +69,9 @@
       <if test="hhTaskCommentId != null" >
         hh_task_comment_id,
       </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -73,6 +91,9 @@
       </if>
       <if test="hhTaskCommentId != null" >
         #{hhTaskCommentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -95,6 +116,9 @@
       <if test="hhTaskCommentId != null" >
         hh_task_comment_id = #{hhTaskCommentId,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -105,6 +129,7 @@
       context = #{context,jdbcType=VARCHAR},
       hh_task_info_id = #{hhTaskInfoId,jdbcType=VARCHAR},
       hh_task_comment_id = #{hhTaskCommentId,jdbcType=INTEGER}
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

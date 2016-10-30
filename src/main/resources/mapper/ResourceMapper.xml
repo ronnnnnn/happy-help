@@ -28,13 +28,13 @@
     select
     <include refid="Base_Column_List" />
     from hh_resource
-    where parent_id = 1
+    where parent_id = 1 ORDER BY priority
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from hh_resource
+    from hh_resource ORDER BY priority
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

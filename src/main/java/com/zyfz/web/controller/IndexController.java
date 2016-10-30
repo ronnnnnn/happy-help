@@ -30,13 +30,14 @@ public class IndexController {
         Set<String> perssions = userservice.findPermissions(((User)request.getAttribute("user")).getUsername());
         List<Resources> menus = resourceService.findMenus(perssions);
         List<Resources> rootMenus = resourceService.finaRootMenu();
-        Map<String,List<Resources>> menuMap = new HashMap<String, List<Resources>>();
-        for (Resources rootResource : rootMenus){
+        Map<String,List<Resources>> menuMap = new LinkedHashMap<String,List<Resources>>();
+        for (int i = 0; i < rootMenus.size(); i++) {
+            Resources rootResource = rootMenus.get(i);
             List<Resources> childMenus = new ArrayList<Resources>();
             for (Resources childResource : menus){
-                 if(childResource.getParentId() == rootResource.getId().longValue()){
-                      childMenus.add(childResource);
-                 }
+                if(childResource.getParentId() == rootResource.getId().longValue()){
+                    childMenus.add(childResource);
+                }
             }
             menuMap.put(rootResource.getMname(),childMenus);
         }

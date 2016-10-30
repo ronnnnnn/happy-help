@@ -49,7 +49,6 @@ public class ArticleController extends BaseController {
 
         try{
             article.setCreateTime(new Date());
-            article.setHhUserId(1);
             return articleService.save(article);
         }catch(Exception e){
             e.printStackTrace();
