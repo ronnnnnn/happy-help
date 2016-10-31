@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.zyfz.domain.Setting" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="sys_type" property="sysType" jdbcType="VARCHAR" />
-    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="type_value" property="typeValue" jdbcType="VARCHAR" />
     <result column="type_description" property="typeDescription" jdbcType="VARCHAR" />
   </resultMap>
 
 
   <sql id="Base_Column_List" >
-    id, sys_type, value, type_description
+    id, sys_type,type_name, type_value, type_description
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -32,9 +33,9 @@
   </delete>
 
   <insert id="insert" parameterType="com.zyfz.domain.Setting" >
-    insert into hh_setting (id, sys_type, value, 
+    insert into hh_setting (id, sys_type,type_name, type_value,
       type_description)
-    values (#{id,jdbcType=INTEGER}, #{sysType,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{sysType,jdbcType=VARCHAR},  #{typeName,jdbcType=VARCHAR},#{typeValue,jdbcType=VARCHAR},
       #{typeDescription,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.Setting" >
@@ -46,8 +47,11 @@
       <if test="sysType != null" >
         sys_type,
       </if>
-      <if test="value != null" >
-        value,
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="typeValue != null" >
+        type_value,
       </if>
       <if test="typeDescription != null" >
         type_description,
@@ -60,8 +64,11 @@
       <if test="sysType != null" >
         #{sysType,jdbcType=VARCHAR},
       </if>
-      <if test="value != null" >
-        #{value,jdbcType=VARCHAR},
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeValue != null" >
+        #{typeValue,jdbcType=VARCHAR},
       </if>
       <if test="typeDescription != null" >
         #{typeDescription,jdbcType=VARCHAR},
@@ -75,8 +82,11 @@
       <if test="sysType != null" >
         sys_type = #{sysType,jdbcType=VARCHAR},
       </if>
-      <if test="value != null" >
-        value = #{value,jdbcType=VARCHAR},
+      <if test="typeName != null" >
+        type_name = #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="typeValue != null" >
+        type_value = #{typeValue,jdbcType=VARCHAR},
       </if>
       <if test="typeDescription != null" >
         type_description = #{typeDescription,jdbcType=VARCHAR},
@@ -87,7 +97,8 @@
   <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.Setting" >
     update hh_setting
     set sys_type = #{sysType,jdbcType=VARCHAR},
-      value = #{value,jdbcType=VARCHAR},
+      type_name = #{typeName,jdbcType=VARCHAR},
+      type_value = #{typeValue,jdbcType=VARCHAR},
       type_description = #{typeDescription,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

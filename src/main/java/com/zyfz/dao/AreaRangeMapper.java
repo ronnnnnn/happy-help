@@ -2,6 +2,7 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.AreaRange;
 
+//该表废弃，范围属性统一集中到系统属性设置
 public interface AreaRangeMapper {
 
 

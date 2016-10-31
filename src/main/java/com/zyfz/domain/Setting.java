@@ -5,7 +5,9 @@ public class Setting {
 
     private String sysType;
 
-    private String value;
+    private String typeName;
+
+    private String typeValue;
 
     private String typeDescription;
 
@@ -25,12 +27,20 @@ public class Setting {
         this.sysType = sysType;
     }
 
-    public String getValue() {
-        return value;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getTypeValue() {
+        return typeValue;
+    }
+
+    public void setTypeValue(String typeValue) {
+        this.typeValue = typeValue;
     }
 
     public String getTypeDescription() {

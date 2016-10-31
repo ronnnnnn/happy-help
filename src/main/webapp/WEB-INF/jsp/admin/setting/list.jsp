@@ -26,18 +26,23 @@
 				checkbox : true
 			}, {
 				field : 'sysType',
-				title : '名称',
-				width : fixWidth(0.1),
+				title : '类别',
+				width : fixWidth(0.2),
 				align : 'center',
 			},{
-				field : 'value',
-				title : '值',
-				width : fixWidth(0.1),
+				field : 'typeName',
+				title : '属性名',
+				width : fixWidth(0.2),
+				align : 'center',
+			},{
+				field : 'typeValue',
+				title : '属性值',
+				width : fixWidth(0.2),
 				align : 'center',
 			},{
 				field : 'typeDescription',
 				title : '描述',
-				width : fixWidth(0.10),
+				width : fixWidth(0.20),
 				align : 'center',
 			}] ],
 			toolbar : [{
@@ -71,7 +76,7 @@
 		if (rows.length == 1) {
 			var d = $('<div/>').dialog({
 				width : 200,
-				height : 150,
+				height : 170,
 				href : '${pageContext.request.contextPath}/setting/add-panel',
 				modal : true,
 				align : 'center',
@@ -118,7 +123,7 @@
 
 		var d = $('<div/>').dialog({
 			width : 200,
-			height : 150,
+			height : 170,
 			href : '${pageContext.request.contextPath}/setting/add-panel',
 			modal : true,
 			align : 'center',
