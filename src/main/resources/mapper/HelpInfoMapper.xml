@@ -17,7 +17,7 @@
     <result column="is_compeleted" jdbcType="BIT" property="isCompeleted" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="hh_category_id" jdbcType="INTEGER" property="hhCategoryId" />
-    <result column="create_time" jdbcType="INTEGER" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="country" jdbcType="VARCHAR" property="country" />
     <result column="province" jdbcType="VARCHAR" property="province" />
     <result column="city" jdbcType="VARCHAR" property="city" />
@@ -25,6 +25,20 @@
     <result column="street" jdbcType="VARCHAR" property="street" />
     <result column="detail_position" jdbcType="VARCHAR" property="detailPosition" />
     <result column="republish_times" jdbcType="INTEGER" property="republishTimes" />
+  </resultMap>
+
+  <resultMap id="HelpInfoWithUserMap" type="HelpInfo" extends="BaseResultMap">
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="u_phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
+      <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
+      <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+    </association>
   </resultMap>
 
   <sql id="Base_Column_List">
@@ -38,6 +52,18 @@
     <include refid="Base_Column_List" />
     from hh_help_info
     where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectWithUserByCIDAndTime"  resultMap="HelpInfoWithUserMap">
+    SELECT hi.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    FROM happy_help.hh_help_info hi left join happy_help.hh_user u on hi.hh_user_id = u.id
+    where hi.hh_category_id = #{0} and  hi.create_time &gt;= #{1} and  hi.create_time &lt;= #{2}
+  </select>
+
+  <select id="selectWithUserByKey"  resultMap="HelpInfoWithUserMap">
+    SELECT hi.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    FROM happy_help.hh_help_info hi left join happy_help.hh_user u on hi.hh_user_id = u.id
+    where hi.title like #{key,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -59,7 +85,7 @@
       #{hhAreaRangeId,jdbcType=INTEGER}, #{hhUserId,jdbcType=INTEGER}, #{needUserNumber,jdbcType=INTEGER}, 
       #{applyUserIds,jdbcType=VARCHAR}, #{useUserIds,jdbcType=VARCHAR}, #{compeletedUserIds,jdbcType=VARCHAR}, 
       #{isCompeleted,jdbcType=BIT}, #{isDeleted,jdbcType=BIT}, #{hhCategoryId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=INTEGER}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
       #{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, 
       #{detailPosition,jdbcType=VARCHAR}, #{republishTimes,jdbcType=INTEGER})
   </insert>
@@ -184,7 +210,7 @@
         #{hhCategoryId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="country != null">
         #{country,jdbcType=VARCHAR},
@@ -256,7 +282,7 @@
         hh_category_id = #{hhCategoryId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="country != null">
         country = #{country,jdbcType=VARCHAR},
@@ -298,7 +324,7 @@
       is_compeleted = #{isCompeleted,jdbcType=BIT},
       is_deleted = #{isDeleted,jdbcType=BIT},
       hh_category_id = #{hhCategoryId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       country = #{country,jdbcType=VARCHAR},
       province = #{province,jdbcType=VARCHAR},
       city = #{city,jdbcType=VARCHAR},

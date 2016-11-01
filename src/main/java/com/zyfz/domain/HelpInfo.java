@@ -1,5 +1,7 @@
 package com.zyfz.domain;
 
+import java.util.Date;
+
 public class HelpInfo {
     private Integer id;
 
@@ -31,7 +33,7 @@ public class HelpInfo {
 
     private Integer hhCategoryId;
 
-    private Integer createTime;
+    private Date createTime;
 
     private String country;
 
@@ -46,6 +48,16 @@ public class HelpInfo {
     private String detailPosition;
 
     private Integer republishTimes;
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;
@@ -167,11 +179,11 @@ public class HelpInfo {
         this.hhCategoryId = hhCategoryId;
     }
 
-    public Integer getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Integer createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
