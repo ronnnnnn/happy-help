@@ -33,9 +33,9 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
-    public Datagrid getCommentWithUserByArticle(Integer articleId, PageModel pageModel) {
+    public Datagrid getCommentWithUserByTypeId(Integer articleId,String type, PageModel pageModel) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
-        List<Comment> comments = commentMapper.selectCommentWithUserByArticle(articleId);
+        List<Comment> comments = commentMapper.selectCommentWithUserByTypeId(articleId,type);
         PageInfo pageInfo = new PageInfo(comments);
         Datagrid datagrid = new Datagrid();
         datagrid.setRows(comments);
@@ -59,10 +59,10 @@ public class CommentServiceImpl implements ICommentService{
     }
 
     @Override
-    public Datagrid getCommentWithUserByArticleAndKey(Integer articleId, String commentKey, PageModel pageModel) {
+    public Datagrid getCommentWithUserByTypeIdAndKey(Integer articleId,String type, String commentKey, PageModel pageModel) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
         String mykey = "%" + commentKey + "%";
-        List<Comment> comments = commentMapper.selectCommentWithUserByArticleAndKey(articleId,mykey);
+        List<Comment> comments = commentMapper.selectCommentWithUserByTypeIdAndKey(articleId,type,mykey);
         PageInfo pageInfo = new PageInfo(comments);
         Datagrid datagrid = new Datagrid();
         datagrid.setRows(comments);

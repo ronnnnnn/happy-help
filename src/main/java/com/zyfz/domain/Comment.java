@@ -13,7 +13,7 @@ public class Comment {
 
     private Boolean isDeleted;
 
-    private String type; //"1"为好人好事文章的评论
+    private String type; //"1"为好人好事文章的评论,"2"为公共服务的评论
 
     private Integer typeId;
 

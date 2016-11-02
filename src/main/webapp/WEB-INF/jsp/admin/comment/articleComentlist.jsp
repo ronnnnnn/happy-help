@@ -3,7 +3,8 @@
 <script type="text/javascript">
 	$(function() {
 		var articleId = getCookie('articleId');
-		var initurl = '${pageContext.request.contextPath}/comment/list/'+articleId;
+		var mtype = '1';
+		var initurl = '${pageContext.request.contextPath}/comment/list/'+articleId + '/'+ mtype;
 		commentInit(initurl);
 	});
 
@@ -103,7 +104,8 @@
 	function commentSearchFun() {
 		var mykey = $("input[name$='commentkey']").val();
 		var myarticleId = getCookie('articleId');
-		var asearchUrl = '${pageContext.request.contextPath}/comment/list/'+myarticleId+'/'+mykey;
+		var mmtype = '1';
+		var asearchUrl = '${pageContext.request.contextPath}/comment/list/'+myarticleId+ '/'+ mmtype +'/'+mykey;
 		commentInit(asearchUrl);
 	}
 
@@ -111,7 +113,8 @@
 		$('#admin_comment_layout input[name=commentkey]').val('');
 
 		var articleId = getCookie('articleId');
-		var initurl = '${pageContext.request.contextPath}/comment/list/'+articleId;
+		var mtype = '1';
+		var initurl = '${pageContext.request.contextPath}/comment/list/'+articleId+ '/'+ mtype;
 		commentInit(initurl);
 	}
 

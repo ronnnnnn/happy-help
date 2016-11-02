@@ -227,17 +227,8 @@
                     $.ajax({
                         type: 'delete',
                         url : '${pageContext.request.contextPath}/helpInfo/'+ids,
-                        data : {
-                            ids : ids.join(',')
-                        },
                         dataType : 'json',
                         success : function(d) {
-                            <%--var categotyId = $('#hcategoryId').val();--%>
-                            <%--var isFree = $('#isFree').val();--%>
-                            <%--var isCompeleted = $('#isCompeleted').val();--%>
-                            <%--var isTop = $('#isTop').val();--%>
-                            <%--var listUrl = '${pageContext.request.contextPath}/helpinfo/list/'+ categotyId + "/"+isFree+"/"+isCompeleted+"/"+isTop;--%>
-                            <%--helpinfoInit(listUrl);--%>
 							var v = $('#admin_helpinfo_datagrid');
 							v.datagrid('reload');
 							v.datagrid('unselectAll');

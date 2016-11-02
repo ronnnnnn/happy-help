@@ -11,19 +11,71 @@ public class ServerInfo {
 
     private String phone;
 
-    private String address;
-
-    private String area;
-
     private Date createTime;
 
     private Integer hhUserId;
 
+    /**
+    * 是否通过审核
+    */
     private Boolean isPass;
 
+    /**
+    * 是否下架
+    */
     private Boolean isDeleted;
 
     private Integer hhCategoryId;
+
+    /**
+    * 服务所在国
+    */
+    private String country;
+
+    /**
+    * 服务所在省
+    */
+    private String province;
+
+    private String city;
+
+    private String area;
+
+    private String street;
+
+    /**
+    * 详细地址
+    */
+    private String address;
+
+    private User user;
+
+    private String imageUrl;
+
+    public ServerInfo() {
+        super();
+    }
+
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public ServerInfo(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;
@@ -55,22 +107,6 @@ public class ServerInfo {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
     }
 
     public Date getCreateTime() {
@@ -111,5 +147,53 @@ public class ServerInfo {
 
     public void setHhCategoryId(Integer hhCategoryId) {
         this.hhCategoryId = hhCategoryId;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

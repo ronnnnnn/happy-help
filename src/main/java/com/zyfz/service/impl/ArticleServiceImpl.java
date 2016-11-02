@@ -59,7 +59,7 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public Integer deleteOneById(Article article) {
-        List<Comment> comments = commentMapper.selectCommentWithUserByArticle(article.getId());
+        List<Comment> comments = commentMapper.selectCommentWithUserByTypeId(article.getId(),"1");
         if (comments.size() != 0) {
             for (Comment comment : comments) {
                 commentMapper.deleteByPrimaryKey(comment.getId());

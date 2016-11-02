@@ -25,7 +25,7 @@
 
 
   <sql id="Base_Column_List">
-    id, context, image_url, create_time, is_deleted, type, type_id, hh_user_id
+    id, context, image_url, create_time, is_deleted, `type`, type_id, hh_user_id
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -35,18 +35,18 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectCommentWithUserByArticle"  parameterType="java.lang.Integer" resultMap="comentUserMap">
-    SELECT c.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
-    FROM happy_help.hh_comment c left join happy_help.hh_user u
-    on c.hh_user_id = u.id WHERE c.type_id = #{articleId,jdbcType=INTEGER}
-    order by  c.create_time desc
+  <select id="selectCommentWithUserByTypeId"   resultMap="comentUserMap">
+    SELECT cm.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
+    FROM happy_help.hh_comment cm left join happy_help.hh_user u
+    on cm.hh_user_id = u.id WHERE cm.type_id = #{0} and cm.type =#{1}
+    order by  cm.create_time desc
   </select>
 
-  <select id="selectCommentWithUserByArticleAndKey"   resultMap="comentUserMap">
-    SELECT c.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
-    FROM happy_help.hh_comment c left join happy_help.hh_user u
-    on c.hh_user_id = u.id WHERE c.type_id = #{0} and context like #{1}
-    order by c.create_time desc
+  <select id="selectCommentWithUserByTypeIdAndKey"   resultMap="comentUserMap">
+    SELECT cm.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
+    FROM happy_help.hh_comment cm left join happy_help.hh_user u
+    on cm.hh_user_id = u.id WHERE cm.type_id = #{0} and cm.type =#{1} and context like #{2}
+    order by cm.create_time desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

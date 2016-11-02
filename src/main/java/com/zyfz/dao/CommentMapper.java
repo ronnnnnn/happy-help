@@ -16,9 +16,9 @@ public interface CommentMapper {
 
     Comment selectByPrimaryKey(Integer id);
 
-    List<Comment> selectCommentWithUserByArticle(Integer articleId);
+    List<Comment> selectCommentWithUserByTypeId(Integer articleId,String type);
 
-    List<Comment> selectCommentWithUserByArticleAndKey(Integer articleId,String commentKey);
+    List<Comment> selectCommentWithUserByTypeIdAndKey(Integer articleId,String type,String commentKey);
 
     int updateByPrimaryKeySelective(Comment record);
 

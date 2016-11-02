@@ -1,6 +1,5 @@
 package com.zyfz.web.controller;
 
-import com.zyfz.domain.Article;
 import com.zyfz.domain.Comment;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.ICommentService;
@@ -22,7 +21,12 @@ public class CommentController extends BaseController {
 
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String toListPanel(){
-        return "admin/comment/list";
+        return "admin/comment/articleComentlist";
+    }
+
+    @RequestMapping(value = "/server/list-panel",method = RequestMethod.GET)
+    public String toserverCommentListPanel(){
+        return "admin/comment/serverComentlist";
     }
 
     @RequestMapping(value = "/edit-panel",method = RequestMethod.GET)
@@ -30,14 +34,14 @@ public class CommentController extends BaseController {
         return "admin/comment/edit";
     }
 
-    @RequestMapping(value = "/list/{articleId}",method = RequestMethod.POST)
-    public void getCommentWithUserByArticleId(@PathVariable Integer articleId, PageModel pageModel, HttpServletResponse response){
-        super.writeJson(commentService.getCommentWithUserByArticle(articleId,pageModel),response);
+    @RequestMapping(value = "/list/{typeId}/{type}",method = RequestMethod.POST)
+    public void getCommentWithUserByArticleId(@PathVariable Integer typeId,@PathVariable String type, PageModel pageModel, HttpServletResponse response){
+        super.writeJson(commentService.getCommentWithUserByTypeId(typeId,type,pageModel),response);
     }
 
-    @RequestMapping(value = "/list/{articleId}/{commentKey}",method = RequestMethod.POST)
-    public void getCommentWithUserByArticleIdAndKey(@PathVariable Integer articleId,@PathVariable String commentKey, PageModel pageModel, HttpServletResponse response){
-        super.writeJson(commentService.getCommentWithUserByArticleAndKey(articleId,commentKey,pageModel),response);
+    @RequestMapping(value = "/list/{typeId}/{type}/{commentKey}",method = RequestMethod.POST)
+    public void getCommentWithUserByArticleIdAndKey(@PathVariable Integer typeId,@PathVariable String type,@PathVariable String commentKey, PageModel pageModel, HttpServletResponse response){
+        super.writeJson(commentService.getCommentWithUserByTypeIdAndKey(typeId,type,commentKey,pageModel),response);
     }
 
     @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)

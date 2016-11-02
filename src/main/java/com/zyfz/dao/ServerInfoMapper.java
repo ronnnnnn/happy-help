@@ -2,6 +2,8 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.ServerInfo;
 
+import java.util.List;
+
 public interface ServerInfoMapper {
 
     int deleteByPrimaryKey(Integer id);
@@ -11,6 +13,10 @@ public interface ServerInfoMapper {
     int insertSelective(ServerInfo record);
 
     ServerInfo selectByPrimaryKey(Integer id);
+
+    List<ServerInfo> selectByCIDWithUser(Integer categoryId);
+
+    List<ServerInfo> selectByCIDWithUserWithKey(String key);
 
     int updateByPrimaryKeySelective(ServerInfo record);
 
