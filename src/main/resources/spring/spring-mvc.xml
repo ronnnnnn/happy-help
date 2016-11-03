@@ -51,7 +51,9 @@
     </bean>  
     <!-- 定义跳转的文件的前后缀 ，视图模式配置-->  
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
-        <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->  
+        <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html"/>
         <property name="prefix" value="/WEB-INF/jsp/" />  
         <property name="suffix" value=".jsp" />  
     </bean>  
@@ -65,6 +67,14 @@
         <property name="maxUploadSize" value="10485760000" />    
         <!-- 内存中的最大值 -->  
         <property name="maxInMemorySize" value="40960" />    
-    </bean>   
-  
+    </bean>
+
+    <!-- 控制器异常处理 -->
+    <!--<bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">-->
+    <!--</bean>-->
+
+    <!--<bean class="com.zyfz.web.exception.DefaultExceptionHandler"/>-->
+    <bean id="exceptionResolver" class="com.zyfz.web.exception.MyExceptionResolver"/>
+
+    <import resource="spring-mvc-shiro.xml"/>
 </beans>

@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class DefaultExceptionHandler {
     /**
-     * 没有权限 异常
+     * 没有权限异常
      * <p/>
      * 后续根据不同的需求定制即可
      */
@@ -23,7 +23,7 @@ public class DefaultExceptionHandler {
     public ModelAndView processUnauthenticatedException(NativeWebRequest request, UnauthorizedException e) {
         ModelAndView mv = new ModelAndView();
         mv.addObject("exception", e);
-        mv.setViewName("unauthorized");
+        mv.setViewName("error/unauthorized");
         return mv;
     }
 }

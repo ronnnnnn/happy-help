@@ -20,9 +20,9 @@
             <tr>
                 <th>类别</th>
                 <td>
-                    <select  id="rse-type"  class="esayui-combobox"  name="type"   style="width: 100%" data-options="required:true" <c:if test="${!empty resource.mtype}">value="${resource.mtype}"</c:if>>
-                        <option  value='menu'>menu</option>
-                        <option  value='button'  >button</option>
+                    <select  id="rse-type"  class="esayui-combobox"  name="type"   style="width: 100%" data-options="required:true"  <c:if test="${!empty resource.mtype}">value='${resource.mtype}'</c:if>>
+                        <option  value='menu' <c:if test="${'menu' eq resource.mtype}">selected</c:if>>menu</option>
+                        <option  value='button' <c:if test="${'button' eq resource.mtype}">selected</c:if>>button</option>
                     </select>
                 </td>
             </tr>

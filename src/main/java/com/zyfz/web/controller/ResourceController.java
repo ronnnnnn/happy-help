@@ -32,6 +32,7 @@ public class ResourceController extends BaseController{
      * @param model
      * @return  资源列表
      */
+    @RequiresPermissions("resource:view")
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model){
         model.addAttribute("resourceList",resourceService.findAll());
@@ -43,6 +44,7 @@ public class ResourceController extends BaseController{
      * @param pageModel
      * @param response
      */
+    @RequiresPermissions("resource:view")
     @RequestMapping(value = "/datagrid",method = RequestMethod.GET)
     public void getResourcesDatagrid(PageModel pageModel,HttpServletResponse response){
         super.writeJson(resourceService.getAll(pageModel),response);
@@ -130,7 +132,7 @@ public class ResourceController extends BaseController{
     }
 
     /**
-     * 根据id字符串集合获得资源
+     * 根据id字符串集合获得资源,显示角色拥有的资源调用
      * @param value
      * @param response
      */
@@ -150,9 +152,10 @@ public class ResourceController extends BaseController{
     }
 
     /**
-     * 获取所有资源
+     * 获取所有资源，组织资源树
      * @param response
      */
+    @RequiresPermissions("resource:view")
     @RequestMapping(value = "/all/list",method = RequestMethod.GET)
     public void getAllResources(HttpServletResponse response){
         super.writeJson(resourceService.findAll(),response);

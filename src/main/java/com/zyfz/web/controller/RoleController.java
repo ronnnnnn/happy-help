@@ -6,6 +6,7 @@ import com.zyfz.model.PageModel;
 import com.zyfz.model.ResourceModel;
 import com.zyfz.service.IResourceService;
 import com.zyfz.service.IRoleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,11 +32,13 @@ public class RoleController extends BaseController {
      * 页面跳转
      * @return 页面
      */
+    @RequiresPermissions("roles:view")
     @RequestMapping(method = RequestMethod.GET)
     public String getRolePanel(){
         return "admin/role/list";
     }
 
+    @RequiresPermissions("role:update")
     @RequestMapping(value = "/baseedit",method = RequestMethod.GET)
     public String getBaseeditPanel(){
         return "admin/role/baseedit";
@@ -45,6 +48,7 @@ public class RoleController extends BaseController {
      * 资源管理跳转
      * @return
      */
+    @RequiresPermissions("role:update")
     @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
     public String getRoleEditPanel(@PathVariable Integer id, Model model){
         List<ResourceModel> resourceList = new ArrayList<ResourceModel>();
@@ -82,6 +86,7 @@ public class RoleController extends BaseController {
      * @param role
      * @return true 或 错误信息
      */
+    @RequiresPermissions("role:create")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Object addRole(@RequestBody Role role){
@@ -95,7 +100,7 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 用于将角色的资源id集合装化为资源名字集合
+     * 用于将角色的资源id集合转化为资源名字集合，显示超级管理员角色时调用
      * @param value 角色对应下的资源id
      * @param response  资源集合
      */
@@ -119,6 +124,7 @@ public class RoleController extends BaseController {
      * 批量删除角色
      * @param ids id集合
      */
+    @RequiresPermissions("role:delete")
     @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object deleteByIds(@PathVariable String ids){
@@ -132,19 +138,21 @@ public class RoleController extends BaseController {
     }
 
     /**
-     * 获得所有角色 不分页
+     * 获得所有角色不分页,为超级管理员添加角色权限时调用
      * @param response
      */
+
     @RequestMapping(value = "/all/list",method = RequestMethod.GET)
     public void getAllRoles(HttpServletResponse response){
        super.writeJson(roleService.getAllRoles(),response);
     }
 
     /**
-     * 获得所有角色 分页
+     * 获得所有角色分页
      * @param pageModel
      * @param response
      */
+    @RequiresPermissions("role:view")
     @RequestMapping(value = "/list")
     public void getRoleList(PageModel pageModel,HttpServletResponse response){
         super.writeJson(roleService.getAll(pageModel),response);
@@ -155,7 +163,7 @@ public class RoleController extends BaseController {
      * @param role
      * @return
      */
-
+    @RequiresPermissions("role:update")
     @RequestMapping(method = RequestMethod.PATCH)
     @ResponseBody
     public Object updateRoleResource(@RequestBody  Role role){

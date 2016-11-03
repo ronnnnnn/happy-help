@@ -6,6 +6,7 @@ import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ public class UserController extends BaseController{
      * 相关页面的跳转
      * @return
      */
+    @RequiresPermissions("superuser:view")
     @RequestMapping(value = "/superuser/list")
     public String toSuperUserList(){
         return "admin/user/superUserList";
@@ -102,6 +104,7 @@ public class UserController extends BaseController{
      * @param user
      * @return
      */
+
     @RequestMapping(method = RequestMethod.PATCH)
     @ResponseBody
     public Object updateUser(@RequestBody User user){

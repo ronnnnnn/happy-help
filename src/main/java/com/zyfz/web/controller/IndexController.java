@@ -39,7 +39,9 @@ public class IndexController {
                     childMenus.add(childResource);
                 }
             }
-            menuMap.put(rootResource.getMname(),childMenus);
+            if (childMenus.size() != 0){
+                menuMap.put(rootResource.getMname(),childMenus);
+            }
         }
         model.addAttribute("menus",menuMap);
         return "admin/index";
