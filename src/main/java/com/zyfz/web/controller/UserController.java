@@ -44,56 +44,67 @@ public class UserController extends BaseController{
         return "admin/user/superUserList";
     }
 
+    @RequiresPermissions("user:view")
     @RequestMapping(value = "/normaluser/list")
     public String toNormalUserList(){
         return "admin/user/normalUserList";
     }
 
+    @RequiresPermissions("superuser:update")
     @RequestMapping(value = "/password/panel")
     public String toPasswordEditPanel(){
         return "admin/user/superUserPasswordEdit";
     }
 
+    @RequiresPermissions("user:update")
     @RequestMapping(value = "/normal/password/panel")
     public String toNormalPasswordEditPanel(){
         return "admin/user/normalUserPasswordEdit";
     }
 
+    @RequiresPermissions("superuser:update")
     @RequestMapping(value = "/superuser/editpanel")
     public String toSuperUserEditPanel(){
         return "admin/user/superUserEditPanel";
     }
 
+    @RequiresPermissions("user:update")
     @RequestMapping(value = "/normaluser/editpanel")
     public String toNormalUserEditPanel(){
         return "admin/user/normalUserEditPanel";
     }
 
+    @RequiresPermissions("honer:view")
     @RequestMapping(value = "/rank/honer")
     public String toHonerRank(){
         return "admin/user/rank/honerUserList";
     }
 
+    @RequiresPermissions("honer:update")
     @RequestMapping(value = "/honer/panel")
     public String toHonerEditPanel(){
         return "admin/user/rank/superUserHonerEdit";
     }
 
+    @RequiresPermissions("contribute:update")
     @RequestMapping(value = "/contribute/panel")
     public String toContributeEditPanel(){
         return "admin/user/rank/UserContributeEdit";
     }
 
+    @RequiresPermissions("contribute:view")
     @RequestMapping(value = "/rank/contribute")
     public String toHonerContribute(){
         return "admin/user/rank/contributeUserList";
     }
 
+    @RequiresPermissions("superuser:view")
     @RequestMapping(value = "/superuser/all")
     public void getAllSuperUser(PageModel pageModel, HttpServletResponse response){
         super.writeJson(userservice.getAllSuperUser(pageModel),response);
     }
 
+    @RequiresPermissions("user:view")
     @RequestMapping(value = "/normaluser/all")
     public void getAllNormalUser(PageModel pageModel, HttpServletResponse response){
         super.writeJson(userservice.getAllNormalUser(pageModel),response);
@@ -105,6 +116,7 @@ public class UserController extends BaseController{
      * @return
      */
 
+    @RequiresPermissions("")
     @RequestMapping(method = RequestMethod.PATCH)
     @ResponseBody
     public Object updateUser(@RequestBody User user){

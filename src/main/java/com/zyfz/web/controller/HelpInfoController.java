@@ -4,6 +4,7 @@ import com.zyfz.domain.HelpInfo;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.IHelpInfoService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,12 +33,14 @@ public class HelpInfoController extends BaseController {
     ICategoryService categoryService;
 
 
+    @RequiresPermissions("help:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String toListPanel(Model model){
         model.addAttribute("hcategoryList",categoryService.getAllWithList());
         return "admin/helpinfo/list";
     }
 
+    @RequiresPermissions("help:view")
     @RequestMapping(value = "/list/{categoryId}/{startTime}/{endTime}",method = RequestMethod.POST)
     public void getDatagrid(@PathVariable Integer categoryId, @PathVariable String startTime, @PathVariable String endTime, PageModel pageModel, HttpServletResponse response){
       try {
@@ -51,13 +54,14 @@ public class HelpInfoController extends BaseController {
 
     }
 
+    @RequiresPermissions("help:view")
     @RequestMapping(value = "/search/{key}",method = RequestMethod.POST)
     public void getDatagrid(@PathVariable String key, PageModel pageModel, HttpServletResponse response){
             super.writeJson(helpInfoService.getHelpInfoWithUserByKey(key,pageModel),response);
     }
 
 
-
+    @RequiresPermissions("help:delete")
     @RequestMapping(value="/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object deleteByIds(@PathVariable String ids){

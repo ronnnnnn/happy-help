@@ -3,6 +3,7 @@ package com.zyfz.web.controller;
 import com.zyfz.domain.Setting;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.ISettingService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,16 +19,19 @@ public class SettingController extends BaseController {
     @Resource
     ISettingService settingService;
 
+    @RequiresPermissions("property:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String toListPanel(){
         return "admin/setting/list";
     }
 
+    @RequiresPermissions("property:update")
     @RequestMapping(value = "/edit-panel",method = RequestMethod.GET)
     public String toEditPanel(){
         return "admin/setting/edit";
     }
 
+    @RequiresPermissions("property:create")
     @RequestMapping(value = "/add-panel",method = RequestMethod.GET)
     public String toAddPanel(){
         return "admin/setting/add";
@@ -38,6 +42,7 @@ public class SettingController extends BaseController {
      * @param pageModel
      * @param response
      */
+    @RequiresPermissions("property:view")
     @RequestMapping(value = "/list")
     public void getSettingList(PageModel pageModel, HttpServletResponse response){
         super.writeJson(settingService.getAll(pageModel),response);
@@ -48,6 +53,7 @@ public class SettingController extends BaseController {
      * @param setting
      * @return
      */
+    @RequiresPermissions("property:create")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Object addSetting(Setting setting){
@@ -64,6 +70,7 @@ public class SettingController extends BaseController {
      * @param setting
      * @return
      */
+    @RequiresPermissions("property:update")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
     public Object updateSetting(Setting setting){
@@ -80,6 +87,7 @@ public class SettingController extends BaseController {
      * @param
      * @return
      */
+    @RequiresPermissions("property:delete")
     @RequestMapping(value="/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object addSetting(@PathVariable String ids){

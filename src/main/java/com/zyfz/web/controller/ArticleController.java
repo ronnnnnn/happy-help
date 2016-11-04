@@ -4,6 +4,7 @@ import com.zyfz.domain.Article;
 import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IArticleService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,26 +24,31 @@ public class ArticleController extends BaseController {
     @Resource
     IArticleService articleService;
 
+    @RequiresPermissions("article:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String toAriclePanel(){
         return "admin/article/list";
     }
 
+    @RequiresPermissions("article:update")
     @RequestMapping(value = "/edit-panel",method = RequestMethod.GET)
     public String toAricleEditPanel(){
         return "admin/article/edit";
     }
 
+    @RequiresPermissions("article:view")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public void getArticleList(PageModel pageModel, HttpServletResponse response){
         super.writeJson(articleService.getAllAritcleWithUser(pageModel),response);
     }
 
+    @RequiresPermissions("article:view")
     @RequestMapping(value = "/search/{articleKey}",method = RequestMethod.POST)
     public void getArticleByLike(@PathVariable String articleKey, PageModel pageModel,HttpServletResponse response){
         super.writeJson(articleService.getArticlByTitleLike(pageModel,articleKey),response);
     }
 
+    @RequiresPermissions("article:create")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Object addArticle(Article article){
@@ -56,6 +62,7 @@ public class ArticleController extends BaseController {
         }
     }
 
+    @RequiresPermissions("article:update")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
     public Object updateArticle(@RequestBody  Article article){
@@ -67,6 +74,7 @@ public class ArticleController extends BaseController {
         }
     }
 
+    @RequiresPermissions("article:delete")
     @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object deleteByIds(@PathVariable String ids){
@@ -88,6 +96,7 @@ public class ArticleController extends BaseController {
     }
 
 
+    @RequiresPermissions("article:update")
     @RequestMapping(value = "/pass/{ids}",method = RequestMethod.PATCH)
     @ResponseBody
     public Object updateStatusByIds(@PathVariable String ids){

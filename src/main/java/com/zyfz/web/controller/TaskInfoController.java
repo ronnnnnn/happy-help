@@ -5,6 +5,7 @@ import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.ITaskInfoService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,23 +28,27 @@ public class TaskInfoController extends BaseController {
     @Resource
     ICategoryService categoryService;
 
+    @RequiresPermissions("task:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String toListPanel(Model model){
         model.addAttribute("categoryList",categoryService.getAllWithList());
         return "admin/taskinfo/list";
     }
 
+    @RequiresPermissions("task:update")
     @RequestMapping(value = "/edit-panel",method = RequestMethod.GET)
     public String toEditPanel(Model model){
         model.addAttribute("categoryList",categoryService.getAllWithList());
         return "admin/taskinfo/edit";
     }
 
+    @RequiresPermissions("task:view")
     @RequestMapping(value = "/list/{categoryId}/{isFree}/{isCompeleted}/{isTop}",method = RequestMethod.POST)
     public void getDategridList(@PathVariable Integer categoryId,@PathVariable Boolean isFree,@PathVariable Boolean isCompeleted,@PathVariable Boolean isTop, PageModel pageModel, HttpServletResponse response){
         super.writeJson(taskInfoService.getTaskInfoWithUserByCategory(categoryId,isFree,isCompeleted,isTop,pageModel),response);
     }
 
+    @RequiresPermissions("task:create")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Object addTaskInfo(TaskInfo taskInfo){
@@ -55,6 +60,7 @@ public class TaskInfoController extends BaseController {
         }
     }
 
+    @RequiresPermissions("task:update")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
     public Object updateArticle(@RequestBody TaskInfo taskInfo){
@@ -66,6 +72,7 @@ public class TaskInfoController extends BaseController {
         }
     }
 
+    @RequiresPermissions("task:delete")
     @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object deleteByIds(@PathVariable String ids){
@@ -86,6 +93,7 @@ public class TaskInfoController extends BaseController {
 
     }
 
+    @RequiresPermissions("task:view")
     @RequestMapping(value = "/search/{taskinfoKey}",method = RequestMethod.POST)
     public void getTaskInfoByKey(@PathVariable String taskinfoKey,PageModel pageModel,HttpServletResponse response){
         super.writeJson(taskInfoService.getTaskInfoWithUserByKey(taskinfoKey,pageModel),response);

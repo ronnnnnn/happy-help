@@ -5,6 +5,7 @@ import com.zyfz.domain.Show;
 import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IShowService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -33,16 +34,19 @@ public class ShowController extends BaseController{
      * 跳转到视图
      * @return
      */
+    @RequiresPermissions("show:view")
     @RequestMapping(value = "/list/panel",method = RequestMethod.GET)
     public String toShowListPanel(){
         return "/admin/show/list";
     }
 
+    @RequiresPermissions("show:create")
     @RequestMapping(value = "/add-panel",method = RequestMethod.GET)
     public String toAddPanel(){
         return "/admin/show/add";
     }
 
+    @RequiresPermissions("show:update")
     @RequestMapping(value = "/edit-panel",method = RequestMethod.GET)
     public String toEditPanel(){
         return "/admin/show/edit";
@@ -53,6 +57,7 @@ public class ShowController extends BaseController{
      * @param pageModel
      * @param response
      */
+    @RequiresPermissions("show:view")
     @RequestMapping(value = "/list")
     public void getShowDateList(PageModel pageModel, HttpServletResponse response){
         super.writeJson(showService.getAll(pageModel),response);
@@ -63,6 +68,7 @@ public class ShowController extends BaseController{
      * @param show
      * @return
      */
+    @RequiresPermissions("show:create")
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Object savaShow(Show show){
@@ -82,6 +88,7 @@ public class ShowController extends BaseController{
      * @param show
      * @return
      */
+    @RequiresPermissions("show:update")
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @ResponseBody
     public Object updateShow(Show show){
@@ -99,6 +106,7 @@ public class ShowController extends BaseController{
      * @param ids
      * @return
      */
+    @RequiresPermissions("show:delete")
     @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object updateShow(@PathVariable String ids){

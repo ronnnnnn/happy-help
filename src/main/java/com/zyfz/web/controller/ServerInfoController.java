@@ -4,6 +4,7 @@ import com.zyfz.domain.ServerInfo;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.IServerInfoService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -24,22 +25,26 @@ public class ServerInfoController extends BaseController{
     @Resource
     ICategoryService categoryService;
 
+    @RequiresPermissions("server:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String toListPanel(Model model){
         model.addAttribute("vcategoryList",categoryService.getAllWithList());
         return "admin/serverinfo/list";
     }
 
+    @RequiresPermissions("server:view")
     @RequestMapping(value = "/search/{key}",method = RequestMethod.POST)
     public void getServerInfoWithCID(@PathVariable String key, PageModel pageModel, HttpServletResponse response){
         super.writeJson(serverInfoService.getServerInfoByKey(key,pageModel),response);
     }
 
+    @RequiresPermissions("server:view")
     @RequestMapping(value = "/list/{categoryId}",method = RequestMethod.POST)
     public void getServerInfoWithCID(@PathVariable Integer categoryId, PageModel pageModel, HttpServletResponse response){
         super.writeJson(serverInfoService.getServerInfoByCategoryId(categoryId,pageModel),response);
     }
 
+    @RequiresPermissions("server:delete")
     @RequestMapping(value = "/{ids}",method = RequestMethod.DELETE)
     @ResponseBody
     public Object deleteByIds(@PathVariable String ids){
@@ -53,6 +58,7 @@ public class ServerInfoController extends BaseController{
         return count;
     }
 
+    @RequiresPermissions("server:update")
     @RequestMapping(value = "/{ids}",method = RequestMethod.PATCH)
     @ResponseBody
     public Object updatePassStatusByIds(@PathVariable String ids){

@@ -2,6 +2,7 @@ package com.zyfz.web.controller;
 
 import com.zyfz.domain.Category;
 import com.zyfz.service.ICategoryService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,14 @@ public class CategoryController {
     @Resource
     ICategoryService categoryService;
 
+    @RequiresPermissions("category:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
     public String list(Model model){
         model.addAttribute("categoryList",categoryService.getAllWithList());
         return "admin/category/list";
     }
 
+    @RequiresPermissions("category:create")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.GET)
     public String showAppendChildForm(@PathVariable("parentId") Integer parentId, Model model) {
         Category mcategory = new Category();
@@ -38,6 +41,7 @@ public class CategoryController {
     }
 
 
+    @RequiresPermissions("category:create")
     @RequestMapping(value = "/{parentId}/appendChild", method = RequestMethod.POST)
     @ResponseBody
     public Object create(@RequestBody Category category) {
@@ -46,6 +50,7 @@ public class CategoryController {
     }
 
 
+    @RequiresPermissions("category:update")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         Category category = new Category();
@@ -61,6 +66,7 @@ public class CategoryController {
     }
 
 
+    @RequiresPermissions("category:update")
     @RequestMapping(value = "/{id}/update", method = RequestMethod.POST)
     @ResponseBody
     public Object update(@RequestBody  Category category) {
@@ -68,6 +74,7 @@ public class CategoryController {
         return true;
     }
 
+    @RequiresPermissions("category:delete")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public Object delete(@PathVariable("id") Integer id) {

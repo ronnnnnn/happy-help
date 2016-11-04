@@ -32,7 +32,7 @@ public class RoleController extends BaseController {
      * 页面跳转
      * @return 页面
      */
-    @RequiresPermissions("roles:view")
+    @RequiresPermissions("role:view")
     @RequestMapping(method = RequestMethod.GET)
     public String getRolePanel(){
         return "admin/role/list";
