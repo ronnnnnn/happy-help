@@ -180,4 +180,9 @@ public class UserServiceImpl implements IUserservice{
         datagrid.setTotal(pageInfo.getTotal());
         return  datagrid;
     }
+
+    @Override
+    public User findByCookie(String sessionId) {
+        return userMapper.selectByCookie(sessionId);
+    }
 }

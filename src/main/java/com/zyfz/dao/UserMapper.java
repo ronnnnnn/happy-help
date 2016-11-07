@@ -18,6 +18,8 @@ public interface UserMapper {
 
     User selectByPhone(String phone);
 
+    User selectByCookie(String sessionId);
+
     List<User> selectByUsernameLike(String username);
 
     List<User> selectByPhoneLike(String phone);

@@ -27,7 +27,9 @@ public class User {
     private String userIdentify;
 
     private String country;
+
     private String province;
+
     private String city;
 
     private String area;
@@ -67,6 +69,16 @@ public class User {
     private String email;
 
     private String photo;
+
+    private String cookie;
+
+    public String getCookie() {
+        return cookie;
+    }
+
+    public void setCookie(String cookie) {
+        this.cookie = cookie;
+    }
 
     public String getEmail() {
         return email;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -27,6 +28,10 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index(HttpServletRequest request, Model model){
+        Serializable cookie = request.getSession().getId();
+        User user = (User)request.getAttribute("user");
+        user.setCookie(cookie + "");
+        userservice.update(user); //登录成功后保存用户的sessionId
         Set<String> perssions = userservice.findPermissions(((User)request.getAttribute("user")).getUsername());
         List<Resources> menus = resourceService.findMenus(perssions);
         List<Resources> rootMenus = resourceService.finaRootMenu();
