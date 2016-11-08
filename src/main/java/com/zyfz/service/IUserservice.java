@@ -21,6 +21,8 @@ public interface IUserservice extends IBaseService<User>{
 
     public User findByPhone(String phone); //根据手机号查找用户
 
+    public User findByUsernameOrPhone(String userkey);
+
     public User findByCookie(String sessionId);
 
     public Set<String> findRoles(String username);// 根据用户名查找其角色

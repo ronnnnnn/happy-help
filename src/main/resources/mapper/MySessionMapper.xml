@@ -29,7 +29,7 @@
     ,
     <include refid="Blob_Column_List" />
     from hh_session
-    where cookie = #{sessionI,jdbcType=BIGINT}
+    where cookie = #{sessionId,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >

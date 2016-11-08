@@ -59,7 +59,7 @@
 								});
 							},
 							error: function (data) {
-								alert("err");
+
 							}
 						});
 					}else{

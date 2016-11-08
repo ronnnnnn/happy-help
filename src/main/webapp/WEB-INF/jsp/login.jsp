@@ -136,20 +136,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group" style="height:10px;padding-left: 15px">
+                        <div >
+                            <div class="input-group" align="center">
+                                自动登录：<input type="checkbox" name="rememberMe" value="true">
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group form-actions">
                         <div class="col-xs-4 col-xs-offset-4 ">
                             <button type="submit" class="btn btn-sm btn-info"><span class="glyphicon glyphicon-off"></span> 登录</button>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-xs-6 link">
-                            <p class="text-center remove-margin"><small>忘记密码？</small> <a href="javascript:void(0)" ><small>找回</small></a>
-                            </p>
-                        </div>
-                        <div class="col-xs-6 link">
-                            <p class="text-center remove-margin"><small>还没注册?</small> <a href="javascript:void(0)" ><small>注册</small></a>
-                            </p>
-                        </div>
+
                     </div>
                 </form>
             </div>

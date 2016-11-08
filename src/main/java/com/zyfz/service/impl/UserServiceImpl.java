@@ -185,4 +185,15 @@ public class UserServiceImpl implements IUserservice{
     public User findByCookie(String sessionId) {
         return userMapper.selectByCookie(sessionId);
     }
+
+    @Override
+    public User findByUsernameOrPhone(String userkey) {
+        User myUser = new User();
+        myUser = this.findByUsername(userkey);
+        if(myUser != null){
+            return myUser;
+        }else{
+            return  this.findByPhone(userkey);
+        }
+    }
 }

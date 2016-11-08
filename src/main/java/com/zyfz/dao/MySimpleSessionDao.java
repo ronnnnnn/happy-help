@@ -6,7 +6,9 @@ import org.apache.log4j.Logger;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.SimpleSession;
+import org.apache.shiro.session.mgt.ValidatingSession;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.springframework.util.SerializationUtils;
 
 import javax.annotation.Resource;
 import java.io.*;
@@ -27,13 +29,15 @@ public class MySimpleSessionDao extends EnterpriseCacheSessionDAO {
     public Serializable create(Session session) {
         Serializable cookie = super.create(session);
         MySession mySession = new MySession();
+        SimpleSession simpleSession = (SimpleSession)session;
+        log.info(simpleSession.getStartTimestamp());
         try {
-            mySession.setSession(objectToBytes((SimpleSession)session));
-            mySession.setCookie(cookie.toString());
-            mySessionMapper.insertSelective(mySession);
+            mySession.setSession(objectToBytes(simpleSession));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mySession.setCookie(cookie.toString());
+        mySessionMapper.insertSelective(mySession);
         mySession.setCookie(cookie.toString());
         return cookie;
     }
@@ -48,19 +52,21 @@ public class MySimpleSessionDao extends EnterpriseCacheSessionDAO {
         }
 
         if (session == null){
-            MySession mySession = mySessionMapper.selectByCookie(session.getId()+"");
+            MySession mySession = mySessionMapper.selectByCookie(sessionId.toString());
             if (mySession != null){
                 try {
                     session = (SimpleSession)bytesToObject(mySession.getSession());
+                    ((SimpleSession)session).setExpired(false);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
+                log.info(session.getStartTimestamp());
             }
         }else{
             if(isExpire(session)){
-                User user = userMapper.selectByCookie(sessionId+"");
+                User user = userMapper.selectByCookie(sessionId.toString());
                 if (user != null){
                     ((SimpleSession)session).setLastAccessTime(new Date());
                 }
@@ -73,10 +79,11 @@ public class MySimpleSessionDao extends EnterpriseCacheSessionDAO {
     @Override
     public void update(Session session) throws UnknownSessionException{
         super.update(session);
-        MySession mySession = mySessionMapper.selectByCookie(session.getId()+"");
+        MySession mySession = mySessionMapper.selectByCookie(session.getId().toString());
         if(mySession  != null){
+            SimpleSession simpleSession = (SimpleSession)session;
             try {
-                mySession.setSession(objectToBytes((SimpleSession)session));
+                mySession.setSession(objectToBytes(simpleSession));
             } catch (IOException e) {
                 e.printStackTrace();
             }
