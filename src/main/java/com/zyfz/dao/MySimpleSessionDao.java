@@ -55,8 +55,11 @@ public class MySimpleSessionDao extends EnterpriseCacheSessionDAO {
             MySession mySession = mySessionMapper.selectByCookie(sessionId.toString());
             if (mySession != null){
                 try {
-                    session = (SimpleSession)bytesToObject(mySession.getSession());
-                    ((SimpleSession)session).setExpired(false);
+                    SimpleSession simpleSession = bytesToObject(mySession.getSession());
+                    simpleSession.setExpired(false);
+                    simpleSession.setStopTimestamp(null);
+                    simpleSession.setLastAccessTime(new Date());
+                    session = simpleSession;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {

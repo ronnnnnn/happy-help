@@ -124,7 +124,7 @@
 				width : fixWidth(0.15),
 				align : 'center',
 				formatter : function(value, row, index) {
-					return '<img style=\"height: 150px;width: 200px;\" src="'+row.imageUrl+'" />';
+					return '<a onclick=csshowPic("'+row.imageUrl+'")>预览图片</a>';
 				},
 			},{
 				field : 'createTime',
@@ -193,7 +193,13 @@
 	}
 
 
-
+	function csshowPic(picUrl) {
+		$("#csmpic").html("");
+		var img = "<img src='"+picUrl+"' width='100%' height='100%'/>";
+		$("#csmpic").append(img);
+		$("#csmpic").append("<br/><hr/><br/>");
+		$('#csmpic').dialog('open');
+	}
 
 
 	function serverInfoRemove() {
@@ -331,6 +337,15 @@
 
 <div id="vmenuContent" class="menuContent" style="display:none; position: absolute;">
 	<ul id="vtree" class="ztree" style="margin-top:0; width:180px;height: 200px"></ul>
+</div>
+
+<div id="csmpic" class="easyui-dialog"
+	 data-options="closed:true,modal:true,title:'显示图片',buttons:[{
+					text : '确定',
+					handler : function() {
+                      	$('#csmpic').dialog('close');
+					}}]"
+	 style="width: 350px; height: 300px;" title="显示图片">
 </div>
 
 </body>

@@ -45,7 +45,7 @@
 				width : fixWidth(0.2),
 				align : 'center',
 				formatter : function(value, row, index) {
-					return '<img style=\"height: 300px;width: 200px;\" src="'+row.imageUrl+'" />';
+					return '<a onclick=sshowPic("'+row.imageUrl+'")>预览图片</a>'
 				},
 			},{
 				field : 'createTime',
@@ -88,6 +88,13 @@
 	}
 
 
+	function sshowPic(picUrl) {
+		$("#smpic").html("");
+		var img = "<img src='"+picUrl+"' width='100%' height='100%'/>";
+		$("#smpic").append(img);
+		$("#smpic").append("<br/><hr/><br/>");
+		$('#smpic').dialog('open');
+	}
 
 
 
@@ -275,6 +282,14 @@
 
 </div>
 
+<div id="smpic" class="easyui-dialog"
+	 data-options="closed:true,modal:true,title:'显示图片',buttons:[{
+					text : '确定',
+					handler : function() {
+                      	$('#smpic').dialog('close');
+					}}]"
+	 style="width:375px; height: 657px;" title="显示图片">
+</div>
 
 </body>
 </html>

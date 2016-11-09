@@ -41,7 +41,8 @@
 				width : fixWidth(0.15),
 				align : 'center',
 				formatter : function(value, row, index) {
-					return '<img style=\"height: 150px;width: 200px;\" src="'+row.imageUrl+'" />';
+					return '<a onclick=showPic("'+row.imageUrl+'")>预览图片</a>'
+					//return '<img style=\"height: 150px;width: 200px;\" src="'+row.imageUrl+'" />';
 				},
 			},{
 				field : 'createTime',
@@ -103,6 +104,13 @@
 		});
 	}
 
+	function showPic(picUrl) {
+		$("#mpic").html("");
+		var img = "<img src='"+picUrl+"' width='100%' height='100%'/>";
+		$("#mpic").append(img);
+		$("#mpic").append("<br/><hr/><br/>");
+		$('#mpic').dialog('open');
+	}
 
 	function articleEditFun() {
 		var rows = $('#admin_article_datagrid').datagrid('getChecked');
@@ -353,6 +361,14 @@
 	</div>
 </div>
 
+<div id="mpic" class="easyui-dialog"
+	 data-options="closed:true,modal:true,title:'显示图片',buttons:[{
+					text : '确定',
+					handler : function() {
+                      	$('#mpic').dialog('close');
+					}}]"
+	 style="width: 350px; height: 300px;" title="添加用户">
+</div>
 
 </body>
 </html>
