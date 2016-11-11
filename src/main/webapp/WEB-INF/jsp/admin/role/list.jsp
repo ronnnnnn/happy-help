@@ -19,7 +19,7 @@
 			fitColumns : true,
 			nowrap : false,
 			rownumbers : true,
-			frozenColumns : [ [ {
+			columns : [ [ {
 				field : 'id',
 				title : '编号',
 				width : fixWidth(0.1),

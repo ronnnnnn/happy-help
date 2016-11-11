@@ -72,6 +72,7 @@ public class User {
 
     private String cookie;
 
+
     public String getCookie() {
         return cookie;
     }

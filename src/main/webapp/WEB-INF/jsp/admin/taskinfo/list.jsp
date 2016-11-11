@@ -155,18 +155,6 @@
                 align : 'center',
             },{
                 field : 'isFree',
-                title : '状态',
-                width : fixWidth(0.05),
-                align : 'center',
-                formatter : function(value, row, index) {
-                    if (value == true) {
-                        return '无偿服务';
-                    } else {
-                        return '有偿服务';
-                    }
-                },
-            },{
-                field : 'isFree',
                 title : '类型',
                 width : fixWidth(0.05),
                 align : 'center',
@@ -206,18 +194,6 @@
                 title : '置顶结束时间',
                 width : fixWidth(0.06),
                 align : 'center',
-            },{
-                field : 'isFree',
-                title : '状态',
-                width : fixWidth(0.03),
-                align : 'center',
-                formatter : function(value, row, index) {
-                    if (value == true) {
-                        return '无偿服务';
-                    } else {
-                        return '有偿服务';
-                    }
-                },
             },{
                 field : 'user',
                 title : '作者信息',

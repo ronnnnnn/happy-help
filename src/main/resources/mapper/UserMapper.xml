@@ -338,8 +338,8 @@
       <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
       </if>
       <if test="cookie != null" >
         #{cookie,jdbcType=VARCHAR},

@@ -35,7 +35,6 @@ public class UserServiceImpl implements IUserservice{
 
     @Override
     public Integer save(User user) {
-
         return userMapper.insertSelective(user);
     }
 

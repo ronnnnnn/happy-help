@@ -13,6 +13,7 @@ import java.util.Set;
 public interface IUserservice extends IBaseService<User>{
 
     public void changeContribute(int userId,Double newContribute);//修改贡献值
+
     public void changeHoner(int userId,Double newHoner);//修改荣誉值
 
     public void changePassword(int userId, String newPassword); //修改密码
