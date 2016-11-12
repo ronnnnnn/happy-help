@@ -5490,3 +5490,7 @@ Caused by: java.lang.NumberFormatException: For input string: "${password.hashIt
 [INFO] [2016-11-12 13:21:01][com.zyfz.dao.MySimpleSessionDao]Sat Nov 12 12:01:14 CST 2016
 [INFO] [2016-11-12 13:21:01][com.zyfz.dao.MySimpleSessionDao]Sat Nov 12 12:01:14 CST 2016
 [INFO] [2016-11-12 13:21:01][net.sf.ehcache.util.UpdateChecker]New update(s) found: 2.6.5 [http://www.terracotta.org/confluence/display/release/Release+Notes+Ehcache+Core+2.6]. Please check http://ehcache.org for the latest version.
+[INFO] [2016-11-12 13:50:59][org.apache.shiro.session.mgt.AbstractValidatingSessionManager]Validating all active sessions...
+[INFO] [2016-11-12 13:50:59][org.apache.shiro.session.mgt.AbstractValidatingSessionManager]Finished session validation.  No sessions were stopped.
+[INFO] [2016-11-12 14:20:59][org.apache.shiro.session.mgt.AbstractValidatingSessionManager]Validating all active sessions...
+[INFO] [2016-11-12 14:20:59][org.apache.shiro.session.mgt.AbstractValidatingSessionManager]Finished session validation.  [2] sessions were stopped.

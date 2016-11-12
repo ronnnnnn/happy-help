@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by ron on 16-11-11.
  */
-@RequestMapping("/api/user")
 @Controller
 public class AppUserController extends BaseController {
     @Resource
@@ -28,7 +27,7 @@ public class AppUserController extends BaseController {
      * @param user
      * @return 返回系统随机生成的7位用户名
      */
-    @RequestMapping(value = "/reg/v1",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/user/reg",method = RequestMethod.POST)
     @ResponseBody
     public void registerUser(User user, HttpServletResponse response){
         ResponseMessage<String> responseMessage = new ResponseMessage<String>();
@@ -46,7 +45,7 @@ public class AppUserController extends BaseController {
             User safePhone = userservice.findByPhone(user.getPhone());
             if(safePhone != null){
                 responseMessage.setCode(40101);
-                responseMessage.setMessage("failure");
+                responseMessage.setMessage("该手机号已经被注册");
                 responseMessage.setResult("null");
                 super.writeJson(responseMessage,response);
             }else {
@@ -59,7 +58,7 @@ public class AppUserController extends BaseController {
             }
         }catch (Exception e){
             responseMessage.setCode(50101);
-            responseMessage.setMessage("failure");
+            responseMessage.setMessage("系统内部错误");
             responseMessage.setResult("null");
            super.writeJson(responseMessage,response);
         }

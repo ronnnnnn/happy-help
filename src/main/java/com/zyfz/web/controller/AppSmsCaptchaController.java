@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @SessionAttributes("captcha")
 @RestController
-@RequestMapping("/api/sms")
+@RequestMapping("/api/v1/sms")
 public class AppSmsCaptchaController extends BaseController {
 
     public static final Logger log = LoggerFactory.getLogger(AppSmsCaptchaController.class);
@@ -37,7 +37,7 @@ public class AppSmsCaptchaController extends BaseController {
     private String extend;
 
 
-    @RequestMapping(value = "/captcha/{recPhoneNum}/v1", method = RequestMethod.POST)
+    @RequestMapping(value = "/captcha/{recPhoneNum}", method = RequestMethod.POST)
     @ResponseBody
     public Object getSmsCaptcha(ModelMap model, @PathVariable("recPhoneNum")String recPhoneNum, HttpServletResponse response) {
 
@@ -45,7 +45,7 @@ public class AppSmsCaptchaController extends BaseController {
         if (recPhoneNum == null || recPhoneNum.trim().length() < 0 || recPhoneNum.trim().length() > 11) {
 //            model.addAttribute("error_msg", "请输入正确手机号!");
 //            return model.toString();
-            ResponseMessage<String> responseMessage = new ResponseMessage<String>(40001,"failure,phone number error",null);
+            ResponseMessage<String> responseMessage = new ResponseMessage<String>(40001,"手机号码格式错误！",null);
             return responseMessage;
         }
 
@@ -73,7 +73,7 @@ public class AppSmsCaptchaController extends BaseController {
             log.debug("getSmsCaptcha: responseBody = " + responseBody);
             if (rsp.getResult() != null) {
                 //model.addAttribute("success_response", rsp.getResult());
-                responseMessage.setMessage(rsp.getResult().getMsg());
+                responseMessage.setMessage("success");
             } else {
                // model.addAttribute("error_response", rsp.getSubMsg());
                 responseMessage.setMessage(rsp.getSubMsg().toString());
@@ -89,7 +89,7 @@ public class AppSmsCaptchaController extends BaseController {
 //            return successJson.getBoolean("success");
             return responseMessage;
         } else {
-            return new ResponseMessage<String>(50001,"failure,successJson is null",null);
+            return new ResponseMessage<String>(50001,"系统内部错误",null);
         }
 
     }
