@@ -50,7 +50,7 @@ public class User {
 
     private Double honerScore;
 
-    private String gradeTotal;
+    private Double gradeTotal;
 
     private Integer gradeTimes;
 
@@ -71,7 +71,6 @@ public class User {
     private String photo;
 
     private String cookie;
-
 
     public String getCookie() {
         return cookie;
@@ -289,11 +288,11 @@ public class User {
         this.honerScore = honerScore;
     }
 
-    public String getGradeTotal() {
+    public Double getGradeTotal() {
         return gradeTotal;
     }
 
-    public void setGradeTotal(String gradeTotal) {
+    public void setGradeTotal(Double gradeTotal) {
         this.gradeTotal = gradeTotal;
     }
 

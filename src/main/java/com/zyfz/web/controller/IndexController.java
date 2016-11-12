@@ -3,9 +3,11 @@ package com.zyfz.web.controller;
 import com.zyfz.domain.Resources;
 import com.zyfz.domain.User;
 import com.zyfz.model.ResponseMessage;
+import com.zyfz.model.UserModel;
 import com.zyfz.service.IResourceService;
 import com.zyfz.service.IUserservice;
 import com.zyfz.web.util.JsonView;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -94,7 +96,9 @@ public class IndexController {
 
             return modelAndView;
         }else {  //app普通用户返回json数据
-            return JsonView.Render(new ResponseMessage<String>(0,"success",null),response);
+            UserModel userModel = new UserModel(user.getId(),user.getUsername(),user.getPhone(),user.getNickname(),user.getHonerScore(),user.getPhoto());
+            userModel.setGrade(user.getGradeTotal(),user.getGradeTimes());
+            return JsonView.Render(new ResponseMessage<UserModel>(0,"success",userModel),response);
         }
 
     }

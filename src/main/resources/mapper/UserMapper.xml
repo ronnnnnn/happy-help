@@ -25,7 +25,7 @@
     <result column="account" property="account" jdbcType="DOUBLE" />
     <result column="contribute_score" property="contributeScore" jdbcType="DOUBLE" />
     <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
-    <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
+    <result column="grade_total" property="gradeTotal" jdbcType="DOUBLE" />
     <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
     <result column="withdraw_account" property="withdrawAccount" jdbcType="VARCHAR" />
     <result column="wirhdraw_accont_type" property="wirhdrawAccontType" jdbcType="VARCHAR" />
@@ -137,7 +137,7 @@
       #{realName,jdbcType=VARCHAR}, #{userIdentify,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR},#{province,jdbcType=VARCHAR},#{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR},
       #{currentArea,jdbcType=VARCHAR}, #{isAdmin,jdbcType=BIT}, #{isNew,jdbcType=BIT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{account,jdbcType=DOUBLE}, #{contributeScore,jdbcType=DOUBLE}, 
-      #{honerScore,jdbcType=DOUBLE}, #{gradeTotal,jdbcType=VARCHAR}, #{gradeTimes,jdbcType=INTEGER}, 
+      #{honerScore,jdbcType=DOUBLE}, #{gradeTotal,jdbcType=DOUBLE}, #{gradeTimes,jdbcType=INTEGER},
       #{withdrawAccount,jdbcType=VARCHAR}, #{wirhdrawAccontType,jdbcType=VARCHAR}, #{regid,jdbcType=VARCHAR}, 
       #{alias,jdbcType=VARCHAR}, #{topic,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, #{cookie,jdbcType=VARCHAR})
   </insert>
@@ -315,7 +315,7 @@
         #{honerScore,jdbcType=DOUBLE},
       </if>
       <if test="gradeTotal != null" >
-        #{gradeTotal,jdbcType=VARCHAR},
+        #{gradeTotal,jdbcType=DOUBLE},
       </if>
       <if test="gradeTimes != null" >
         #{gradeTimes,jdbcType=INTEGER},
@@ -417,7 +417,7 @@
         honer_score = #{honerScore,jdbcType=DOUBLE},
       </if>
       <if test="gradeTotal != null" >
-        grade_total = #{gradeTotal,jdbcType=VARCHAR},
+        grade_total = #{gradeTotal,jdbcType=DOUBLE},
       </if>
       <if test="gradeTimes != null" >
         grade_times = #{gradeTimes,jdbcType=INTEGER},
@@ -473,7 +473,7 @@
       account = #{account,jdbcType=DOUBLE},
       contribute_score = #{contributeScore,jdbcType=DOUBLE},
       honer_score = #{honerScore,jdbcType=DOUBLE},
-      grade_total = #{gradeTotal,jdbcType=VARCHAR},
+      grade_total = #{gradeTotal,jdbcType=DOUBLE},
       grade_times = #{gradeTimes,jdbcType=INTEGER},
       withdraw_account = #{withdrawAccount,jdbcType=VARCHAR},
       wirhdraw_accont_type = #{wirhdrawAccontType,jdbcType=VARCHAR},

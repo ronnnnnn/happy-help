@@ -40,8 +40,8 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/login")
     public ModelAndView showLoginForm(HttpServletRequest req, HttpServletResponse rep) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
-        String error = null;
-        int errorCode = 0;
+        String error = "系统内部错误";
+        int errorCode = 50101;
         if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
             error = "用户名错误";
             errorCode = 40103;//用户名错误
@@ -60,7 +60,7 @@ public class LoginController extends BaseController {
          * 根据不同的用户类型返回不同的数据格式
          */
         if (app != null){
-            return JsonView.Render(new ResponseMessage<String>(errorCode,"failure",error),rep);
+            return JsonView.Render(new ResponseMessage<String>(errorCode,error,error),rep);
         }else {
             ModelAndView modelAndView = new ModelAndView("/login");
             modelAndView.addObject("error",error);

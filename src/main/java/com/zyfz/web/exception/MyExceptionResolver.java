@@ -32,7 +32,7 @@ public class MyExceptionResolver implements HandlerExceptionResolver {
             logger.info("==========用户："+user.getUsername());
             return new ModelAndView("admin/error/unauthorized",model);
         }else { //app用户以json格式返回错误信息
-            return JsonView.Render(new ResponseMessage<String>(40102,"faluire",ex.toString()),response);
+            return JsonView.Render(new ResponseMessage<String>(40102,"用户未登录",ex.toString()),response);
         }
     }
 }
