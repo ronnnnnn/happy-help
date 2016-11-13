@@ -177,9 +177,9 @@ public class UserController extends BaseController{
      * @param pageModel
      * @param response
      */
-    @RequestMapping(value = "/key")
-    public void getUserByKey(String key,PageModel pageModel,HttpServletResponse response){
-        super.writeJson(userservice.getUserLike(pageModel,key),response);
+    @RequestMapping(value = "/key/{utype}")
+    public void getUserByKey(@PathVariable Boolean utype,String key,PageModel pageModel,HttpServletResponse response){
+        super.writeJson(userservice.getUserLike(pageModel,key,utype),response);
     }
     //修改荣誉值
 

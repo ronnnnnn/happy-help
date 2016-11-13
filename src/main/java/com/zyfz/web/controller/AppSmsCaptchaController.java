@@ -55,8 +55,11 @@ public class AppSmsCaptchaController extends BaseController {
             ResponseMessage<String> responseMessage = new ResponseMessage<String>(40001,"手机号码格式错误！",null);
             return responseMessage;
         }
+        String captcha = null;
+        do {
+             captcha = Generator.generateCaptcha();
+        }while (captchaService.selectByCaptcha(captcha) != null);
 
-        String captcha  = Generator.generateCaptcha();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("captcha", captcha);
         jsonObject.put("product", "乐助风");

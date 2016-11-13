@@ -13,6 +13,7 @@ public class Captcha {
         super();
     }
 
+
     public Captcha(String captcha, Date createTime) {
         this.captcha = captcha;
         this.createTime = createTime;

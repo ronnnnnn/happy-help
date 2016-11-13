@@ -337,9 +337,9 @@
 	}
 
 	function UserSearchFun() {
-
+        var utype = true;
 		$('#admin_user_datagrid').datagrid({
-			url : '${pageContext.request.contextPath}/user/key',
+			url : '${pageContext.request.contextPath}/user/key/'+utype,
 			fit : true,
 			pagination : true,
 			idField : 'id',

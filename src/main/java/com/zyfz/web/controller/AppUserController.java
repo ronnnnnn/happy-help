@@ -1,5 +1,6 @@
 package com.zyfz.web.controller;
 
+import com.zyfz.domain.Captcha;
 import com.zyfz.domain.User;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ICaptchaService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by ron on 16-11-11.
@@ -51,7 +53,11 @@ public class AppUserController extends BaseController {
                 responseMessage.setMessage("该手机号已经被注册");
                 responseMessage.setResult("null");
                 super.writeJson(responseMessage,response);
-            }else if (captchaService.selectByCaptcha(user.getCaptcha()).size() != 0){
+            }else if (captchaService.selectByCaptcha(user.getCaptcha())!= null){
+                //验证码使用使用过后删除验证码
+                Captcha captcha = captchaService.selectByCaptcha(user.getCaptcha());
+                captchaService.deleteOneById(captcha);
+
                 passwordHelper.encryptPassword(user);
                 userservice.save(user);
                 responseMessage.setCode(0);

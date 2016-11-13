@@ -25,7 +25,7 @@ public class CaptchaServiceImpl implements ICaptchaService {
     }
 
     @Override
-    public List<Captcha> selectByCaptcha(String captcha) {
+    public Captcha selectByCaptcha(String captcha) {
         return captchaMapper.selectByCaptcha(captcha);
     }
 
@@ -46,6 +46,6 @@ public class CaptchaServiceImpl implements ICaptchaService {
 
     @Override
     public Integer deleteOneById(Captcha captcha) {
-        return null;
+        return captchaMapper.deleteByPrimaryKey(captcha.getId());
     }
 }

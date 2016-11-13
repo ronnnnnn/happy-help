@@ -76,18 +76,18 @@
     where phone = #{phone,jdbcType=VARCHAR}
   </select>
 
-  <select id="selectByUsernameLike" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByUsernameLike" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from hh_user
-    where username like #{username,jdbcType=VARCHAR}
+    where username like #{0} and is_admin = #{1}
   </select>
 
-  <select id="selectByPhoneLike" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPhoneLike" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from hh_user
-    where phone like #{phone,jdbcType=VARCHAR}
+    where phone like #{0} and is_admin = #{1}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
     select

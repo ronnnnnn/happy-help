@@ -13,7 +13,7 @@ public interface CaptchaMapper {
 
     int insertSelective(Captcha record);
 
-    List<Captcha> selectByCaptcha(String  captcha);
+    Captcha selectByCaptcha(String  captcha);
 
     Captcha selectByPrimaryKey(Integer id);
 

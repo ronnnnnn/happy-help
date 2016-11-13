@@ -372,9 +372,9 @@
 	}
 
 	function nUserSearchFun() {
-
+		var ntype = false;
 		$('#admin_normal_user_datagrid').datagrid({
-			url : '${pageContext.request.contextPath}/user/key',
+			url : '${pageContext.request.contextPath}/user/key/'+ntype,
 			fit : true,
 			pagination : true,
 			idField : 'id',

@@ -10,7 +10,7 @@ public class Generator {
     public static String generateCaptcha() {
         Random random = new Random();
         int value[] = {random.nextInt(9), random.nextInt(9),
-                random.nextInt(9), random.nextInt(9)};
+                random.nextInt(9), random.nextInt(9), random.nextInt(9), random.nextInt(9)};
 
         StringBuffer captcha = new StringBuffer();
         for (int i = 0; i < value.length; i++) {

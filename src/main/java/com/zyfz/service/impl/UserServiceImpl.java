@@ -164,12 +164,12 @@ public class UserServiceImpl implements IUserservice{
     }
 
     @Override
-    public Datagrid getUserLike(PageModel model,String likeString) {
+    public Datagrid getUserLike(PageModel model,String likeString,Boolean utype) {
         PageHelper.startPage(model.getPage(),model.getRows());
         String queryString = likeString + "%";
-        List<User> users = userMapper.selectByPhoneLike(queryString);
+        List<User> users = userMapper.selectByPhoneLike(queryString,utype);
         if(users.size() == 0){
-            users = userMapper.selectByUsernameLike(queryString);
+            users = userMapper.selectByUsernameLike(queryString,utype);
         }else if(users.size() == 0){
             return new Datagrid();
         }

@@ -20,9 +20,9 @@ public interface UserMapper {
 
     User selectByCookie(String sessionId);
 
-    List<User> selectByUsernameLike(String username);
+    List<User> selectByUsernameLike(String username,Boolean utype);
 
-    List<User> selectByPhoneLike(String phone);
+    List<User> selectByPhoneLike(String phone,Boolean utype);
 
     List<User> selectAll();
 
