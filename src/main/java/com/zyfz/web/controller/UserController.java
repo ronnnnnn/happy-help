@@ -116,7 +116,7 @@ public class UserController extends BaseController{
      * @return
      */
 
-    @RequiresPermissions("")
+    @RequiresPermissions("user:update")
     @RequestMapping(method = RequestMethod.PATCH)
     @ResponseBody
     public Object updateUser(@RequestBody User user){

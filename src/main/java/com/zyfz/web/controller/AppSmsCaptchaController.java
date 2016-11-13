@@ -48,6 +48,7 @@ public class AppSmsCaptchaController extends BaseController {
     public Object getSmsCaptcha(ModelMap model, @PathVariable("recPhoneNum")String recPhoneNum, HttpServletResponse response) {
 
         String responseBody = null;
+        String rspm = null;
         if (recPhoneNum == null || recPhoneNum.trim().length() < 0 || recPhoneNum.trim().length() > 11) {
 //            model.addAttribute("error_msg", "请输入正确手机号!");
 //            return model.toString();
@@ -76,6 +77,7 @@ public class AppSmsCaptchaController extends BaseController {
            // model.addAttribute("captcha", captcha);
             responseMessage.setResult(captcha);
             responseBody = rsp.getBody();
+            rspm = rsp.getSubMsg();
             log.debug("getSmsCaptcha: responseBody = " + responseBody);
             if (rsp.getResult() != null) {
                 //model.addAttribute("success_response", rsp.getResult());
@@ -96,7 +98,14 @@ public class AppSmsCaptchaController extends BaseController {
             captchaService.save(new Captcha(captcha,new Date()));
             return responseMessage;
         } else {
-            return new ResponseMessage<String>(50001,"系统内部错误",null);
+            int code = 40000;
+            if (rspm.intern() == "触发业务流控".intern()){
+                code = 40002;
+                rspm = "操作太频繁，请稍后再试";
+            }else {
+                code = 40003;
+            }
+            return new ResponseMessage<>(code,rspm,null);
         }
 
     }

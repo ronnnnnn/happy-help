@@ -51,4 +51,9 @@ public class ShowServiceImpl  implements IShowService{
     public Integer deleteOneById(Show show) {
         return showMapper.deleteByPrimaryKey(show.getId());
     }
+
+    @Override
+    public List<Show> getPicByType(String mtype) {
+        return showMapper.selectByPicType(mtype);
+    }
 }

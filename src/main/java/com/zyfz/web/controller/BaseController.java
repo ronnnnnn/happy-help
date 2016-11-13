@@ -31,7 +31,7 @@ public class BaseController {
 			return "";
 		
 		//SimpleDateFormat sdf = new SimpleDateFormat("\\yyyy\\MM\\dd\\");
-		String basePath = "/opt/pic";
+		String basePath = "/var/www/files";
 //		String basePath = "/home/ron/桌面/乐助";
 		logger.info("==============" + basePath);
 		String subPath = "/Images/" + uploadpath +"/";

@@ -15,6 +15,8 @@ public interface ShowMapper {
 
     List<Show> selectAll();
 
+    List<Show> selectByPicType(String mtype);
+
     int updateByPrimaryKeySelective(Show record);
 
     int updateByPrimaryKey(Show record);
