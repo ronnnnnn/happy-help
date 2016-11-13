@@ -127,7 +127,8 @@
                 /ueditor/** = anon
                 /jquery-treetable/** = anon
                 /test = anon
-                /api/sms/** = anon
+                /api/v1/sms/** = anon
+                /api/v1/user/reg = anon
                 /login = authc
                 /logout = logout
                 /authenticated = authc

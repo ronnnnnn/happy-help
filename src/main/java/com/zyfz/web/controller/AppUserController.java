@@ -2,6 +2,7 @@ package com.zyfz.web.controller;
 
 import com.zyfz.domain.User;
 import com.zyfz.model.ResponseMessage;
+import com.zyfz.service.ICaptchaService;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,8 @@ public class AppUserController extends BaseController {
     @Resource
     PasswordHelper passwordHelper;
 
+    @Resource
+    ICaptchaService captchaService;
     /**
      * App注册用户
      * @param user
@@ -48,12 +51,17 @@ public class AppUserController extends BaseController {
                 responseMessage.setMessage("该手机号已经被注册");
                 responseMessage.setResult("null");
                 super.writeJson(responseMessage,response);
-            }else {
+            }else if (captchaService.selectByCaptcha(user.getCaptcha()).size() != 0){
                 passwordHelper.encryptPassword(user);
                 userservice.save(user);
                 responseMessage.setCode(0);
                 responseMessage.setMessage("success");
                 responseMessage.setResult(user.getUsername());
+                super.writeJson(responseMessage,response);
+            }else{
+                responseMessage.setCode(40106);
+                responseMessage.setMessage("验证码无效！");
+                responseMessage.setResult("null");
                 super.writeJson(responseMessage,response);
             }
         }catch (Exception e){

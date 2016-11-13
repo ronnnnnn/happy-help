@@ -40,7 +40,7 @@ public class LoginController extends BaseController {
     @RequestMapping(value = "/login")
     public ModelAndView showLoginForm(HttpServletRequest req, HttpServletResponse rep) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
-        String error = "系统内部错误";
+        String error = null;
         int errorCode = 50101;
         if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
             error = "用户名错误";

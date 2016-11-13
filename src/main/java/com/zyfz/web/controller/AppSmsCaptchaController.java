@@ -6,7 +6,9 @@ import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
+import com.zyfz.domain.Captcha;
 import com.zyfz.model.ResponseMessage;
+import com.zyfz.service.ICaptchaService;
 import com.zyfz.web.util.Const;
 import com.zyfz.web.util.Generator;
 import org.hibernate.validator.constraints.NotBlank;
@@ -15,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 
 /**
@@ -36,6 +40,8 @@ public class AppSmsCaptchaController extends BaseController {
 
     private String extend;
 
+    @Resource
+    ICaptchaService captchaService;
 
     @RequestMapping(value = "/captcha/{recPhoneNum}", method = RequestMethod.POST)
     @ResponseBody
@@ -87,6 +93,7 @@ public class AppSmsCaptchaController extends BaseController {
         if (successJson != null) {
 //            successJson = successJson.getJSONObject("result");
 //            return successJson.getBoolean("success");
+            captchaService.save(new Captcha(captcha,new Date()));
             return responseMessage;
         } else {
             return new ResponseMessage<String>(50001,"系统内部错误",null);

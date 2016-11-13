@@ -72,6 +72,16 @@ public class User {
 
     private String cookie;
 
+    private String captcha;
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
+
     public String getCookie() {
         return cookie;
     }
