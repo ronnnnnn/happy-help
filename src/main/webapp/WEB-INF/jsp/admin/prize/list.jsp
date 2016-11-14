@@ -190,7 +190,7 @@
 		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
 
 		if (rows.length == 1 && rows[0].isLottery == false) {
-			var d = $('<div/>').dialog({
+			var md = $('<div/>').dialog({
 				width : 950,
 				height : 400,
 				href : '${pageContext.request.contextPath}/prize/useredit-panel',
@@ -247,7 +247,7 @@
 											v.datagrid('reload');
 											v.datagrid('unselectAll');
 											v.datagrid('clearChecked');
-											d.dialog('destroy');
+											md.dialog('destroy');
 											$.messager.show({
 												title : '提示',
 												msg : '选择成功'

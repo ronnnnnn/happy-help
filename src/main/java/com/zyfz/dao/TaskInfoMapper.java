@@ -20,6 +20,8 @@ public interface TaskInfoMapper {
 
     List<TaskInfo> selectAll();
 
+    List<TaskInfo> selectTaskInfoWithUserByCategoryAndStatus(TaskInfo taskInfo);
+
     int updateByPrimaryKeySelective(TaskInfo record);
 
     int updateByPrimaryKey(TaskInfo record);

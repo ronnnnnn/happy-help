@@ -95,4 +95,20 @@ public class TaskInfoServiceImpl implements ITaskInfoService {
         return datagrid;
     }
 
+    /**
+     * 根据类别和状态返回数据
+     * @param taskInfo
+     * @param pageModel
+     * @return
+     */
+    @Override
+    public Datagrid getTaskInfoWithUserByCategoryAndStatus(TaskInfo taskInfo, PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<TaskInfo> taskInfos = taskInfoMapper.selectTaskInfoWithUserByCategoryAndStatus(taskInfo);
+        PageInfo pageInfo = new PageInfo(taskInfos);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(taskInfos);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
+    }
 }

@@ -36,6 +36,7 @@
       <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
       <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
       <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
     </association>
   </resultMap>
 
@@ -59,9 +60,24 @@
   </select>
 
   <select id="selectTaskInfoWithUserByCategory"   resultMap="TaskInfoWithUserMap">
-   SELECT t.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+   SELECT t.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
    FROM happy_help.hh_task_info t left join happy_help.hh_user u on t.hh_user_id = u.id
    WHERE t.hh_category_id = #{0} and t.is_free = #{1} and t.is_compeleted = #{2} and t.is_top = #{3}
+  </select>
+
+  <select id="selectTaskInfoWithUserByCategoryAndStatus" parameterType="com.zyfz.domain.TaskInfo"  resultMap="TaskInfoWithUserMap">
+    SELECT t.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_task_info t left join happy_help.hh_user u on t.hh_user_id = u.id
+    WHERE t.hh_category_id = #{hhCategoryId,jdbcType=INTEGER}
+    <if test="isFree != null">
+      and t.is_free = #{isFree,jdbcType=BIT}
+    </if>
+    <if test="isAccept != null">
+      and t.is_accept = #{isAccept,jdbcType=BIT}
+    </if>
+    <if test="isCompeleted != null">
+      and t.is_compeleted = #{isCompeleted,jdbcType=BIT}
+    </if>
   </select>
 
   <select id="selectTaskInfoWithUserByKey" parameterType="java.lang.String"  resultMap="TaskInfoWithUserMap">

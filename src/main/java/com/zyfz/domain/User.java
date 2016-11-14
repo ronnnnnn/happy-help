@@ -357,4 +357,9 @@ public class User {
     public String getCredentialsSalt() {
         return username + salt;
     }
+
+    public Integer getGrade(){
+        return (gradeTotal.intValue())/gradeTimes;
+    }
+
 }

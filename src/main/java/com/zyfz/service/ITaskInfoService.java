@@ -9,5 +9,8 @@ import com.zyfz.model.PageModel;
  */
 public interface ITaskInfoService extends IBaseService<TaskInfo> {
      public Datagrid getTaskInfoWithUserByCategory(Integer categoryId,Boolean isFree,Boolean isCompeleted , Boolean isTop, PageModel pageModel);
+
      public Datagrid getTaskInfoWithUserByKey(String taskinfoKey,PageModel pageModel);
+
+     public Datagrid getTaskInfoWithUserByCategoryAndStatus(TaskInfo taskInfo,PageModel pageModel);
 }

@@ -26,7 +26,7 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from hh_category
+    from hh_category ORDER BY category_code
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

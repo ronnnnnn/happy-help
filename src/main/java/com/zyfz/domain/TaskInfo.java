@@ -226,4 +226,19 @@ public class TaskInfo {
     public void setDetailPosition(String detailPosition) {
         this.detailPosition = detailPosition;
     }
+
+
+    public String getDetailAddress(){
+        return province+"/"+country+"/"+area+"/"+street+"/"+detailPosition;
+    }
+
+    public Boolean getIsImage(){
+        if (imageUrl == null){
+            return false;
+        } else if(imageUrl.intern() == "nono".intern()){
+            return false;
+        }else {
+            return true;
+        }
+    }
 }
