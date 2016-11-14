@@ -6,13 +6,18 @@ import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ICaptchaService;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
+import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ron on 16-11-11.
@@ -77,6 +82,29 @@ public class AppUserController extends BaseController {
            super.writeJson(responseMessage,response);
         }
     }
+
+
+    @RequestMapping(value = "/api/v1/anon/user/new/password",method = RequestMethod.POST)
+    public void updateUserPassword(User user, HttpServletResponse response){
+
+         try {
+             Captcha captcha = captchaService.selectByCaptcha(user.getCaptcha());
+             if(captcha != null){
+                 captchaService.deleteOneById(captcha);
+                 User user1 = userservice.findByPhone(user.getPhone());
+                 userservice.changePassword(user1.getId(),user.getPassword());
+                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+             }else {
+                 super.writeJson(new ResponseMessage<String>(40106,"验证码无效",null),response);
+             }
+         }catch (Exception e){
+             Map<String,String> map = new HashMap<String, String>();
+             map.put("errMsg",e.toString());
+             super.writeJson(new ResponseMessage<Map<String,String>>(0,"success",map),response);
+         }
+
+    }
+
 
 
 }
