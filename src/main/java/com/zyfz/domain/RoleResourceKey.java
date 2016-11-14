@@ -1,5 +1,8 @@
 package com.zyfz.domain;
 
+/**
+ * 角色资源表
+ */
 public class RoleResourceKey {
     private Integer hhRoleId;
 

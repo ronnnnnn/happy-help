@@ -1,5 +1,8 @@
 package com.zyfz.domain;
 
+/**
+ * 暂时未用到
+ */
 public class SystemSetting {
     private Integer id;
 

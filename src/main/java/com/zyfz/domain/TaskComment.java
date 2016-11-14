@@ -2,16 +2,19 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 服务消息一级评论表，针对消息进行评论
+ */
 public class TaskComment {
     private Integer id;
 
-    private String context;
+    private String context; //评论内容
 
-    private Integer hhTaskInfoId;
+    private Integer hhTaskInfoId; //任务消息ID
 
-    private Integer userId;
+    private Integer userId;  //评论者id
 
-    private String userNickname;
+    private String userNickname; //评论者昵称，冗余字段，提高读取效率
 
     private Date createTime;
 

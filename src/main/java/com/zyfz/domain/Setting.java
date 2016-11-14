@@ -1,15 +1,18 @@
 package com.zyfz.domain;
 
+/**
+ * 系统设置表
+ */
 public class Setting {
     private Integer id;
 
-    private String sysType;
+    private String sysType; //类型
 
-    private String typeName;
+    private String typeName; //名字
 
-    private String typeValue;
+    private String typeValue; //值
 
-    private String typeDescription;
+    private String typeDescription; //描述
 
     public Integer getId() {
         return id;

@@ -1,5 +1,9 @@
 package com.zyfz.domain;
 
+/**
+ * 暂时不用
+ */
+
 public class AreaRange {
     private Integer id;
 

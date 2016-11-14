@@ -1,5 +1,9 @@
 package com.zyfz.domain;
 
+/**
+ * 资源表
+ */
+
 public class Resources {
     private Integer id;
 

@@ -2,6 +2,9 @@ package com.zyfz.domain;
 
 import java.util.List;
 
+/**
+ * 角色表
+ */
 public class Role {
     private Integer id;
 

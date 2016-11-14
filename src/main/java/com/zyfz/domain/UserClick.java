@@ -1,11 +1,14 @@
 package com.zyfz.domain;
 
+/**
+ * 用户点赞表
+ */
 public class UserClick {
     private Integer id;
 
-    private String userId;
+    private String userId; //点赞用户id
 
-    private Integer hhArticleId;
+    private Integer hhArticleId; //文章ID
 
     public Integer getId() {
         return id;

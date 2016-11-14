@@ -2,50 +2,54 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 服务消息发布表
+ */
+
 public class TaskInfo {
     private Integer id;
 
-    private String title;
+    private String title;//标题
 
-    private String context;
+    private String context; //内容
 
-    private String imageUrl;
+    private String imageUrl; //图片链接
 
-    private Double money;
+    private Double money; //有偿奖励帮助金额
 
-    private String phone;
+    private String phone; //手机号
 
-    private Date createTime;
+    private Date createTime; //创建时间
 
-    private String endTime;
+    private String endTime; //置顶结束时间
 
-    private Boolean isFree;
+    private Boolean isFree; //是否无偿
 
-    private Boolean isAccept;
+    private Boolean isAccept; //改服务是否被接受
 
-    private Boolean isTop;
+    private Boolean isTop; //是否置顶
 
-    private Boolean isCompeleted;
+    private Boolean isCompeleted; //服务是否完成
 
-    private Boolean isDeleted;
+    private Boolean isDeleted; //服务是否下架
 
-    private Integer hhCategoryId;
+    private Integer hhCategoryId;  //所属类别Id
 
-    private Integer hhUserId;
+    private Integer hhUserId; //发布者id
 
-    private String country;
+    private String country; //国
 
-    private String province;
+    private String province; //省
 
-    private String city;
+    private String city; //市
 
-    private String area;
+    private String area; //区
 
-    private String street;
+    private String street; //街道
 
-    private String detailPosition;
+    private String detailPosition;//详细地址
 
-    private User user;
+    private User user; //发布任务着
 
     public User getUser() {
         return user;

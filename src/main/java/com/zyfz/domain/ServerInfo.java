@@ -2,14 +2,17 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 公共服务表
+ */
 public class ServerInfo {
     private Integer id;
 
-    private String title;
+    private String title; //题目
 
-    private String context;
+    private String context; //内容
 
-    private String phone;
+    private String phone; //电话
 
     private Date createTime;
 

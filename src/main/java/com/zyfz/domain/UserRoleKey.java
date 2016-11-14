@@ -1,5 +1,9 @@
 package com.zyfz.domain;
 
+/**
+ * 用户和角色关联表
+ */
+
 public class UserRoleKey {
     private Integer hhUserId;
 

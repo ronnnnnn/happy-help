@@ -2,18 +2,37 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 服务消息状态表
+ */
 public class TaskContract {
     private Integer id;
 
+    /**
+     * 记录任务的状态，
+     0-3的记录无偿任务的状态，
+     0表示用户请求任务，
+     1表示任务发布者同意其完成任务，
+     2表示请求任务的人完成任务，
+     3表示任务发布者完成任务。
+
+     5以后记录有偿任务状态。
+     6表示用户申请提价阶段
+     7表示发布者还价阶段
+     8用户接受议价
+     9发布者接受议价
+     10接受者完成renwu
+     11发布者确认完成任务
+     */
     private Integer status;
 
-    private String money;
+    private String money;  //记录讨价还价中的价格
 
-    private Integer hhTaskInfoId;
+    private Integer hhTaskInfoId;  //服务消息
 
-    private Integer talkTimes;
+    private Integer talkTimes;  //讨价还价的次数，不能超过3次
 
-    private Integer hhUserId;
+    private Integer hhUserId;  //提供服务者信息
 
     private Date createTime;
 

@@ -1,19 +1,22 @@
 package com.zyfz.domain;
 
+/**
+ * 类别表
+ */
 public class Category {
     private Integer id;
 
-    private String categoryName;
+    private String categoryName; //类别名字
 
-    private String categoryCode;
+    private String categoryCode; //类别编码
 
-    private Integer parentId;
+    private Integer parentId; //父类别id
 
     private String parentIds;
 
-    private Integer priority;
+    private Integer priority; //优先级
 
-    private String description;
+    private String description; //描述
 
     public Integer getId() {
         return id;

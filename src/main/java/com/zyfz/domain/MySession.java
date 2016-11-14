@@ -1,6 +1,8 @@
 package com.zyfz.domain;
 
-import java.io.Serializable;
+/**
+ * session持久化表
+ */
 
 public class MySession {
     private Long id;

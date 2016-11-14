@@ -2,13 +2,17 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 轮播图，广告页等设置
+ */
+
 public class Show {
     private Integer id;
-    private String mname;
-    private String imageUrl;
-    private String  mtype;
-    private Integer sort;
-    private Boolean isUse;
+    private String mname; //图片名字
+    private String imageUrl; //图片url
+    private String  mtype; //图片类型
+    private Integer sort; //图片排序
+    private Boolean isUse; //是否使用
     private Date createTime;
 
     public String getMtype() {

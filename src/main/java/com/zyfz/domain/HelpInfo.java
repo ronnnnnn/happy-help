@@ -2,42 +2,45 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 紧急求助表
+ */
 public class HelpInfo {
     private Integer id;
 
-    private String title;
+    private String title;//题目
 
-    private String context;
+    private String context;//内容
 
     private String imageUrl;
 
-    private String phome;
+    private String phome;//电话，单词拼错了，要修改的太多，暂时不改了
 
-    private String areaRange;
+    private String areaRange;  //推送范围
 
-    private Integer hhAreaRangeId;
+    private Integer hhAreaRangeId; //推送范围id，废弃，范围属性维护统一归纳到系统属性设置
 
-    private Integer hhUserId;
+    private Integer hhUserId;  //发布紧急求助消息用户id
 
-    private Integer needUserNumber;
+    private Integer needUserNumber; //需要求助的人数
 
-    private String applyUserIds;
+    private String applyUserIds; //废弃字段
 
-    private String useUserIds;
+    private String useUserIds; //废弃字段
 
-    private String compeletedUserIds;
+    private String compeletedUserIds; //废弃字段
 
-    private Boolean isCompeleted;
+    private Boolean isCompeleted; //是否完成
 
-    private Boolean isDeleted;
+    private Boolean isDeleted; //是否下架
 
-    private Integer hhCategoryId;
+    private Integer hhCategoryId; //所属类别id
 
     private Date createTime;
 
-    private String country;
+    private String country;  //国
 
-    private String province;
+    private String province; //省
 
     private String city;
 
@@ -45,9 +48,9 @@ public class HelpInfo {
 
     private String street;
 
-    private String detailPosition;
+    private String detailPosition; //详细地址
 
-    private Integer republishTimes;
+    private Integer republishTimes;  //发布时间
 
     private User user;
 

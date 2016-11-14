@@ -1,5 +1,8 @@
 package com.zyfz.domain;
 
+/**
+ * 暂时未用
+ */
 public class JudgeRecord {
     private Integer id;
 

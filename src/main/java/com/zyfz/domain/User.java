@@ -14,65 +14,65 @@ public class User {
 
     private String salt;
 
-    private Boolean isLocked;
+    private Boolean isLocked; //0锁定，1未锁定
 
-    private String roleIds;
+    private String roleIds;  //角色ID
 
-    private String organization;
+    private String organization; //组织，预留字段
 
-    private String nickname;
+    private String nickname;   //昵称
 
-    private String realName;
+    private String realName;   //真实名字
 
-    private String userIdentify;
+    private String userIdentify;  //用户省份证
 
-    private String country;
+    private String country;  //国家
 
-    private String province;
+    private String province; //省
 
-    private String city;
+    private String city; //城
 
-    private String area;
+    private String area; //区
 
-    private String street;
+    private String street; //街道
 
-    private String currentArea;
+    private String currentArea; //详细地址
 
-    private Boolean isAdmin;
+    private Boolean isAdmin; //是否管理员
 
-    private Boolean isNew;
+    private Boolean isNew; //是否新用户，新用户拥有新用户特权
 
     private Date createTime;
 
-    private Double account;
+    private Double account; //账户金额
 
-    private Double contributeScore;
+    private Double contributeScore; //贡献值
 
-    private Double honerScore;
+    private Double honerScore; //荣誉值
 
-    private Double gradeTotal;
+    private Double gradeTotal;  //评星总分
 
-    private Integer gradeTimes;
+    private Integer gradeTimes; //评星次数
 
-    private String withdrawAccount;
+    private String withdrawAccount;  //体现账户
 
-    private String wirhdrawAccontType;
+    private String wirhdrawAccontType; //体现账户类型
 
-    private String regid;
+    private String regid; //推送标识
 
-    private String alias;
+    private String alias; //推送标识
 
-    private String topic;
+    private String topic; //推送标识
 
     private List<Role> roles;
 
     private String email;
 
-    private String photo;
+    private String photo; //头像
 
-    private String cookie;
+    private String cookie; //存储sessionId
 
-    private String captcha;
+    private String captcha; //验证码
 
     public String getCaptcha() {
         return captcha;

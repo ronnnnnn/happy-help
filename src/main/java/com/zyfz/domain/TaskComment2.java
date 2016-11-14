@@ -2,18 +2,21 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 服务消息二级评论表，针对人进行评论
+ */
 public class TaskComment2 {
     private Integer id;
 
-    private Integer parentUserId;
+    private Integer parentUserId;//被回复id
 
-    private Integer childUserId;
+    private Integer childUserId;//回复者id
 
-    private String context;
+    private String context; //评论内容
 
-    private String hhTaskInfoId;
+    private String hhTaskInfoId; //所属服务消息
 
-    private Integer hhTaskCommentId;
+    private Integer hhTaskCommentId;//评论id
 
     private Date createTime;
 

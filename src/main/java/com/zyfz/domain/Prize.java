@@ -2,22 +2,26 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 奖池信息表
+ */
+
 public class Prize {
     private Integer id;
 
-    private String prizeNum;
+    private String prizeNum; //期数
 
-    private Double prizeMoney;
+    private Double prizeMoney; //本期中奖金额
 
-    private String userIds;
+    private String userIds;  //中奖人id集合，逗号分开
 
-    private String userNames;
+    private String userNames; //中奖人名字结合，以逗号分开
 
-    private String hhPhones;
+    private String hhPhones; //中奖人电话号码结合，以逗号分开
 
-    private Date createTime;
+    private Date createTime; //创建时间
 
-    private Boolean isLottery;
+    private Boolean isLottery; //是否开奖，开奖后数据不允许再修改
 
     public Boolean getIsLottery() {
         return isLottery;

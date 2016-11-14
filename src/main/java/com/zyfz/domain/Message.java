@@ -1,5 +1,8 @@
 package com.zyfz.domain;
 
+/**
+ * 推送消息记录表
+ */
 public class Message {
     private Integer id;
 

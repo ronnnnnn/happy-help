@@ -2,16 +2,19 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 评论表，好人好事均用此表
+ */
 public class Comment {
     private Integer id;
 
-    private String context;
+    private String context; //内容
 
-    private String imageUrl;
+    private String imageUrl; //预留字段
 
     private Date createTime;
 
-    private Boolean isDeleted;
+    private Boolean isDeleted; //是否隐藏评论
 
     private String type; //"1"为好人好事文章的评论,"2"为公共服务的评论
 

@@ -2,24 +2,27 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
+/**
+ * 好人好事文章表
+ */
 public class Article {
     private Integer id;
 
     private String title;
 
-    private String context;
+    private String context; //内容
 
     private String imageUrl;
 
     private Date createTime;
 
-    private String visitClick;
+    private String visitClick; //记录点赞用户
 
     private Boolean isChecked;
 
-    private Boolean isDeleted;
+    private Boolean isDeleted; //是否下架
 
-    private Boolean isPass;
+    private Boolean isPass; //是否通过审核
 
     private Integer hhUserId;
 
