@@ -14,6 +14,24 @@ public class Show {
     private Integer sort; //图片排序
     private Boolean isUse; //是否使用
     private Date createTime;
+    private String relateUrl;
+    private String relateArticleTitle;
+
+    public String getRelateUrl() {
+        return relateUrl;
+    }
+
+    public void setRelateUrl(String relateUrl) {
+        this.relateUrl = relateUrl;
+    }
+
+    public String getRelateArticleTitle() {
+        return relateArticleTitle;
+    }
+
+    public void setRelateArticleTitle(String relateArticleTitle) {
+        this.relateArticleTitle = relateArticleTitle;
+    }
 
     public String getMtype() {
         return mtype;

@@ -19,10 +19,21 @@
 			</td>
 		</tr>
 		<tr>
+			<th>关联文章链接</th>
+			<td><input id="sh-relateUrl" name="relateUrl" style="width:100%" class="easyui-validatebox" data-options="required:false" />
+			</td>
+		</tr>
+		<tr>
+			<th>关联文章题目</th>
+			<td><input id="sh-relateArticleTitle" name="relateArticleTitle" style="width:100%" class="easyui-validatebox" data-options="required:false" />
+			</td>
+		</tr>
+		<tr>
 			<th>排序</th>
 			<td><input id="sh-sort" name="sort" style="width:100%" class="easyui-validatebox" data-options="required:true" />
 			</td>
 		</tr>
+
 		<tr>
 			<th>是否使用</th>
 			<td>

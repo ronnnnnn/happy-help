@@ -10,6 +10,7 @@ import org.springframework.web.multipart.support.StringMultipartFileEditor;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,14 @@ public class AppCategoryController extends BaseController {
     @RequestMapping(value = "/api/v1/anon/category",method = RequestMethod.GET)
     public void getCategory(HttpServletResponse response){
         try {
-            super.writeJson(new ResponseMessage<List<Category>>(0,"success",categoryService.getAllWithList()),response);
+            List<Category> categories = categoryService.getAllWithList();
+            List<Category> categoryList = new ArrayList<Category>();
+            for (Category category : categories){
+                if (category.getCategoryCode().intern() != "0".intern()){
+                    categoryList.add(category);
+                }
+            }
+            super.writeJson(new ResponseMessage<List<Category>>(0,"success",categoryList),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());

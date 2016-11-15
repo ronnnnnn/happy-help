@@ -34,6 +34,16 @@
 				title : '类别',
 				width : fixWidth(0.1),
 				align : 'center',
+			}, {
+				field : 'relateUrl',
+				title : '关联文章链接',
+				width : fixWidth(0.1),
+				align : 'center',
+			}, {
+				field : 'relateArticleTitle',
+				title : '关联文章题目',
+				width : fixWidth(0.1),
+				align : 'center',
 			},{
 				field : 'sort',
 				title : '排序',
@@ -90,7 +100,7 @@
 
 	function sshowPic(picUrl) {
 		$("#smpic").html("");
-		var img = "<img src='"+picUrl+"' width='100%' height='100%'/>";
+		var img = "<img src='"+picUrl+"' width='100%' height='auto'/>";
 		$("#smpic").append(img);
 		$("#smpic").append("<br/><hr/><br/>");
 		$('#smpic').dialog('open');
@@ -102,8 +112,8 @@
 		var rows = $('#admin_show_pic_datagrid').datagrid('getChecked');
 		if (rows.length == 1) {
 			var d = $('<div/>').dialog({
-				width : 270,
-				height : 255,
+				width : 300,
+				height : 300,
 				href : '${pageContext.request.contextPath}/show/edit-panel',
 				modal : true,
 				align : 'center',
@@ -150,7 +160,7 @@
 
 		var d = $('<div/>').dialog({
 			width : 300,
-			height : 250,
+			height : 300,
 			href : '${pageContext.request.contextPath}/show/add-panel',
 			modal : true,
 			align : 'center',
@@ -288,7 +298,7 @@
 					handler : function() {
                       	$('#smpic').dialog('close');
 					}}]"
-	 style="width:375px; height: 657px;" title="显示图片">
+	 style="width:375px; height:auto;" title="显示图片">
 </div>
 
 </body>

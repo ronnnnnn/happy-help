@@ -9,10 +9,12 @@
     <result column="mtype" property="mtype" jdbcType="VARCHAR" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
     <result column="is_use" property="isUse" jdbcType="BIT" />
+    <result column="relate_url" property="relateUrl" jdbcType="VARCHAR" />
+    <result column="relate_article_title" property="relateArticleTitle" jdbcType="VARCHAR" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, mname, image_url, create_time,mtype,sort,is_use
+    id, mname, image_url, create_time,mtype,sort,is_use,relate_url,relate_article_title
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -42,9 +44,9 @@
 
   <insert id="insert" parameterType="com.zyfz.domain.Show" >
     insert into hh_show (id, mname, image_url,
-      create_time,mtype,sort,is_use)
+      create_time,mtype,sort,is_use,relate_url,relate_article_title)
     values (#{id,jdbcType=INTEGER}, #{mname,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP},#{mtype,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{isUse,jdbcType=BIT})
+      #{createTime,jdbcType=TIMESTAMP},#{mtype,jdbcType=VARCHAR},#{sort,jdbcType=INTEGER},#{isUse,jdbcType=BIT}, #{relateUrl,jdbcType=VARCHAR}, #{relateArticleTitle,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.Show" >
     insert into hh_show
@@ -70,6 +72,12 @@
       <if test="isUse != null" >
         is_use,
       </if>
+      <if test="relateUrl != null" >
+        relate_url,
+      </if>
+      <if test="relateArticleTitle != null" >
+        relate_article_title,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -92,6 +100,12 @@
       </if>
       <if test="isUse != null" >
         #{isUse,jdbcType=BIT},
+      </if>
+      <if test="relateUrl != null" >
+        #{relateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="relateArticleTitle != null" >
+        #{relateArticleTitle,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -117,6 +131,12 @@
       <if test="isUse != null" >
         is_use = #{isUse,jdbcType=BIT},
       </if>
+      <if test="relateUrl != null" >
+        relate_url = #{relateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="relateArticleTitle != null" >
+        relate_article_title = #{relateArticleTitle,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -127,7 +147,9 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       mtype = #{mtype,jdbcType=VARCHAR},
       sort =  #{sort,jdbcType=INTEGER},
-      is_use = #{isUse,jdbcType=BIT}
+      is_use = #{isUse,jdbcType=BIT},
+      relate_url = #{relateUrl,jdbcType=VARCHAR},
+      relate_article_title = #{relateArticleTitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

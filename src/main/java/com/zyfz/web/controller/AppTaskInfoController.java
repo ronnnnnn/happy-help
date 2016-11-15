@@ -5,6 +5,7 @@ import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ITaskInfoService;
+import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,12 +25,25 @@ public class AppTaskInfoController extends BaseController{
     @Resource
     ITaskInfoService taskInfoService;
 
+    @Resource
+    IUserservice userservice;
+
     @RequestMapping(value = "/api/v1/anon/taskInfo",method = RequestMethod.GET)
-    public void getTaskInfo(@RequestParam("assistanceStatus") Integer assistanceStatus, @RequestParam("categoryId")Integer categoryId, @RequestParam(value = "pn",required = false)Integer pn, HttpServletResponse response){
+    public void getTaskInfo(@RequestParam("assistanceStatus") Integer assistanceStatus, @RequestParam(value = "categoryId",required = false)Integer categoryId,@RequestParam(value = "username",required = false)String username, @RequestParam(value = "pn",required = false)Integer pn, HttpServletResponse response){
 
         try {
             TaskInfo taskInfo = new TaskInfo();
-            taskInfo.setHhCategoryId(categoryId);
+            if(categoryId != null){
+                taskInfo.setHhCategoryId(categoryId);
+            }else  {
+                try {
+                    taskInfo.setHhUserId(userservice.findByUsername(username).getId());
+                }catch (Exception e){
+                    Map<String,String> map = new HashMap<String, String>();
+                    map.put("errMsg","请求参数错误");
+                    super.writeJson(new ResponseMessage<Map<String,String>>(40401,"请求参数错误",map),response);
+                }
+            }
             if (assistanceStatus == 0){
                 taskInfo.setIsFree(false);
             } else if (assistanceStatus == 1){
@@ -54,7 +68,7 @@ public class AppTaskInfoController extends BaseController{
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());
-            super.writeJson(new ResponseMessage<Map<String,String>>(500401,"系统内部错误",map),response);
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"系统内部错误",map),response);
         }
     }
 
