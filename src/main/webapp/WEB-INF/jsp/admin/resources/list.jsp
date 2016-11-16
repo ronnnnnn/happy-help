@@ -182,6 +182,11 @@
             processData: false,
             dataType: 'json',
                 success: function(data) {
+                if(data == true){
+                    $.messager.alert('提示', '删除成功！');
+                }else{
+                    $.messager.alert('提示', '不能删除根节点！');
+                }
                 var currTab =  $('#lyout_center_tabs').tabs('getSelected'); //获得当前tab
                 currTab.panel('refresh');
             },

@@ -2,6 +2,7 @@ package com.zyfz.web.controller;
 
 import com.zyfz.domain.User;
 import com.zyfz.model.ResponseMessage;
+import com.zyfz.web.util.DeviceUtil;
 import com.zyfz.web.util.JsonView;
 import org.apache.log4j.spi.LoggerFactory;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by ron on 16-9-20.
@@ -53,19 +56,30 @@ public class LoginController extends BaseController {
             errorCode =  40105;//其他错误
         }
 
-
+        /**
+         *  app端带app标识进行登录
+         */
         String app = req.getParameter("type");
 
         /**
          * 根据不同的用户类型返回不同的数据格式
+         * app端登录成功返回json数据
+         * web端返回jsp页面
          */
         if (app != null){
             return JsonView.Render(new ResponseMessage<String>(errorCode,error,error),rep);
         }else {
-            ModelAndView modelAndView = new ModelAndView("/login");
-            modelAndView.addObject("error",error);
-            return modelAndView;
+            if(DeviceUtil.isMobileDevice(req.getHeader("user-agent"))){
+                Map<String,String> map = new HashMap<String,String>();
+                map.put("message","用户未登录！");
+                return JsonView.Render(new ResponseMessage<Map<String,String>>(40000,"未登录！",map),rep); //手机 app端返回json数据
+            }else {
+                ModelAndView modelAndView = new ModelAndView("/login");   //pc web端返回登录界面
+                modelAndView.addObject("error",error);
+                return modelAndView;
+            }
         }
+
 
 
 //        if(app != null || app != "app"){

@@ -18,6 +18,8 @@ public interface ResourceMapper {
 
     List<Resources> selectRootMenu();
 
+    List<Resources> selectByParentId(Integer parentId);
+
     int updateByPrimaryKeySelective(Resources record);
 
     int updateByPrimaryKey(Resources record);

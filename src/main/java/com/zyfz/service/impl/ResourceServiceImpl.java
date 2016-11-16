@@ -109,6 +109,11 @@ public class ResourceServiceImpl implements IResourceService {
     }
 
     @Override
+    public List<Resources> findByParentId(Integer parentId) {
+        return resourceMapper.selectByParentId(parentId);
+    }
+
+    @Override
     public List<Resources> finaRootMenu() {
         return resourceMapper.selectRootMenu();
     }

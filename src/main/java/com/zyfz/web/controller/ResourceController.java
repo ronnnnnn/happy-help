@@ -127,8 +127,12 @@ public class ResourceController extends BaseController{
     public Object delete(@PathVariable("id") Integer id) {
         Resources resources = new Resources();
         resources.setId(id);
-        resourceService.deleteOneById(resources);
-        return true;
+        if (resourceService.findByParentId(id).size() == 0){
+            resourceService.deleteOneById(resources);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     /**
@@ -161,4 +165,14 @@ public class ResourceController extends BaseController{
         super.writeJson(resourceService.findAll(),response);
     }
 
+
+    @RequestMapping(value = "/isRoot/{parentId}",method = RequestMethod.GET)
+    @ResponseBody
+    public Object getResourceByParentId(@PathVariable Integer parentId){
+        if(resourceService.findByParentId(parentId).size() != 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

@@ -42,7 +42,12 @@
 				align : 'center',
 			},{
 				field : 'hhPhones',
-				title : '获奖人号码',
+				title : '获奖人号码(荣誉值)',
+				width : fixWidth(0.2),
+				align : 'center',
+			},{
+				field : 'articlePhones',
+				title : '获奖人号码(文章)',
 				width : fixWidth(0.2),
 				align : 'center',
 			},{
@@ -231,7 +236,6 @@
 										hhPhones.push(userRows[i].phone);
 										hhPhones.join(',');
 									}
-
 									$.ajax({
 										type: 'post',
 										url : '${pageContext.request.contextPath}/prize/update',
@@ -320,6 +324,7 @@
 						if (articleRows.length > 0) {
 							$.messager.confirm('确认', '您是选择当前用户为中奖用户？', function(r) {
 								if (r) {
+									var oldUserIds = rows[0].userIds.split(",");
 									for ( var i = 0; i < articleRows.length; i++) {
 										userIds.push(articleRows[i].user.id);
 										userIds.join(',');
@@ -334,9 +339,7 @@
 										url : '${pageContext.request.contextPath}/prize/update',
 										data : {
 											id: rows[0].id,
-											userIds : userIds.join(","),
-											userNames : userNames.join(","),
-											hhPhones : hhPhones.join(",")
+											articlePhones : hhPhones.join(",")
 										},
 										dataType : 'json',
 										success : function(d) {

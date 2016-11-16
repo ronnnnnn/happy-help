@@ -359,6 +359,12 @@ public class User {
     }
 
     public Integer getGrade(){
+        if(gradeTimes==null || gradeTimes == 0){
+            gradeTimes = 1;
+        }
+        if(gradeTotal == null || gradeTotal == 0){
+            gradeTotal = 0d;
+        }
         return (gradeTotal.intValue())/gradeTimes;
     }
 

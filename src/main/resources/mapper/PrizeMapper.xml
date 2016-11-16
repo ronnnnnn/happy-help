@@ -8,13 +8,14 @@
     <result column="user_ids" jdbcType="VARCHAR" property="userIds" />
     <result column="user_names" jdbcType="VARCHAR" property="userNames" />
     <result column="hh_phones" jdbcType="VARCHAR" property="hhPhones" />
+    <result column="article_phones" jdbcType="VARCHAR" property="articlePhones" />
     <result column="is_lottery" jdbcType="BIT" property="isLottery" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
 
   <sql id="Base_Column_List">
-    id, prize_num, prize_money, user_ids, user_names, hh_phones,is_lottery ,create_time
+    id, prize_num, prize_money, user_ids, user_names, hh_phones,article_phones,is_lottery ,create_time
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -45,10 +46,10 @@
 
   <insert id="insert" parameterType="com.zyfz.domain.Prize">
     insert into hh_prize (id, prize_num, prize_money, 
-      user_ids, user_names, hh_phones, is_lottery,
+      user_ids, user_names, hh_phones,article_phones, is_lottery,
       create_time)
     values (#{id,jdbcType=INTEGER}, #{prizeNum,jdbcType=VARCHAR}, #{prizeMoney,jdbcType=DOUBLE}, 
-      #{userIds,jdbcType=VARCHAR}, #{userNames,jdbcType=VARCHAR}, #{hhPhones,jdbcType=VARCHAR}, #{isLottery,jdbcType=BIT},
+      #{userIds,jdbcType=VARCHAR}, #{userNames,jdbcType=VARCHAR}, #{hhPhones,jdbcType=VARCHAR},#{articlePhones,jdbcType=VARCHAR}, #{isLottery,jdbcType=BIT},
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
 
@@ -72,6 +73,9 @@
       </if>
       <if test="hhPhones != null">
         hh_phones,
+      </if>
+      <if test="articlePhones != null">
+        article_phones,
       </if>
       <if test="isLottery != null">
         is_lottery,
@@ -99,6 +103,9 @@
       <if test="hhPhones != null">
         #{hhPhones,jdbcType=VARCHAR},
       </if>
+      <if test="articlePhones != null">
+        #{articlePhones,jdbcType=VARCHAR},
+      </if>
       <if test="isLottery != null">
         #{isLottery,jdbcType=BIT},
       </if>
@@ -125,6 +132,9 @@
       <if test="hhPhones != null">
         hh_phones = #{hhPhones,jdbcType=VARCHAR},
       </if>
+      <if test="articlePhones != null">
+        article_phones = #{articlePhones,jdbcType=VARCHAR},
+      </if>
       <if test="isLottery != null">
         is_lottery = #{isLottery,jdbcType=VARCHAR},
       </if>
@@ -141,6 +151,7 @@
       user_ids = #{userIds,jdbcType=VARCHAR},
       user_names = #{userNames,jdbcType=VARCHAR},
       hh_phones = #{hhPhones,jdbcType=VARCHAR},
+      article_phones = #{articlePhones,jdbcType=VARCHAR},
       is_lottery = #{isLottery,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

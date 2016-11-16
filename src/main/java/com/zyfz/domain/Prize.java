@@ -13,15 +13,25 @@ public class Prize {
 
     private Double prizeMoney; //本期中奖金额
 
-    private String userIds;  //中奖人id集合，逗号分开
+    private String userIds;  //废弃字段
 
-    private String userNames; //中奖人名字结合，以逗号分开
+    private String userNames; //废弃字段
 
-    private String hhPhones; //中奖人电话号码结合，以逗号分开
+    private String hhPhones; //中奖人电话号码结合，以逗号分开(重荣誉值排名选)
+
+    private String articlePhones; //中奖人电话号码结合，以逗号分开(重文章选)
 
     private Date createTime; //创建时间
 
     private Boolean isLottery; //是否开奖，开奖后数据不允许再修改
+
+    public String getArticlePhones() {
+        return articlePhones;
+    }
+
+    public void setArticlePhones(String articlePhones) {
+        this.articlePhones = articlePhones;
+    }
 
     public Boolean getIsLottery() {
         return isLottery;

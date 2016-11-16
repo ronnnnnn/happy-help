@@ -39,6 +39,15 @@
       <version>1.7.4</version>
     </dependency>
 
+    <!-- 阿里大于短信发送 -->
+    <dependency>
+      <groupId>com.taobao</groupId>
+      <artifactId>taobao-api</artifactId>
+      <version>20160607</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/taobao-api-20160607.jar</systemPath>
+    </dependency>
+
     <!-- spring核心包 -->
     <dependency>
       <groupId>org.springframework</groupId>

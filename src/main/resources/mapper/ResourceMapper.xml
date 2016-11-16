@@ -24,6 +24,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_resource
+    where parent_id = #{parentId,jdbcType=INTEGER}
+  </select>
+
   <select id="selectRootMenu" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

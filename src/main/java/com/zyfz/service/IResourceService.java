@@ -18,4 +18,7 @@ public interface IResourceService extends IBaseService<Resources>{
     List<Resources> finaRootMenu();
 
     List<Resources> findAll();
+
+    List<Resources> findByParentId(Integer parentId);
+
 }
