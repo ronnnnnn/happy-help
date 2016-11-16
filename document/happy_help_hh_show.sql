@@ -1,0 +1,2 @@
+INSERT INTO happy_help.hh_show (mname, image_url, create_time, mtype, sort, is_use, relate_url, relate_article_title) VALUES ('轮播图1', '/pic/Images/show/ic_test_0.jpg', '2016-10-10 14:37:52', 'loadingPic', 1, 1, 'nono', 'test2');
+INSERT INTO happy_help.hh_show (mname, image_url, create_time, mtype, sort, is_use, relate_url, relate_article_title) VALUES ('轮播图2', '/pic/Images/show/ic_test_1.jpg', '2016-11-15 15:31:06', 'loadingPic', 2, 1, 'nono', 'test2');
