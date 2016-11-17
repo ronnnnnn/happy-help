@@ -1,6 +1,8 @@
 package com.zyfz.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 服务消息发布表
@@ -21,7 +23,7 @@ public class TaskInfo {
 
     private Date createTime; //创建时间
 
-    private String endTime; //置顶结束时间
+    private Date endTime; //置顶结束时间
 
     private Boolean isFree; //是否无偿
 
@@ -50,6 +52,8 @@ public class TaskInfo {
     private String detailPosition;//详细地址
 
     private User user; //发布任务着
+
+    private List<String> imageUrls[];
 
     public User getUser() {
         return user;
@@ -115,11 +119,11 @@ public class TaskInfo {
         this.createTime = createTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
     }
 
@@ -241,4 +245,17 @@ public class TaskInfo {
             return true;
         }
     }
+
+    public String[] getImageUrls(){
+        if(imageUrl == null){
+            String[] strings = {"nono"};
+            return strings;
+        } else if (imageUrl!=null || imageUrl.intern() != "nono".intern()){
+            return imageUrl.split(",");
+        }else {
+            String[] strings = {"nono"};
+            return strings;
+        }
+    }
+
 }

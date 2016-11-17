@@ -9,7 +9,7 @@
     <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="end_time" jdbcType="VARCHAR" property="endTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="is_free" jdbcType="BIT" property="isFree" />
     <result column="is_accept" jdbcType="BIT" property="isAccept" />
     <result column="is_top" jdbcType="BIT" property="isTop" />
@@ -83,6 +83,12 @@
     <if test="isCompeleted != null">
       and t.is_compeleted = #{isCompeleted,jdbcType=BIT}
     </if>
+    <if test="province != null">
+      and t.province = #{province,jdbcType=VARCHAR}
+    </if>
+    <if test="city != null">
+      and t.city = #{city,jdbcType=VARCHAR}
+    </if>
   </select>
 
   <select id="selectTaskInfoWithUserByKey" parameterType="java.lang.String"  resultMap="TaskInfoWithUserMap">
@@ -107,7 +113,7 @@
       )
     values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR}, 
       #{imageUrl,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{phone,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=VARCHAR}, #{isFree,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{isFree,jdbcType=BIT},
       #{isAccept,jdbcType=BIT}, #{isTop,jdbcType=BIT}, #{isCompeleted,jdbcType=BIT}, 
       #{isDeleted,jdbcType=BIT}, #{hhCategoryId,jdbcType=INTEGER}, #{hhUserId,jdbcType=INTEGER}, 
       #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, 
@@ -204,7 +210,7 @@
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="endTime != null">
-        #{endTime,jdbcType=VARCHAR},
+        #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isFree != null">
         #{isFree,jdbcType=BIT},
@@ -272,7 +278,7 @@
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="endTime != null">
-        end_time = #{endTime,jdbcType=VARCHAR},
+        end_time = #{endTime,jdbcType=TIMESTAMP},
       </if>
       <if test="isFree != null">
         is_free = #{isFree,jdbcType=BIT},
@@ -324,7 +330,7 @@
       money = #{money,jdbcType=DOUBLE},
       phone = #{phone,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
       is_free = #{isFree,jdbcType=BIT},
       is_accept = #{isAccept,jdbcType=BIT},
       is_top = #{isTop,jdbcType=BIT},

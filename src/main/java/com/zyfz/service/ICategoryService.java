@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface ICategoryService extends IBaseService<Category> {
     public List<Category> getAllWithList();
+
+    public  Category getByCategoryName(String categoryName);
 }

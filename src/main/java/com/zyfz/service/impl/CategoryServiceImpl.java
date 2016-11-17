@@ -56,4 +56,9 @@ public class CategoryServiceImpl implements ICategoryService {
     public Integer deleteOneById(Category category) {
         return categoryMapper.deleteByPrimaryKey(category.getId());
     }
+
+    @Override
+    public Category getByCategoryName(String categoryName) {
+        return categoryMapper.selectByCategoryName(categoryName);
+    }
 }

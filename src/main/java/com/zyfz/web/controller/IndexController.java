@@ -96,7 +96,7 @@ public class IndexController {
 
             return modelAndView;
         }else {  //app普通用户返回json数据
-            UserModel userModel = new UserModel(user.getId(),user.getUsername(),user.getPhone(),user.getNickname(),user.getHonerScore(),user.getPhoto());
+            UserModel userModel = new UserModel(user.getId(),user.getUsername(),user.getPhone(),user.getNickname(),user.getHonerScore(),user.getPhoto(),user.getCookie());
             userModel.setGrade(user.getGradeTotal(),user.getGradeTimes());
             return JsonView.Render(new ResponseMessage<UserModel>(0,"success",userModel),response);
         }

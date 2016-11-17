@@ -23,6 +23,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByCategoryName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_category
+    where category_name = #{categoryName,jdbcType=INTEGER}
+  </select>
+
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

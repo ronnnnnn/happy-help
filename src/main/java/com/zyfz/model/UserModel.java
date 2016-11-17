@@ -24,17 +24,29 @@ public class UserModel {
 
     private String photo;
 
+    private String sid;
+
+
     public UserModel() {
        super();
     }
 
-    public UserModel(Integer id, String username, String phone, String nickname, Double honerScore, String photo) {
+    public UserModel(Integer id, String username, String phone, String nickname, Double honerScore, String photo,String sid) {
         this.id = id;
         this.username = username;
         this.phone = phone;
         this.nickname = nickname;
         this.honerScore = honerScore;
         this.photo = photo;
+        this.sid = sid;
+    }
+
+    public String getSid() {
+        return sid;
+    }
+
+    public void setSid(String sid) {
+        this.sid = sid;
     }
 
     public Integer getId() {

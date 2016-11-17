@@ -34,6 +34,7 @@ public class TaskInfoServiceImpl implements ITaskInfoService {
     @Override
     public Integer save(TaskInfo taskInfo) {
         taskInfo.setCreateTime(new Date());
+        taskInfo.setEndTime(new Date());
         return taskInfoMapper.insertSelective(taskInfo);
     }
 
