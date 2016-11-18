@@ -97,7 +97,7 @@ public class AppTaskInfoController extends BaseController{
         }
     }
 
-    @RequestMapping(value = "/api/v1/anon/taskInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/taskInfo",method = RequestMethod.POST)
     public void addTaskInfo(AppTaskInfoModel appTaskInfoModel, HttpServletRequest request,HttpServletResponse response){
         try {
             TaskInfo taskInfo = new TaskInfo();

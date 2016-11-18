@@ -18,6 +18,7 @@ public class JsonView {
         MappingJacksonHttpMessageConverter jsonConverter = new MappingJacksonHttpMessageConverter();
 
         MediaType jsonMimeType = MediaType.APPLICATION_JSON;
+       // MediaType mediaType = new MediaType("application/json;charset=utf-8");
 
         try {
             jsonConverter.write(model, jsonMimeType, new ServletServerHttpResponse(response));
