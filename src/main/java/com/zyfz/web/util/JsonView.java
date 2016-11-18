@@ -22,7 +22,7 @@ public class JsonView {
        // MediaType mediaType = new MediaType("application/json;charset=utf-8");
 
         try {
-            jsonConverter.write(model, jsonMimeType, new ServletServerHttpResponse(response));
+            jsonConverter.write(model,  MediaType.parseMediaType("application/json;charset=utf-8"), new ServletServerHttpResponse(response));
         } catch (HttpMessageNotWritableException e) {
             e.printStackTrace();
         } catch (IOException e) {
