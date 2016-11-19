@@ -1,0 +1,4 @@
+1.解决@RequestParam参数接受中文乱码,需要修改tomcat
+    <Connector port="8081" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" URIEncoding="UTF-8"/>

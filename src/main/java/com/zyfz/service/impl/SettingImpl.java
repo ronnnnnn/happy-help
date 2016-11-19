@@ -50,4 +50,9 @@ public class SettingImpl implements ISettingService {
     public Integer deleteOneById(Setting setting) {
         return settingMapper.deleteByPrimaryKey(setting.getId());
     }
+
+    @Override
+    public List<Setting> getSettingsBySysType(String sysType) {
+        return settingMapper.selectBySysType(sysType);
+    }
 }

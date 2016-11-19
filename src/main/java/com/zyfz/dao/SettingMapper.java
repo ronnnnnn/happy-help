@@ -20,4 +20,6 @@ public interface SettingMapper {
     int updateByPrimaryKeySelective(Setting record);
 
     int updateByPrimaryKey(Setting record);
+
+    List<Setting> selectBySysType(String sysType);
 }
