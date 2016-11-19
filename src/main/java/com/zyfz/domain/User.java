@@ -1,5 +1,8 @@
 package com.zyfz.domain;
 
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +76,16 @@ public class User {
     private String cookie; //存储sessionId
 
     private String captcha; //验证码
+
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getCaptcha() {
         return captcha;
@@ -366,6 +379,30 @@ public class User {
             gradeTotal = 0d;
         }
         return (gradeTotal.intValue())/gradeTimes;
+    }
+
+    public String getContactAddress(){
+        List<String> address = new ArrayList<String>();
+        address.add(country);
+        if (province != null){
+            address.add(province);
+        }
+        if (city != null){
+            address.add(city);
+        }
+        if (area != null){
+            address.add(area);
+        }
+        if (street != null){
+            address.add(street);
+        }
+        if (currentArea != null){
+            address.add(currentArea);
+        }
+        if (address == null){
+            address.add("未知");
+        }
+       return StringUtils.collectionToDelimitedString(address,",");
     }
 
 }

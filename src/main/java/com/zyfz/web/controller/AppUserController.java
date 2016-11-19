@@ -8,10 +8,8 @@ import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletResponse;
@@ -105,6 +103,15 @@ public class AppUserController extends BaseController {
 
     }
 
-
+    @RequestMapping(value = "/api/v1/user/{username}",method = RequestMethod.GET)
+    public void getUserDetail(@PathVariable String username,HttpServletResponse response){
+        try {
+            super.writeJson(new ResponseMessage<User>(0,"success",userservice.findByUsername(username)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG",e.toString());
+            super.writeJson(new ResponseMessage<Map>(0,"请求失败!",map),response);
+        }
+    }
 
 }

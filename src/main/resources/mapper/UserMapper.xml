@@ -35,6 +35,7 @@
     <result column="email" property="email" jdbcType="VARCHAR" />
     <result column="photo" property="photo" jdbcType="VARCHAR" />
     <result column="cookie" property="cookie" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
 
   <resultMap id="userRoleMap" type="com.zyfz.domain.User" extends="BaseResultMap">
@@ -51,7 +52,7 @@
     id, username, phone, password, salt, is_locked, role_ids, organization, nickname, 
     real_name, user_identify,country,province,city, area,street, current_area, is_admin, is_new, create_time, account,
     contribute_score, honer_score, grade_total, grade_times, withdraw_account, wirhdraw_accont_type, 
-    regId, alias, topic,email,photo,cookie
+    regId, alias, topic,email,photo,cookie,description
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -130,7 +131,7 @@
       create_time, account, contribute_score, 
       honer_score, grade_total, grade_times, 
       withdraw_account, wirhdraw_accont_type, regId, 
-      alias, topic,email,photo,cookie)
+      alias, topic,email,photo,cookie,description)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{isLocked,jdbcType=BIT}, 
       #{roleIds,jdbcType=VARCHAR}, #{organization,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
@@ -139,7 +140,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{account,jdbcType=DOUBLE}, #{contributeScore,jdbcType=DOUBLE}, 
       #{honerScore,jdbcType=DOUBLE}, #{gradeTotal,jdbcType=DOUBLE}, #{gradeTimes,jdbcType=INTEGER},
       #{withdrawAccount,jdbcType=VARCHAR}, #{wirhdrawAccontType,jdbcType=VARCHAR}, #{regid,jdbcType=VARCHAR}, 
-      #{alias,jdbcType=VARCHAR}, #{topic,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, #{cookie,jdbcType=VARCHAR})
+      #{alias,jdbcType=VARCHAR}, #{topic,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, #{cookie,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.User" >
     insert into hh_user
@@ -243,6 +244,9 @@
       <if test="cookie != null" >
         cookie,
       </if>
+      <if test="description != null" >
+        description,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -343,6 +347,9 @@
       </if>
       <if test="cookie != null" >
         #{cookie,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -446,6 +453,9 @@
       <if test="cookie != null" >
         cookie = #{cookie,jdbcType=VARCHAR},
       </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -482,7 +492,8 @@
       topic = #{topic,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR},
       photo = #{photo,jdbcType=VARCHAR},
-      cookie = #{cookie,jdbcType=VARCHAR}
+      cookie = #{cookie,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
