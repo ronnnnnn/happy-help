@@ -130,7 +130,12 @@ public class AppTaskInfoController extends BaseController{
                 taskInfo.setIsFree(true);
             }
             taskInfo.setPhone(appTaskInfoModel.getContactPhone());
-            taskInfo.setMoney(Double.valueOf(appTaskInfoModel.getMoney()));
+            if(appTaskInfoModel.getMoney().intern() == "".intern()){
+                taskInfo.setMoney(0d);
+            }else {
+                taskInfo.setMoney(Double.valueOf(appTaskInfoModel.getMoney()));
+            }
+
             taskInfo.setHhUserId(userservice.findByUsername(appTaskInfoModel.getUsername()).getId());
             taskInfo.setHhCategoryId(categoryService.getByCategoryName(appTaskInfoModel.getCategoryName()).getId());
             taskInfoService.save(taskInfo);
