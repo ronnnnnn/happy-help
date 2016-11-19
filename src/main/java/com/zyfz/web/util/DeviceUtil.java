@@ -10,7 +10,7 @@ public class DeviceUtil {
          * mac os : iphone ipad
          * windows phone:Nokia等windows系统的手机
          */
-        String[] deviceArray = new String[]{"android","mac os","windows phone"};
+        String[] deviceArray = new String[]{"android","windows phone"};
         if(requestHeader == null)
             return false;
         requestHeader = requestHeader.toLowerCase();
