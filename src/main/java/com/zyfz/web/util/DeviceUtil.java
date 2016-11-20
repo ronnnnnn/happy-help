@@ -10,12 +10,14 @@ public class DeviceUtil {
          * mac os : iphone ipad
          * windows phone:Nokia等windows系统的手机
          */
-        String[] deviceArray = new String[]{"android","windows phone"};
+        String[] deviceArray = new String[]{"android","windows phone", "okhttp"};
         if(requestHeader == null)
             return false;
         requestHeader = requestHeader.toLowerCase();
         for(int i=0;i<deviceArray.length;i++){
             if(requestHeader.indexOf(deviceArray[i])>0){
+                return true;
+            } else if (requestHeader.intern().contains(deviceArray[i].intern())) {
                 return true;
             }
         }
