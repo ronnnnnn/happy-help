@@ -127,6 +127,8 @@
                 /ueditor/** = anon
                 /jquery-treetable/** = anon
                 /test = anon
+                /notify.jsp = anon
+                /signatures_url.jsp = anon
                 /api/v1/sms/** = anon
                 /api/v1/user/reg = anon
                 /api/v1/anon/** = anon
