@@ -2,6 +2,7 @@ package com.zyfz.web.controller;
 
 import com.zyfz.domain.Captcha;
 import com.zyfz.domain.User;
+import com.zyfz.model.AppUserInfoModel;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ICaptchaService;
 import com.zyfz.service.IUserservice;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.jws.soap.SOAPBinding;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +84,7 @@ public class AppUserController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/api/v1/anon/user/new/password",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/user/new/password",method = RequestMethod.POST)
     public void updateUserPassword(User user, HttpServletResponse response){
 
          try {
@@ -114,4 +116,22 @@ public class AppUserController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/api/v1/anon/user",method = RequestMethod.POST)
+    public void updateUser(AppUserInfoModel appUserInfoModel, HttpServletRequest request){
+        User user = new User();
+        if (appUserInfoModel.getAvater() != null){
+            String imageUrl = super.saveUploadFile(request,appUserInfoModel.getAvater(),"head","jpg");
+            user.setPhoto(imageUrl);
+        }
+        if (appUserInfoModel.getAddress() != null){
+            user.setCurrentArea(appUserInfoModel.getAddress());
+        }
+        if (appUserInfoModel.getEmail() != null){
+            user.setEmail(appUserInfoModel.getEmail());
+        }
+        if (appUserInfoModel.getNickname() != null){
+            user.setNickname(appUserInfoModel.getNickname());
+        }
+
+    }
 }
