@@ -48,6 +48,23 @@
       <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/taobao-api-20160607.jar</systemPath>
     </dependency>
 
+    <!-- 小米推送 -->
+    <dependency>
+      <groupId>com.xiaomi</groupId>
+      <artifactId>MiPush_SDK_Server</artifactId>
+      <version>2_2_17</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/MiPush_SDK_Server_2_2_17.jar</systemPath>
+    </dependency>
+
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar</systemPath>
+    </dependency>
+
     <!-- spring核心包 -->
     <dependency>
       <groupId>org.springframework</groupId>

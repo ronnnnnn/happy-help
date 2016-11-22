@@ -1,4 +1,11 @@
 1.解决@RequestParam参数接受中文乱码,需要修改tomcat
+    server.xml下
     <Connector port="8081" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443" URIEncoding="UTF-8"/>
+
+2.配置tomcat虚拟路径保存图片
+    在$CATALINA_BASE/conf/localhost/中添加一个.xml文件，(pic.xml)
+    pic.xml文件中的内容如下：
+    <Context docBase="/var/www/files" />
+

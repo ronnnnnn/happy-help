@@ -1,11 +1,9 @@
 package com.zyfz.web.controller;
 
-import com.sun.org.glassfish.gmbal.ParameterNames;
 import com.zyfz.domain.Setting;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ISettingService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

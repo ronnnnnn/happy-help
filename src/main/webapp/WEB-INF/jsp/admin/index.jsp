@@ -4,7 +4,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>Index</title>
+<title>乐助风内容管理系统</title>
+<%--<% String path = request.getContextPath();%>--%>
+<%--<link rel="icon" href="<%=path%>/favicon.ico" mce_href="<%=path%>/favicon.ico" type="image/x-icon">--%>
+<%--<link rel="shortcut icon" href="<%=path%>/favicon.ico" mce_href="<%=path%>/favicon.ico" type="image/x-icon">--%>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -138,7 +141,7 @@
 <body class="easyui-layout">
 	<div data-options="region:'north'" style="height: 70px;background-color: #0081C2">
 		<div  style="float: left;padding: 13px">
-			<h1 align="center" style="margin-left: 20px;color: #d9edf7;">乐助后台管理</h1>
+			<h1 align="center" style="margin-left: 20px;color: #d9edf7;">乐助风内容管理系统</h1>
 		</div>
 
 		<div style="float: right;padding: 17px">
