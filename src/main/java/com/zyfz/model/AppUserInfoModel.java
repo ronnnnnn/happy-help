@@ -6,12 +6,48 @@ import org.springframework.web.multipart.MultipartFile;
  * Created by ron on 16-11-22.
  */
 public class AppUserInfoModel {
+    private Integer id;
     private String username;
     private MultipartFile avater;
     private String nickname;
     private String email;
+    private String province;
+    private String city;
+    private String area;
     private String address;
     private String synopsis;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
 
     public String getUsername() {
         return username;

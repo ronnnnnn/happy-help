@@ -116,21 +116,43 @@ public class AppUserController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/api/v1/anon/user",method = RequestMethod.POST)
-    public void updateUser(AppUserInfoModel appUserInfoModel, HttpServletRequest request){
-        User user = new User();
-        if (appUserInfoModel.getAvater() != null){
-            String imageUrl = super.saveUploadFile(request,appUserInfoModel.getAvater(),"head","jpg");
-            user.setPhoto(imageUrl);
-        }
-        if (appUserInfoModel.getAddress() != null){
-            user.setCurrentArea(appUserInfoModel.getAddress());
-        }
-        if (appUserInfoModel.getEmail() != null){
-            user.setEmail(appUserInfoModel.getEmail());
-        }
-        if (appUserInfoModel.getNickname() != null){
-            user.setNickname(appUserInfoModel.getNickname());
+    @RequestMapping(value = "/api/v1/user",method = RequestMethod.POST)
+    public void updateUser(AppUserInfoModel appUserInfoModel, HttpServletRequest request,HttpServletResponse response){
+
+        try {
+            User user = new User();
+            if (appUserInfoModel.getAvater() != null){
+                String imageUrl = super.saveUploadFile(request,appUserInfoModel.getAvater(),"head","jpg");
+                user.setPhoto(imageUrl);
+            }
+            if (appUserInfoModel.getAddress() != null){
+                user.setCurrentArea(appUserInfoModel.getAddress());
+            }
+            if (appUserInfoModel.getEmail() != null){
+                user.setEmail(appUserInfoModel.getEmail());
+            }
+            if (appUserInfoModel.getNickname() != null){
+                user.setNickname(appUserInfoModel.getNickname());
+            }
+            if (appUserInfoModel.getProvince() != null){
+                user.setProvince(appUserInfoModel.getProvince());
+            }
+            if (appUserInfoModel.getCity() != null){
+                user.setCity(appUserInfoModel.getCity());
+            }
+            if (appUserInfoModel.getArea() != null){
+                user.setArea(appUserInfoModel.getArea());
+            }
+            if (appUserInfoModel.getSynopsis() != null){
+                user.setDescription(appUserInfoModel.getSynopsis());
+            }
+            user.setId(appUserInfoModel.getId());
+            userservice.update(user);
+            super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","系统内部错误!");
+            super.writeJson(new ResponseMessage<Map>(50101,"系统内部错误",map),response);
         }
 
     }
