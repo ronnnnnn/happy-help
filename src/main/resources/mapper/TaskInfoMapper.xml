@@ -95,7 +95,7 @@
   <select id="selectTaskInfoWithUserByKey" parameterType="java.lang.String"  resultMap="TaskInfoWithUserMap">
     SELECT t.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
     FROM happy_help.hh_task_info t left join happy_help.hh_user u on t.hh_user_id = u.id
-    WHERE t.title LIKE #{taskinfoKey,jdbcType=VARCHAR}
+    WHERE t.context LIKE #{taskinfoKey,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

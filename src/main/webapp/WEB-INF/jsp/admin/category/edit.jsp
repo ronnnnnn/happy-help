@@ -17,6 +17,10 @@
                 <td><input id="cat-categoryName" name="categoryName" class="easyui-validatebox" style="width: 100%" <c:if test="${!empty category.categoryName}">value="${category.categoryName}"</c:if>/></td>
             </tr>
             <tr>
+                <th>推送标识</th>
+                <td><input id="cat-topic" name="topic" class="easyui-validatebox" style="width: 100%" <c:if test="${!empty category.categoryName}">value="${category.topic}"</c:if>/></td>
+            </tr>
+            <tr>
                 <th>类别编码</th>
                 <td><input  id="cat-categoryCode"  class="easyui-validatebox"  name="categoryCode" style="width: 100%" <c:if test="${!empty category.categoryCode}">value="${category.categoryCode}"</c:if>/></td>
             </tr>

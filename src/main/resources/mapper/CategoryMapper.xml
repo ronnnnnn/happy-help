@@ -9,11 +9,12 @@
     <result column="parent_ids" property="parentIds" jdbcType="VARCHAR" />
     <result column="priority" property="priority" jdbcType="INTEGER" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="topic" property="topic" jdbcType="VARCHAR" />
   </resultMap>
 
 
   <sql id="Base_Column_List" >
-    id, category_name, category_code, parent_id, parent_ids, priority, description
+    id, category_name, category_code, parent_id, parent_ids, priority, description , topic
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -44,10 +45,10 @@
   <insert id="insert" parameterType="com.zyfz.domain.Category" >
     insert into hh_category (id, category_name, category_code, 
       parent_id, parent_ids, priority, 
-      description)
+      description,topic)
     values (#{id,jdbcType=INTEGER}, #{categoryName,jdbcType=VARCHAR}, #{categoryCode,jdbcType=VARCHAR}, 
       #{parentId,jdbcType=INTEGER}, #{parentIds,jdbcType=VARCHAR}, #{priority,jdbcType=INTEGER}, 
-      #{description,jdbcType=VARCHAR})
+      #{description,jdbcType=VARCHAR},#{topic,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.Category" >
     insert into hh_category
@@ -73,6 +74,9 @@
       <if test="description != null" >
         description,
       </if>
+      <if test="topic != null" >
+        topic,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -95,6 +99,9 @@
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="topic != null" >
+        #{topic,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -120,6 +127,9 @@
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
+      <if test="topic != null" >
+        topic = #{topic,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -130,7 +140,8 @@
       parent_id = #{parentId,jdbcType=INTEGER},
       parent_ids = #{parentIds,jdbcType=VARCHAR},
       priority = #{priority,jdbcType=INTEGER},
-      description = #{description,jdbcType=VARCHAR}
+      description = #{description,jdbcType=VARCHAR},
+      topic = #{topic,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -85,6 +85,4 @@ public class MiPushUtils {
         sender.broadcast(message, topic, 0); //根据topic，发送消息到指定一组设备上，不重试。
     }
 
-
-
 }

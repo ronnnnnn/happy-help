@@ -319,7 +319,7 @@
 <div id="admin_serverInfo_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 100px;">
 		<form id="user_honer_searchForm">
-			检索文章(根据标题):<input name="serverInfokey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="serverInfoSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="serverInfoClearFun()">清空</a>
+			检索文章(根据内容):<input name="serverInfokey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="serverInfoSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="serverInfoClearFun()">清空</a>
 		</form>
 		<form id="admin_helpinfo_gethelpForm" method="post">
 			<input type="hidden" id="vcategoryId" name="vcategoryId" style="width: 10%">

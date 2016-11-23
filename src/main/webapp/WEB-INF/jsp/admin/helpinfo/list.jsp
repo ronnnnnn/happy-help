@@ -335,7 +335,7 @@
 <div id="admin_helpinfo_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height:100px;">
 		<form id="user_honer_searchForm">
-			检索帮助消息(根据标题):<input name="helpinfokey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="helpinfoSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="helpinfoClearFun()">清空</a>
+			检索帮助消息(根据内容):<input name="helpinfokey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="helpinfoSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="helpinfoClearFun()">清空</a>
 		</form>
 		<form id="admin_helpinfo_gethelpForm" method="post">
 			<input type="hidden" id="hcategoryId" name="hhCategoryId" style="width: 10%">

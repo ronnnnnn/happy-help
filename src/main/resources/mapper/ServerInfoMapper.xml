@@ -56,7 +56,7 @@
   <select id="selectByCIDWithUserWithKey" parameterType="java.lang.String" resultMap="ServerInfoWithUserMap">
     SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
-    where  si.title like #{key,jdbcType=VARCHAR}
+    where  si.context like #{key,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

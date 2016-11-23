@@ -128,11 +128,6 @@
                 align : 'center',
                 //hidden : true,
                 checkbox : true
-            }, {
-                field : 'title',
-                title : '标题',
-                width : fixWidth(0.05),
-                align : 'center',
             },{
                 field : 'context',
                 title : '内容',
@@ -298,8 +293,6 @@
 
     function taskinfoClearFun() {
         $('#admin_taskinfo_layout input[name=taskinfokey]').val('');
-        var initurl = '${pageContext.request.contextPath}/taskinfo/list';
-        taskinfoInit(initurl);
     }
 
     function taskinfoxsImport() {
@@ -361,7 +354,7 @@
 <div id="admin_taskinfo_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height:100px;">
 		<form id="user_honer_searchForm">
-			检索帮助消息(根据标题):<input name="taskinfokey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="taskinfoSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="taskinfoClearFun()">清空</a>
+			检索帮助消息(根据内容):<input name="taskinfokey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="taskinfoSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="taskinfoClearFun()">清空</a>
 		</form>
 		<form id="admin_taskinfo_getTaskForm" method="post">
 			<input type="hidden" id="categoryId" name="hhCategoryId" style="width: 10%">

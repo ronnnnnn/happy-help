@@ -17,6 +17,7 @@
     <thead>
         <tr>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">类别名称</th>
+            <th style="font-size: 14px; padding : 8px;background: #F4F4F4">推送标识</th>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">类别编码</th>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">说明</th>
             <th style="font-size: 14px; padding : 8px;background: #F4F4F4">操作</th>
@@ -26,6 +27,7 @@
         <c:forEach items="${categoryList}" var="category">
             <tr  data-tt-id='${category.id}' <c:if test="${not category.rootNode}">data-tt-parent-id='${category.parentId}'</c:if>>
                 <td style="font-size: 14px; padding : 8px;">${category.categoryName}</td>
+                <td style="font-size: 14px; padding : 8px;">${category.topic}</td>
                 <td style="font-size: 14px; padding : 8px;">${category.categoryCode}</td>
                 <td style="font-size: 14px; padding : 8px;">${category.description}</td>
                 <td style="font-size: 14px; padding : 8px;">
@@ -81,6 +83,7 @@
                     var parentId = $('#cat-parentId').val();
                     var parentIds = $('#cat-parentIds').val();
                     var categoryName = $('#cat-categoryName').val();
+                    var topic = $('#cat-topic').val();
                     var categoryCode = $('#cat-categoryCode').val();
                     var description = $('#cat-description').val();
                     var priority = $('#cat-priority').val();
@@ -91,7 +94,7 @@
                         url: '${pageContext.request.contextPath}/category/'+categoryId+'/appendChild',
                         processData: false,
                         dataType: 'json',
-                        data : '{"parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","categoryName":\"'+categoryName+'\","categoryCode":\"'+categoryCode+'\","description":\"'+description+'\","priority":\"'+priority+'\"}',
+                        data : '{"parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","categoryName":\"'+categoryName+'\","categoryCode":\"'+categoryCode+'\","description":\"'+description+'\","priority":\"'+priority+'\","topic":\"'+topic+'\"}',
                         success: function(data) {
                             d.dialog('destroy');
                             var currTab =  $('#lyout_center_tabs').tabs('getSelected'); //获得当前tab
@@ -128,6 +131,7 @@
                     var parentId = $('#cat-parentId').val();
                     var parentIds = $('#cat-parentIds').val();
                     var categoryName = $('#cat-categoryName').val();
+                    var topic = $('#cat-topic').val();
                     var categoryCode = $('#cat-categoryCode').val();
                     var description = $('#cat-description').val();
                     var priority = $('#cat-priority').val();
@@ -137,7 +141,7 @@
                         url: '${pageContext.request.contextPath}/category/'+categoryId+'/update',
                         processData: false,
                         dataType: 'json',
-                        data : '{"id":\"'+id+'\","parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","categoryName":\"'+categoryName+'\","categoryCode":\"'+categoryCode+'\","description":\"'+description+'\","priority":\"'+priority+'\"}',
+                        data : '{"id":\"'+id+'\","parentId":\"'+parentId+'\","parentIds":\"'+parentIds+'\","categoryName":\"'+categoryName+'\","categoryCode":\"'+categoryCode+'\","description":\"'+description+'\","priority":\"'+priority+'\","topic":\"'+topic+'\"}',
                         success: function(data) {
                             d.dialog('destroy');
                             var currTab =  $('#lyout_center_tabs').tabs('getSelected'); //获得当前tab

@@ -45,7 +45,7 @@ public class ArticleController extends BaseController {
     @RequiresPermissions("article:view")
     @RequestMapping(value = "/search/{articleKey}",method = RequestMethod.POST)
     public void getArticleByLike(@PathVariable String articleKey, PageModel pageModel,HttpServletResponse response){
-        super.writeJson(articleService.getArticlByTitleLike(pageModel,articleKey),response);
+        super.writeJson(articleService.getArticlByContextLike(pageModel,articleKey),response);
     }
 
     @RequiresPermissions("article:create")

@@ -83,12 +83,6 @@
 					articleRemove();
 				}
 			}, '-', {
-				text : '修改',
-				iconCls : 'icon-edit',
-				handler : function() {
-					articleEditFun();
-				}
-			}, '-', {
 				text : '通过审核',
 				iconCls : 'icon-edit',
 				handler : function() {
@@ -350,7 +344,7 @@
 <div id="admin_article_layout" class="easyui-layout" data-options="fit:true,border:false">
 	<div data-options="region:'north',title:'查询条件',border:false" style="height: 70px;">
 		<form id="user_honer_searchForm">
-			检索文章(根据标题):<input name="articlekey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="articleSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="articleClearFun()">清空</a>
+			检索文章(根据内容):<input name="articlekey" /> </a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="articleSearchFun()">查询</a> <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-back'" onclick="articleClearFun()">清空</a>
 		</form>
 	</div>
 	<div data-options="region:'center',border:false">

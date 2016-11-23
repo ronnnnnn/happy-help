@@ -69,7 +69,7 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     @Override
-    public Datagrid getArticlByTitleLike(PageModel pageModel,String title) {
+    public Datagrid getArticlByContextLike(PageModel pageModel,String title) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
         String mytitle = "%" + title + "%";
         List<Article> articles = articleMapper.selectByTitleLike(mytitle);

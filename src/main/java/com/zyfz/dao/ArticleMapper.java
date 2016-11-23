@@ -18,7 +18,7 @@ public interface ArticleMapper {
 
     List<Article> selectAllWithUser();
 
-    List<Article> selectByTitleLike(String title);
+    List<Article> selectByTitleLike(String key);
 
     int updateByPrimaryKeySelective(Article record);
 
