@@ -1,7 +1,12 @@
 package com.zyfz.domain;
 
+import com.zyfz.service.ICaptchaService;
+import com.zyfz.service.ICategoryService;
+import com.zyfz.service.impl.CategoryServiceImpl;
+import org.springframework.context.annotation.Bean;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +16,8 @@ import java.util.List;
  */
 
 public class TaskInfo {
+
+
     private Integer id;
 
     private String title;//标题
@@ -38,6 +45,8 @@ public class TaskInfo {
     private Boolean isDeleted; //服务是否下架
 
     private Integer hhCategoryId;  //所属类别Id
+
+    private String categoryName;
 
     private Integer hhUserId; //发布者id
 
@@ -276,4 +285,11 @@ public class TaskInfo {
         }
     }
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 }

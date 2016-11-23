@@ -88,6 +88,7 @@ public class AppTaskInfoController extends BaseController{
                 pageModel.setPage(pn);
                 pageModel.setRows(10);
             }
+            Datagrid datagrid = new Datagrid();
             super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskInfoService.getTaskInfoWithUserByCategoryAndStatus(taskInfo,pageModel)),response);
 
         }catch (Exception e){
