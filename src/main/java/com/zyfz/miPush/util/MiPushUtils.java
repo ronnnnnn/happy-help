@@ -1,6 +1,8 @@
 package com.zyfz.miPush.util;
 
 import com.xiaomi.xmpush.server.*;
+import com.zyfz.domain.Push;
+import com.zyfz.model.AppPushModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,38 +39,6 @@ public class MiPushUtils {
     public final static int TYPE_ANDROID = 0;
     public final static int TYPE_IOS = 1;
 
-    /**
-     * 根据regid发送一条短信
-     *
-     * @param title
-     * @param content
-     * @param regId
-     * @param deviceType
-     * @throws Exception
-     */
-    /**
-     * 调用小米推送
-     */
-
-
-//    private Result sendMessage(String title, String content, String regId, int deviceType) throws Exception {
-//        Constants.useSandbox();
-//        Sender sender = null;
-//        sender = new Sender(ANDROID_APP_SECRET); //需要根据appSecert来发送
-//        Message message = buildMessage(title, content, deviceType);
-//        Result result = sender.send(message, regId, 0); //根据regID，发送消息到指定设备上，不重试。
-//        return result;
-//    }
-//
-//    /**
-//     * TargetedMessage封装了MiPush推送服务系统中的消息Message对象，和该Message对象所要发送到的目标
-//     *
-//     * @param pushBeans
-//     * @param userMobile
-//     * @param deviceType
-//     * @return
-//     * @throws ChaEChaException
-//     */
 
     /**
      * 构建android推送信息
@@ -77,10 +47,11 @@ public class MiPushUtils {
      * @param content
      * @return
      */
-    private Message buildMessage2Android(String title, String content) throws Exception {
+    private Message buildMessage(String title, String content,String messagePayload) throws Exception {
         Message message = new Message.Builder()
                 .title(title)   //通知栏展示的通知的标题
                 .description(content).payload(content)  //通知栏展示的通知描述
+                .payload(messagePayload)
                 .restrictedPackageName(ANDROID_PACKAGE_NAME)//设置包名
                 .passThrough(PASS_THROUGH)  //消息使用透传方式
                 .notifyType(NOTIFY_TYPE) // 使用默认提示音提示
@@ -88,6 +59,32 @@ public class MiPushUtils {
                 .build();
         return message;
     }
+
+    /**
+     * 根据别名推送
+     * @param pushes  用户别名表实体
+     * @param appPushModel  推送内容
+     * @throws Exception
+     */
+
+    private void sendMessageToAliases(List<Push> pushes, AppPushModel appPushModel) throws Exception {
+        Constants.useOfficial();
+        Sender sender = new Sender(ANDROID_APP_SECRET);
+        List<String> aliasList = new ArrayList<String>();
+        for (Push push : pushes){
+            aliasList.add(push.getAlias());  //alias非空白，不能包含逗号，长度小于128。
+        }
+        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload());
+        sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。
+    }
+
+    private void sendBroadcast(String topic,AppPushModel appPushModel) throws Exception {
+        Constants.useOfficial();
+        Sender sender = new Sender(ANDROID_APP_SECRET);
+        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload());
+        sender.broadcast(message, topic, 0); //根据topic，发送消息到指定一组设备上，不重试。
+    }
+
 
 
 }

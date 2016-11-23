@@ -1,5 +1,7 @@
 package com.zyfz.domain;
 
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -233,7 +235,23 @@ public class TaskInfo {
 
 
     public String getDetailAddress(){
-        return province+"/"+country+"/"+area+"/"+street+"/"+detailPosition;
+        List<String> da = new ArrayList<String>();
+        if (country != null){
+            da.add(country);
+        }
+        if (province != null){
+            da.add(province);
+        }
+        if (city != null){
+            da.add(city);
+        }
+        if (area != null){
+            da.add(area);
+        }
+        if (street != null){
+            da.add(street);
+        }
+        return StringUtils.collectionToDelimitedString(da,",");
     }
 
     public Boolean getIsImage(){
