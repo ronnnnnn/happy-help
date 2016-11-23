@@ -12,5 +12,5 @@ public class MiPushConfig {
 
     public static String ANDROID_APP_KEY = "5511751639390";
 
-    public static String ANDROID_APP_PACKAGE = "me.dengfengdecao.happyhelp";
+    public static String ANDROID_PACKAGE_NAME = "me.dengfengdecao.happyhelp";
 }
