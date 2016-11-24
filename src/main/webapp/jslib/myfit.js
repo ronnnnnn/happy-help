@@ -10,11 +10,12 @@ function fixWidth(percent)
     return (document.body.clientWidth - 5) * percent ;
 }
 
-function showMoreContent(content) {
+function showMoreContent(obj) {
+    console.info($(obj).data('context'));
     var mydiv = $('<div style="word-break:break-all"/>').dialog({
         width : 270,
         height : 200,
-        content : content,
+        content : $(obj).data('context'),
         modal : true,
         align : 'center',
         title : '完整内容',

@@ -132,7 +132,7 @@
                 width : fixWidth(0.10),
                 align : 'center',
 				formatter : function(value, row, index) {
-					return '<p style="width:100%;overflow: hidden;text-overflow: ellipsis"  onclick=showMoreContent("'+row.context+'")>'+row.context+'</p>'
+					return '<p style="width:100%; line-height:1.4em;height:2.8em;overflow:hidden;text-overflow: ellipsis" data-context="'+row.context+'" onclick="showMoreContent(this)">'+row.context+'</p>'
 				},
             },{
                 field : 'areaRange',
