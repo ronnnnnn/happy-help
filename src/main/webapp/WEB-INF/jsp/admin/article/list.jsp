@@ -35,6 +35,9 @@
 				title : '内容',
 				width : fixWidth(0.20),
 				align : 'center',
+				formatter : function(value, row, index) {
+					return '<p style="width:100%;overflow: hidden;text-overflow: ellipsis"  onclick=showMoreContent("'+row.context+'")>'+row.context+'</p>'
+				},
 			},{
 				field : 'imageUrl',
 				title : '插图',
@@ -47,7 +50,7 @@
 			},{
 				field : 'createTime',
 				title : '创建时间',
-				width : fixWidth(0.06),
+				width : fixWidth(0.1),
 				align : 'center',
 			},{
 				field : 'isPass',
@@ -67,13 +70,15 @@
 				width : fixWidth(0.25),
 				align : 'center',
 				formatter : function(value, row, index) {
-					var mstrig = "";
-					try {
-						mstrig = "用户名："+row.user.username+",手机号："+row.user.phone+",昵称："+row.user.nickname;
-						return mstrig;
-					}catch(e){
-						return mstrig;
-					}
+//					var mstrig = "";
+//					try {
+//						mstrig = "用户名："+row.user.username+",手机号："+row.user.phone+",昵称："+row.user.nickname;
+//						return mstrig;
+//					}catch(e){
+//						return mstrig;
+//					}
+					var attag = '<a onclick=atshowMore("'+row.user.username+','+row.user.phone+','+row.user.nickname+'")>'+row.user.username+'</a>';
+					return attag;
 				},
 			}] ],
 			toolbar : [ {
@@ -94,15 +99,34 @@
 				handler : function() {
 					commentManage();
 				}
-			}]
+			}],
+
 		});
+	}
+
+	function atshowMore(infos) {
+		var minfos = infos.split(",");
+		$("#atdetail").html("");
+		var text = "<h2>用户名:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[0] +"</h3>"
+		$("#atdetail").append(text);
+		$("#atdetail").append("<hr/>");
+		var text2 = "<h2>联系方式:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[1] +"</h3>"
+		$("#atdetail").append(text2);
+		$("#atdetail").append("<hr/>");
+		var text3 = "<h2>昵称:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[2] +"</h3>"
+		$("#atdetail").append(text3);
+		$("#atdetail").append("<hr/>");
+		$('#atdetail').dialog('open');
 	}
 
 	function showPic(picUrl) {
 		$("#mpic").html("");
-		var img = "<img src='"+picUrl+"' width='100%' height='100%'/>";
-		$("#mpic").append(img);
-		$("#mpic").append("<br/><hr/><br/>");
+		var picUrls  = picUrl.split(",");
+		for(var i = 0 ; i < picUrls.length; i++){
+			var img = "<img src='"+picUrls[i]+"' width='100%' height='100%'/>";
+			$("#mpic").append(img);
+			$("#mpic").append("<br/><hr/><br/>");
+		}
 		$('#mpic').dialog('open');
 	}
 
@@ -362,6 +386,15 @@
                       	$('#mpic').dialog('close');
 					}}]"
 	 style="width: 350px; height: 300px;" title="添加用户">
+</div>
+
+<div id="atdetail" class="easyui-dialog"
+	 data-options="closed:true,modal:true,title:'显示用户详情',buttons:[{
+					text : '确定',
+					handler : function() {
+                      	$('#atdetail').dialog('close');
+					}}]"
+	 style="width: 250px; height: 300px;" title="显示详情">
 </div>
 
 </body>

@@ -118,6 +118,9 @@
 				title : '内容',
 				width : fixWidth(0.20),
 				align : 'center',
+				formatter : function(value, row, index) {
+					return '<p style="width:100%;overflow: hidden;text-overflow: ellipsis"  onclick=showMoreContent("'+row.context+'")>'+row.context+'</p>'
+				},
 			},{
 				field : 'imageUrl',
 				title : '插图',
@@ -161,13 +164,14 @@
 				width : fixWidth(0.25),
 				align : 'center',
 				formatter : function(value, row, index) {
-					var mstrig = "";
-					try {
-						mstrig = "用户名："+row.user.username+",手机号："+row.user.phone+",昵称："+row.user.nickname;
-						return mstrig;
-					}catch(e){
-						return mstrig;
-					}
+//					var mstrig = "";
+//					try {
+						//mstrig = "用户名："+row.user.username+",手机号："+row.user.phone+",昵称："+row.user.nickname;
+						var atag = '<a onclick=showMore("'+row.user.username+','+row.user.phone+','+row.user.nickname+'")>'+row.user.username+'</a>';
+						return atag;
+//					}catch(e){
+//						return mstrig;
+//					}
 				},
 			}] ],
 			toolbar : [ {
@@ -183,6 +187,18 @@
 					serverInfoPass();
 				}
 			}, '-', {
+				text : '下架',
+				iconCls : 'icon-edit',
+				handler : function() {
+					serverInfoUpdateStatus("down");
+				}
+			}, '-', {
+				text : '上架',
+				iconCls : 'icon-edit',
+				handler : function() {
+					serverInfoUpdateStatus("up");
+				}
+			}, '-', {
 				text : '评论管理',
 				iconCls : 'icon-edit',
 				handler : function() {
@@ -192,6 +208,21 @@
 		});
 	}
 
+	function showMore(infos) {
+		var minfos = infos.split(",");
+		$("#csdetail").html("");
+		var text = "<h2>用户名:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[0] +"</h3>"
+		$("#csdetail").append(text);
+		$("#csdetail").append("<hr/>");
+		var text2 = "<h2>联系方式:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[1] +"</h3>"
+		$("#csdetail").append(text2);
+		$("#csdetail").append("<hr/>");
+		var text3 = "<h2>昵称:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[2] +"</h3>"
+		$("#csdetail").append(text3);
+		$("#csdetail").append("<hr/>");
+		$('#csdetail').dialog('open');
+	}
+
 
 	function csshowPic(picUrl) {
 		$("#csmpic").html("");
@@ -199,6 +230,46 @@
 		$("#csmpic").append(img);
 		$("#csmpic").append("<br/><hr/><br/>");
 		$('#csmpic').dialog('open');
+	}
+
+	function serverInfoUpdateStatus(type) {
+		var rows = $('#admin_serverInfo_datagrid').datagrid('getChecked');
+		//	var rows=$('#admin_serverInfo_datagrid').datagrid('getSelected');
+		//	var rows=$('#admin_serverInfo_datagrid').datagrid('getSelecteds');
+		var ids = [];
+		if (rows.length > 0) {
+			$.messager.confirm('确认', '您是否要修改当前选中的选项？', function(r) {
+				if (r) {
+					for ( var i = 0; i < rows.length; i++) {
+						ids.push(rows[i].id);
+						ids.join(',')
+					}
+					$.ajax({
+						type: 'patch',
+						url : '${pageContext.request.contextPath}/serverInfo/'+ids+"/"+type,
+						dataType : 'json',
+						success : function(d) {
+							var v = $('#admin_serverInfo_datagrid');
+							v.datagrid('reload');
+							v.datagrid('unselectAll');
+							v.datagrid('clearChecked');
+							$.messager.show({
+								title : '提示',
+								msg : '修改成功'
+							});
+						}
+					});
+
+				}
+			});
+
+		} else {
+			$.messager.show({
+				title : '提示',
+				msg : '请勾选要修改的选项！'
+			});
+		}
+
 	}
 
 
@@ -346,6 +417,15 @@
                       	$('#csmpic').dialog('close');
 					}}]"
 	 style="width: 350px; height: 300px;" title="显示图片">
+</div>
+
+<div id="csdetail" class="easyui-dialog"
+	 data-options="closed:true,modal:true,title:'显示用户详情',buttons:[{
+					text : '确定',
+					handler : function() {
+                      	$('#csdetail').dialog('close');
+					}}]"
+	 style="width: 250px; height: 300px;" title="显示详情">
 </div>
 
 </body>

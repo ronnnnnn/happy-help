@@ -131,6 +131,9 @@
                 title : '内容',
                 width : fixWidth(0.10),
                 align : 'center',
+				formatter : function(value, row, index) {
+					return '<p style="width:100%;overflow: hidden;text-overflow: ellipsis"  onclick=showMoreContent("'+row.context+'")>'+row.context+'</p>'
+				},
             },{
                 field : 'areaRange',
                 title : '推送范围',
@@ -184,22 +187,36 @@
                     }
                 },
             },{
+				field : 'isDeleted',
+				title : '是否下架',
+				width : fixWidth(0.05),
+				align : 'center',
+				formatter : function(value, row, index) {
+					if (value == true) {
+						return '下架';
+					} else {
+						return '显示中';
+					}
+				},
+			},{
                 field : 'user',
                 title : '作者信息',
                 width : fixWidth(0.2),
                 align : 'center',
                 formatter : function(value, row, index) {
-                    var mstrig = "";
-                    try {
-                        var total = Number(row.user.gradeTotal);
-                        var time =  Number(row.user.gradeTimes);
-                        var grade = total/time;
-
-                        mstrig = "用户名："+row.user.username+",手机号："+row.user.phone+",昵称："+row.user.nickname+",荣誉值："+row.user.honerScore+",评星："+grade;
-                        return mstrig;
-                    }catch(e){
-                        return mstrig;
-                    }
+//                    var mstrig = "";
+//                    try {
+//                        var total = Number(row.user.gradeTotal);
+//                        var time =  Number(row.user.gradeTimes);
+//                        var grade = total/time;
+//
+//                        mstrig = "用户名："+row.user.username+",手机号："+row.user.phone+",昵称："+row.user.nickname+",荣誉值："+row.user.honerScore+",评星："+grade;
+//                        return mstrig;
+//                    }catch(e){
+//                        return mstrig;
+//                    }
+					var htag = '<a onclick=hpshowMore("'+row.user.username+','+row.user.phone+','+row.user.nickname+'")>'+row.user.username+'</a>';
+					return htag;
                 },
             }] ],
             toolbar : [ {
@@ -208,11 +225,89 @@
                 handler : function() {
 					helpinfoRemove();
                 }
-            }]
+            }, '-', {
+				text : '下架',
+				iconCls : 'icon-edit',
+				handler : function() {
+					helpinfoUpdateStatus("down");
+				}
+			}, '-', {
+				text : '上架',
+				iconCls : 'icon-edit',
+				handler : function() {
+					helpinfoUpdateStatus("up");
+				}
+			}]
         });
     }
 
-    function helpinfoRemove() {
+	function hpshowMore(infos) {
+		var minfos = infos.split(",");
+		$("#hpdetail").html("");
+		var text = "<h2>用户名:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[0] +"</h3>"
+		$("#hpdetail").append(text);
+		$("#hpdetail").append("<hr/>");
+		var text2 = "<h2>联系方式:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[1] +"</h3>"
+		$("#hpdetail").append(text2);
+		$("#hpdetail").append("<hr/>");
+		var text3 = "<h2>昵称:</h2>"+"<h3 width='100%' style='padding-left: 20%'>"+ minfos[2] +"</h3>"
+		$("#hpdetail").append(text3);
+		$("#hpdetail").append("<hr/>");
+		$('#hpdetail').dialog('open');
+	}
+
+	function helpinfoUpdateStatus(type) {
+		var rows = $('#admin_helpinfo_datagrid').datagrid('getChecked');
+		//	var rows=$('#admin_taskinfo_datagrid').datagrid('getSelected');
+		//	var rows=$('#admin_taskinfo_datagrid').datagrid('getSelecteds');
+		var ids = [];
+		if (rows.length > 0) {
+			$.messager.confirm('确认', '您是否要修改当前选中选项的状态？', function(r) {
+				if (r) {
+					for ( var i = 0; i < rows.length; i++) {
+						ids.push(rows[i].id);
+						ids.join(',')
+					}
+					$.ajax({
+						type: 'patch',
+						url : '${pageContext.request.contextPath}/helpInfo/'+ids+"/"+type,
+						data : {
+							ids : ids.join(',')
+						},
+						dataType : 'json',
+						success : function(d) {
+							<%--var categotyId = $('#categoryId').val();--%>
+							<%--var isFree = $('#isFree').val();--%>
+							<%--var isCompeleted = $('#isCompeleted').val();--%>
+							<%--var isTop = $('#isTop').val();--%>
+							<%--var listUrl = '${pageContext.request.contextPath}/taskinfo/list/'+ categotyId + "/"+isFree+"/"+isCompeleted+"/"+isTop;--%>
+							<%--taskinfoInit(listUrl);--%>
+							var vh = $('#admin_helpinfo_datagrid');
+							vh.datagrid('reload');
+							vh.datagrid('unselectAll');
+							vh.datagrid('clearChecked');
+							$.messager.show({
+								title : '提示',
+								msg : '修改成功'
+							});
+
+						}
+					});
+
+				}
+			});
+
+		} else {
+			$.messager.show({
+				title : '提示',
+				msg : '请勾选要修改的选项！'
+			});
+		}
+
+	}
+
+
+	function helpinfoRemove() {
         var rows = $('#admin_helpinfo_datagrid').datagrid('getChecked');
         //	var rows=$('#admin_helpinfo_datagrid').datagrid('getSelected');
         //	var rows=$('#admin_helpinfo_datagrid').datagrid('getSelecteds');
@@ -354,7 +449,14 @@
 		<ul id="htree" class="ztree" style="margin-top:0; width:180px;height: 200px"></ul>
 	</div>
 </div>
-
+<div id="hpdetail" class="easyui-dialog"
+	 data-options="closed:true,modal:true,title:'显示用户详情',buttons:[{
+					text : '确定',
+					handler : function() {
+                      	$('#hpdetail').dialog('close');
+					}}]"
+	 style="width: 250px; height: 300px;" title="显示详情">
+</div>
 
 </body>
 </html>

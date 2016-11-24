@@ -84,7 +84,13 @@ public class AppUserController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/api/v1/user/new/password",method = RequestMethod.POST)
+    /**
+     * 修改密码
+     * @param user
+     * @param response
+     */
+
+    @RequestMapping(value = "/api/v1/anon/user/new/password",method = RequestMethod.POST)
     public void updateUserPassword(User user, HttpServletResponse response){
 
          try {

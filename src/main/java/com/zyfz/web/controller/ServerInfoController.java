@@ -58,6 +58,24 @@ public class ServerInfoController extends BaseController{
         return count;
     }
 
+    @RequestMapping(value = "/{ids}/{type}",method = RequestMethod.PATCH)
+    @ResponseBody
+    public Object updateDeleteStatu(@PathVariable String ids,@PathVariable String type){
+        String mids[] = ids.split(",");
+        int count = 0;
+        for (String mid:mids){
+            ServerInfo serverInfo = new ServerInfo(Integer.valueOf(mid));
+            if (type.intern() == "up"){
+                serverInfo.setIsDeleted(false);
+            }else {
+                serverInfo.setIsDeleted(true);
+            }
+            serverInfoService.update(serverInfo);
+            count++;
+        }
+        return count;
+    }
+
     @RequiresPermissions("server:update")
     @RequestMapping(value = "/{ids}",method = RequestMethod.PATCH)
     @ResponseBody

@@ -37,6 +37,7 @@ body,td,th {
     overflow:hidden;
     font-size:12px;
 	}
+
 	.text-overflow::after {
 		content:"...";
 		font-weight:bold;

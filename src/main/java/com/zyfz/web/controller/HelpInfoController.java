@@ -75,4 +75,23 @@ public class HelpInfoController extends BaseController {
         }
         return count;
     }
+
+    @RequestMapping(value="/{ids}/{type}",method = RequestMethod.PATCH)
+    @ResponseBody
+    public Object updateDeleteStatu(@PathVariable String ids,@PathVariable String type){
+        String mids[] = ids.split(",");
+        int count = 0;
+        for (String mid : mids){
+            HelpInfo helpInfo = new HelpInfo();
+            helpInfo.setId(Integer.valueOf(mid));
+            if (type.intern() == "up".intern()){
+                helpInfo.setIsDeleted(false);
+            }else {
+                helpInfo.setIsDeleted(true);
+            }
+            helpInfoService.update(helpInfo);
+            count++;
+        }
+        return count;
+    }
 }

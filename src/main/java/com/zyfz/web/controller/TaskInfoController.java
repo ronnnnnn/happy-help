@@ -93,6 +93,32 @@ public class TaskInfoController extends BaseController {
 
     }
 
+    @RequiresPermissions("task:update")
+    @RequestMapping(value = "/{ids}/{type}",method = RequestMethod.PATCH)
+    @ResponseBody
+    public Object updateDeleteStatus(@PathVariable String ids,@PathVariable String type){
+        try{
+            String mids[] = ids.split(",");
+            int count = 0;
+            for(String mid : mids){
+                TaskInfo taskInfo = new TaskInfo();
+                taskInfo.setId(Integer.valueOf(mid));
+                if (type.intern() == "up"){
+                    taskInfo.setIsDeleted(false);
+                }else {
+                    taskInfo.setIsDeleted(true);
+                }
+                taskInfoService.update(taskInfo);
+                count++;
+            }
+            return count;
+        }catch (Exception e){
+            e.printStackTrace();
+            return e.toString();
+        }
+
+    }
+
     @RequiresPermissions("task:view")
     @RequestMapping(value = "/search/{taskinfoKey}",method = RequestMethod.POST)
     public void getTaskInfoByKey(@PathVariable String taskinfoKey,PageModel pageModel,HttpServletResponse response){
