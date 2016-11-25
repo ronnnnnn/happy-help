@@ -41,7 +41,7 @@ public class AppTaskInfoController extends BaseController{
 
     @RequestMapping(value = "/api/v1/anon/taskInfo",method = RequestMethod.GET)
     public void getTaskInfo(@RequestParam("assistanceStatus") Integer assistanceStatus,
-                            @RequestParam(value = "categoryId",required = false)Integer categoryId,
+                            @RequestParam(value = "categoryName",required = false)String categoryName,
                             @RequestParam(value = "username",required = false)String username,
                             @RequestParam(value = "pn",required = false)Integer pn,
                             @RequestParam(value = "province",required = false)String province,
@@ -58,7 +58,8 @@ public class AppTaskInfoController extends BaseController{
                 taskInfo.setCity(city);
             }
 
-            if(categoryId != null){
+            if(categoryName != null){
+                Integer categoryId = categoryService.getByCategoryName(categoryName).getId();
                 taskInfo.setHhCategoryId(categoryId);
             }else  {
                 try {
