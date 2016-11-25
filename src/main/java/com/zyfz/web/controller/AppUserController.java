@@ -85,7 +85,7 @@ public class AppUserController extends BaseController {
 
 
     /**
-     * 修改密码
+     * 修改密码(忘记密码,需要验证码)
      * @param user
      * @param response
      */
@@ -110,6 +110,33 @@ public class AppUserController extends BaseController {
          }
 
     }
+
+    @RequestMapping(value = "/api/v1/user/new/password",method = RequestMethod.POST)
+    public void updateUserPasswordAfterLogin(User user, HttpServletResponse response){
+
+        try {
+            User tUser = new User();
+            tUser.setId(user.getId());
+            User user1 = userservice.getOneById(tUser);
+            user.setSalt(user1.getSalt());
+            user.setUsername(user1.getUsername());
+            if(user != null && (passwordHelper.decodePassword(user).getPassword().intern() == user1.getPassword().intern()) ){
+                userservice.changePassword(user1.getId(),user.getNewPassword());
+                super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+            }else {
+                super.writeJson(new ResponseMessage<String>(40107,"密码错误!!",null),response);
+            }
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50101,"系统内部错误!",map),response);
+        }
+
+    }
+
+
+
+
 
     @RequestMapping(value = "/api/v1/user/{username}",method = RequestMethod.GET)
     public void getUserDetail(@PathVariable String username,HttpServletResponse response){

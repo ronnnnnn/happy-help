@@ -77,7 +77,17 @@ public class User {
 
     private String captcha; //验证码
 
+    private String newPassword;
+
     private String description;
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
 
     public String getDescription() {
         return description;
