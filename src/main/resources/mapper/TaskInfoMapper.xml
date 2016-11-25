@@ -72,6 +72,9 @@
     <if test="hhCategoryId != null">
       WHERE tu.hh_category_id = #{hhCategoryId,jdbcType=INTEGER}
     </if>
+    <if test="hhCategoryId == null">
+      WHERE tu.id is not null
+    </if>
     <if test="hhUserId != null">
       WHERE tu.hh_user_id = #{hhUserId,jdbcType=INTEGER}
     </if>
