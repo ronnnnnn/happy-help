@@ -39,6 +39,16 @@ public class AppTaskInfoController extends BaseController{
     @Resource
     ICategoryService categoryService;
 
+    /**
+     *
+     * @param assistanceStatus 0为有偿求助列表，1为无偿求助列表, 2为综合，3为未帮助，4为帮助中，5为已帮助
+     * @param categoryName
+     * @param username
+     * @param pn
+     * @param province
+     * @param city
+     * @param response
+     */
     @RequestMapping(value = "/api/v1/anon/taskInfo",method = RequestMethod.GET)
     public void getTaskInfo(@RequestParam("assistanceStatus") Integer assistanceStatus,
                             @RequestParam(value = "categoryName",required = false)String categoryName,
@@ -63,7 +73,9 @@ public class AppTaskInfoController extends BaseController{
                 taskInfo.setHhCategoryId(categoryId);
             }else  {
                 try {
-                    taskInfo.setHhUserId(userservice.findByUsername(username).getId());
+                    if (username != null){
+                        taskInfo.setHhUserId(userservice.findByUsername(username).getId());
+                    }
                 }catch (Exception e){
                     Map<String,String> map = new HashMap<String, String>();
                     map.put("errMsg","请求参数错误");
@@ -78,6 +90,7 @@ public class AppTaskInfoController extends BaseController{
                 taskInfo.setIsAccept(false);
             } else if(assistanceStatus ==4){
                 taskInfo.setIsAccept(true);
+                taskInfo.setIsCompeleted(false);
             } else if(assistanceStatus == 5){
                 taskInfo.setIsCompeleted(true);
             }
@@ -89,6 +102,7 @@ public class AppTaskInfoController extends BaseController{
                 pageModel.setPage(pn);
                 pageModel.setRows(10);
             }
+
             Datagrid datagrid = new Datagrid();
             super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskInfoService.getTaskInfoWithUserByCategoryAndStatus(taskInfo,pageModel)),response);
 
