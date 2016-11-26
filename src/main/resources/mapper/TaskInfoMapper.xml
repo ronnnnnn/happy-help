@@ -258,8 +258,6 @@
     </trim>
   </insert>
 
-
-
   <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.TaskInfo">
     update hh_task_info
     <set>
