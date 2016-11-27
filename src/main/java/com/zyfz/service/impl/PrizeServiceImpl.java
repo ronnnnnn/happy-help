@@ -57,4 +57,15 @@ public class PrizeServiceImpl implements IPrizeService {
         String myKey = prizeNum + "%";
         return prizeMapper.selectByKeyLike(myKey);
     }
+
+    @Override
+    public Datagrid findAllLottery(Prize prize, PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<Prize> prizes = prizeMapper.selectAllLottery(prize);
+        PageInfo pageInfo = new PageInfo(prizes);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(prizes);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
+    }
 }

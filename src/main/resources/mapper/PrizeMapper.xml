@@ -44,6 +44,14 @@
     ORDER BY create_time DESC
   </select>
 
+  <select id="selectAllLottery" resultMap="BaseResultMap" parameterType="com.zyfz.domain.Prize">
+    select
+    <include refid="Base_Column_List" />
+    from hh_prize
+    WHERE  is_lottery = #{isLottery,jdbcType=BIT}
+    ORDER BY create_time DESC
+  </select>
+
   <insert id="insert" parameterType="com.zyfz.domain.Prize">
     insert into hh_prize (id, prize_num, prize_money, 
       user_ids, user_names, hh_phones,article_phones, is_lottery,

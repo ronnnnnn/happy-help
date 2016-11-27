@@ -1,6 +1,8 @@
 package com.zyfz.service;
 
 import com.zyfz.domain.Prize;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 
 import java.util.List;
 
@@ -9,4 +11,6 @@ import java.util.List;
  */
 public interface IPrizeService extends IBaseService<Prize> {
     public List<Prize> findByKeyLike(String prizeNum);
+
+    public Datagrid findAllLottery(Prize prize, PageModel pageModel);
 }

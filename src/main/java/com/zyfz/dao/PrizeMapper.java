@@ -21,4 +21,6 @@ public interface PrizeMapper {
     int updateByPrimaryKey(Prize record);
 
     List<Prize> selectByKeyLike(String prizeNum);
+
+    List<Prize> selectAllLottery(Prize prize);
 }

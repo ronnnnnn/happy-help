@@ -1,5 +1,6 @@
 package com.zyfz.web.controller;
 
+import com.zyfz.domain.Prize;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.model.ResponseMessage;
@@ -31,7 +32,9 @@ public class AppPeizedController extends BaseController {
             PageModel pageModel = new PageModel();
             pageModel.setPage(1);
             pageModel.setRows(20);
-            super.writeJson(new ResponseMessage<Datagrid>(0,"success",prizeService.getAll(pageModel)),response);
+            Prize prize = new Prize();
+            prize.setIsLottery(true);
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",prizeService.findAllLottery(prize,pageModel)),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg","响应失败!");
