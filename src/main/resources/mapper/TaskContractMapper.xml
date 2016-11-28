@@ -1,122 +1,139 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.zyfz.dao.TaskContractMapper" >
-  <resultMap id="BaseResultMap" type="com.zyfz.domain.TaskContract" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="status" property="status" jdbcType="INTEGER" />
-    <result column="money" property="money" jdbcType="VARCHAR" />
-    <result column="hh_task_info_id" property="hhTaskInfoId" jdbcType="INTEGER" />
-    <result column="talk_times" property="talkTimes" jdbcType="INTEGER" />
-    <result column="hh_user_id" property="hhUserId" jdbcType="INTEGER" />
-    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zyfz.dao.TaskContractMapper">
+  <resultMap id="BaseResultMap" type="com.zyfz.domain.TaskContract">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="hh_task_info_id" jdbcType="INTEGER" property="hhTaskInfoId" />
+    <result column="talk_times" jdbcType="INTEGER" property="talkTimes" />
+    <result column="hh_user_id" jdbcType="INTEGER" property="hhUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
-
-
-  <sql id="Base_Column_List" >
-    id, status, money, hh_task_info_id, talk_times, hh_user_id, create_time
+  <sql id="Base_Column_List">
+    id, status, money, content, hh_task_info_id, talk_times, hh_user_id, create_time
   </sql>
 
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from hh_task_contract
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+  <select id="selectByHhUserIdAndTaskInfoId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_task_contract
+    where hh_user_id = #{hhUserId,jdbcType=INTEGER} and hh_task_info_id = #{hhTaskInfoId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hh_task_contract
     where id = #{id,jdbcType=INTEGER}
   </delete>
-
-  <insert id="insert" parameterType="com.zyfz.domain.TaskContract" >
+  <insert id="insert" parameterType="com.zyfz.domain.TaskContract">
     insert into hh_task_contract (id, status, money, 
-      hh_task_info_id, talk_times, hh_user_id, 
-      create_time)
-    values (#{id,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{money,jdbcType=VARCHAR}, 
-      #{hhTaskInfoId,jdbcType=INTEGER}, #{talkTimes,jdbcType=INTEGER}, #{hhUserId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      content, hh_task_info_id, talk_times, 
+      hh_user_id, create_time)
+    values (#{id,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{money,jdbcType=DOUBLE}, 
+      #{content,jdbcType=VARCHAR}, #{hhTaskInfoId,jdbcType=INTEGER}, #{talkTimes,jdbcType=INTEGER}, 
+      #{hhUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.zyfz.domain.TaskContract" >
+  <insert id="insertSelective" parameterType="com.zyfz.domain.TaskContract">
     insert into hh_task_contract
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         status,
       </if>
-      <if test="money != null" >
+      <if test="money != null">
         money,
       </if>
-      <if test="hhTaskInfoId != null" >
+      <if test="content != null">
+        content,
+      </if>
+      <if test="hhTaskInfoId != null">
         hh_task_info_id,
       </if>
-      <if test="talkTimes != null" >
+      <if test="talkTimes != null">
         talk_times,
       </if>
-      <if test="hhUserId != null" >
+      <if test="hhUserId != null">
         hh_user_id,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
-      <if test="money != null" >
-        #{money,jdbcType=VARCHAR},
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
       </if>
-      <if test="hhTaskInfoId != null" >
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hhTaskInfoId != null">
         #{hhTaskInfoId,jdbcType=INTEGER},
       </if>
-      <if test="talkTimes != null" >
+      <if test="talkTimes != null">
         #{talkTimes,jdbcType=INTEGER},
       </if>
-      <if test="hhUserId != null" >
+      <if test="hhUserId != null">
         #{hhUserId,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.TaskContract" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.TaskContract">
     update hh_task_contract
-    <set >
-      <if test="status != null" >
+    <set>
+      <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="money != null" >
-        money = #{money,jdbcType=VARCHAR},
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
       </if>
-      <if test="hhTaskInfoId != null" >
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="hhTaskInfoId != null">
         hh_task_info_id = #{hhTaskInfoId,jdbcType=INTEGER},
       </if>
-      <if test="talkTimes != null" >
+      <if test="talkTimes != null">
         talk_times = #{talkTimes,jdbcType=INTEGER},
       </if>
-      <if test="hhUserId != null" >
+      <if test="hhUserId != null">
         hh_user_id = #{hhUserId,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.TaskContract" >
+  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.TaskContract">
     update hh_task_contract
     set status = #{status,jdbcType=INTEGER},
-      money = #{money,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      content = #{content,jdbcType=VARCHAR},
       hh_task_info_id = #{hhTaskInfoId,jdbcType=INTEGER},
       talk_times = #{talkTimes,jdbcType=INTEGER},
       hh_user_id = #{hhUserId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

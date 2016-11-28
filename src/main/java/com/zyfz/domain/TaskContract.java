@@ -2,9 +2,6 @@ package com.zyfz.domain;
 
 import java.util.Date;
 
-/**
- * 普通求助状态表
- */
 public class TaskContract {
     private Integer id;
 
@@ -21,7 +18,7 @@ public class TaskContract {
      0->1->2->3
 
      +++++++++++++++++++++++++++++
-     5以后记录有偿任务状态
+     5用户请求接受任务不提价
      6表示用户申请提价阶段
      7表示发布者还价阶段
      8用户接受议价 (双方达成共识,任务进行,隐含10属性)
@@ -38,17 +35,19 @@ public class TaskContract {
      6->7->6->9->11->12(用户提价,发布者还价,用户提价,发布者接受提价) 三次议价成功
 
      ----有偿任务不提价流程-------------------------
-     8->10->11->12 ()
+     5->10->11->12 ()
      */
     private Integer status;
 
-    private String money;  //记录讨价还价中的价格
+    private Double money;  //记录讨价还价中的价格
 
     private Integer hhTaskInfoId;  //服务消息
 
-    private Integer talkTimes;  //讨价还价的次数，不能超过3次
+    private String content; //附加内容
 
-    private Integer hhUserId;  //提供服务者信息
+    private Integer talkTimes;//讨价还价的次数，不能超过3次
+
+    private Integer hhUserId; //帮助者id
 
     private Date createTime;
 
@@ -68,12 +67,20 @@ public class TaskContract {
         this.status = status;
     }
 
-    public String getMoney() {
+    public Double getMoney() {
         return money;
     }
 
-    public void setMoney(String money) {
+    public void setMoney(Double money) {
         this.money = money;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public Integer getHhTaskInfoId() {

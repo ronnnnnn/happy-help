@@ -37,5 +37,7 @@ public interface IUserservice extends IBaseService<User>{
     public Datagrid getAllNormalUser(PageModel pageModel);
 
     public Datagrid getUserLike(PageModel model, String likeString,Boolean utype);
+
+    public  Datagrid findHonerOrder(PageModel pageModel);
 }
 

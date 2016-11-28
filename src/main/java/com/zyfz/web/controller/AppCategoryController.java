@@ -42,7 +42,7 @@ public class AppCategoryController extends BaseController {
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());
-            super.writeJson(new ResponseMessage<Map<String,String>>(500301,"系统内部错误",map),response);
+            super.writeJson(new ResponseMessage<Map<String,String>>(500301,"请求失败",map),response);
         }
     }
 

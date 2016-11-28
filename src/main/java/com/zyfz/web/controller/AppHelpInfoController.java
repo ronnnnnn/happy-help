@@ -77,7 +77,7 @@ public class AppHelpInfoController extends BaseController{
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("MSG","系统内部错误!");
-            super.writeJson(new ResponseMessage<Map<String,String>>(0,"系统内部错误!",map),response);
+            super.writeJson(new ResponseMessage<Map<String,String>>(0,"请求失败!",map),response);
         }
     }
 }

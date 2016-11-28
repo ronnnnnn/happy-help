@@ -1,13 +1,17 @@
 package com.zyfz.web.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.zyfz.domain.Captcha;
 import com.zyfz.domain.User;
 import com.zyfz.model.AppUserInfoModel;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ICaptchaService;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,7 +81,7 @@ public class AppUserController extends BaseController {
             }
         }catch (Exception e){
             responseMessage.setCode(50101);
-            responseMessage.setMessage("系统内部错误");
+            responseMessage.setMessage("请求失败!");
             responseMessage.setResult("null");
            super.writeJson(responseMessage,response);
         }
@@ -129,7 +133,7 @@ public class AppUserController extends BaseController {
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());
-            super.writeJson(new ResponseMessage<Map<String,String>>(50101,"系统内部错误!",map),response);
+            super.writeJson(new ResponseMessage<Map<String,String>>(50101,"请求失败!",map),response);
         }
 
     }
@@ -184,9 +188,26 @@ public class AppUserController extends BaseController {
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
-            map.put("MSG","系统内部错误!");
-            super.writeJson(new ResponseMessage<Map>(50101,"系统内部错误",map),response);
+            map.put("MSG","请求失败!");
+            super.writeJson(new ResponseMessage<Map>(50101,"请求失败!",map),response);
         }
 
+    }
+
+    /**
+     * 获取荣誉排行榜
+     */
+    @RequestMapping(value = "/api/v1/anon/honer",method = RequestMethod.GET)
+    public void getHonerScoreSort(HttpServletResponse response){
+        try {
+            PageModel pageModel = new PageModel();
+            pageModel.setPage(1);
+            pageModel.setRows(20);
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",userservice.findHonerOrder(pageModel)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","请求失败!");
+            super.writeJson(new ResponseMessage<Map>(50101,"请求失败!",map),response);
+        }
     }
 }

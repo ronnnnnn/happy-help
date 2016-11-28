@@ -29,7 +29,7 @@ public class AppShowController extends BaseController {
             List<Show> shows = showService.getPicByType(picType);
             super.writeJson(new ResponseMessage<List<Show>>(0,"success",shows),response);
         }catch (Exception e){
-            super.writeJson(new ResponseMessage<String>(50201,"系统异常",null),response);
+            super.writeJson(new ResponseMessage<String>(50201,"请求失败",null),response);
         }
     }
 }

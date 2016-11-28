@@ -195,4 +195,15 @@ public class UserServiceImpl implements IUserservice{
             return  this.findByPhone(userkey);
         }
     }
+
+    @Override
+    public Datagrid findHonerOrder(PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<User> users = userMapper.selectHonerOrder();
+        PageInfo pageInfo = new PageInfo(users);
+        Datagrid datagrid = new Datagrid();
+        datagrid.setRows(users);
+        datagrid.setTotal(pageInfo.getTotal());
+        return datagrid;
+    }
 }

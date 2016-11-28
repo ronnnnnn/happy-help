@@ -103,6 +103,13 @@
     where is_admin = 1
   </select>
 
+  <select id="selectHonerOrder" resultMap="BaseResultMap">
+    select
+    id,username,grade_total,grade_times,honer_score,photo
+    from hh_user
+    where is_admin = 0 ORDER BY honer_score DESC
+  </select>
+
   <select id="selectAllNormalUser" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

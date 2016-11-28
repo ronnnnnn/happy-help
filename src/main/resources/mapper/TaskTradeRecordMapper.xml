@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyfz.dao.TaskTradeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zyfz.domain.TaskTradeRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="hhUserId" property="hhuserid" jdbcType="INTEGER" />
+    <result column="hh_task_info_id" property="hhTaskInfoId" jdbcType="INTEGER" />
+    <result column="trade_type" property="tradeType" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, hhUserId, trade_type, content, money, create_time,hh_task_info_id
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hh_task_trade_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hh_task_trade_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyfz.domain.TaskTradeRecord" >
+    insert into hh_task_trade_record (id, hhUserId, trade_type, 
+      content, money,create_time,hh_task_info_id)
+    values (#{id,jdbcType=INTEGER}, #{hhuserid,jdbcType=INTEGER}, #{tradeType,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP},#{hhTaskInfoId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyfz.domain.TaskTradeRecord" >
+    insert into hh_task_trade_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="hhuserid != null" >
+        hhUserId,
+      </if>
+      <if test="tradeType != null" >
+        trade_type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="hhTaskInfoId != null" >
+        hh_task_info_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hhuserid != null" >
+        #{hhuserid,jdbcType=INTEGER},
+      </if>
+      <if test="tradeType != null" >
+        #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hhTaskInfoId != null" >
+        #{hhTaskInfoId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.TaskTradeRecord" >
+    update hh_task_trade_record
+    <set >
+      <if test="hhuserid != null" >
+        hhUserId = #{hhuserid,jdbcType=INTEGER},
+      </if>
+      <if test="tradeType != null" >
+        trade_type = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hhTaskInfoId != null" >
+        hh_task_info_id = #{hhTaskInfoId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.TaskTradeRecord" >
+    update hh_task_trade_record
+    set hhUserId = #{hhuserid,jdbcType=INTEGER},
+      trade_type = #{tradeType,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      hh_task_info_id = #{hhTaskInfoId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
