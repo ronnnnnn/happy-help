@@ -1,7 +1,5 @@
 package com.zyfz.global;
 
-import com.sun.javafx.logging.PulseLogger;
-
 /**
  * Created by ron on 16-11-28.
  */

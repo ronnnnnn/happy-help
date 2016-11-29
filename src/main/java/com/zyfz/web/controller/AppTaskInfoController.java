@@ -13,12 +13,11 @@ import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.support.StringMultipartFileEditor;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -179,7 +178,7 @@ public class AppTaskInfoController extends BaseController{
      * 有偿接受请求,无偿接受请求,有偿提价请求
      */
     @RequestMapping(value = "/api/v1/taskInfo/accept",method = RequestMethod.POST)
-    public void acceptTask(TaskContract taskContract,HttpServletResponse response){
+    public void acceptTask(@RequestBody TaskContract taskContract, HttpServletResponse response){
        try {
            /**
             * 获得帮助消息
