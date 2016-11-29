@@ -66,6 +66,12 @@
    WHERE t.hh_category_id = #{0} and t.is_free = #{1} and t.is_compeleted = #{2} and t.is_top = #{3}
   </select>
 
+  <select id="selectTaskInfoById" parameterType="java.lang.Integer"  resultMap="TaskInfoWithUserMap">
+    SELECT t.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_task_info t left join happy_help.hh_user u on t.hh_user_id = u.id
+    WHERE t.id = #{id}
+  </select>
+
   <select id="selectTaskInfoWithUserByCategoryAndStatus" parameterType="com.zyfz.domain.TaskInfo"  resultMap="TaskInfoWithUserMap">
     select tu.*,c.category_name from (SELECT t.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_task_info t left join happy_help.hh_user u on t.hh_user_id = u.id) tu left join happy_help.hh_category  c on tu.hh_category_id = c.id

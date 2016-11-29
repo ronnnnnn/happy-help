@@ -51,6 +51,42 @@ public class TaskContract {
 
     private Date createTime;
 
+    private TaskInfo taskInfo;
+
+    private User user;
+
+    public TaskContract() {
+        super();
+    }
+
+    public TaskContract(Integer id, Integer status, Double money, Integer hhTaskInfoId, String content, Integer talkTimes, Integer hhUserId, Date createTime, TaskInfo taskInfo) {
+        this.id = id;
+        this.status = status;
+        this.money = money;
+        this.hhTaskInfoId = hhTaskInfoId;
+        this.content = content;
+        this.talkTimes = talkTimes;
+        this.hhUserId = hhUserId;
+        this.createTime = createTime;
+        this.taskInfo = taskInfo;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public TaskInfo getTaskInfo() {
+        return taskInfo;
+    }
+
+    public void setTaskInfo(TaskInfo taskInfo) {
+        this.taskInfo = taskInfo;
+    }
+
     public Integer getId() {
         return id;
     }

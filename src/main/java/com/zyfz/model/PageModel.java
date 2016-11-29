@@ -6,6 +6,16 @@ public class PageModel {
 	private String sort;
 	private String order;
 	private String ids;
+
+	public PageModel() {
+		super();
+	}
+
+	public PageModel(int page, int rows) {
+		this.page = page;
+		this.rows = rows;
+	}
+
 	public int getPage() {
 		return page;
 	}

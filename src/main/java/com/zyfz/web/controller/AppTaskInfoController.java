@@ -269,4 +269,20 @@ public class AppTaskInfoController extends BaseController{
        }
     }
 
+    @RequestMapping(value = "/api/v1/anon/taskContract",method = RequestMethod.GET)
+    public void getTaskContract(@RequestParam(value = "userId",required = false)Integer pn,@RequestParam(value = "assistanceId",required = true)Integer assistanceId,HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (pn == null || pn == 0){
+                pageModel = new PageModel(1,5);
+            }else{
+                pageModel = new PageModel(pn,5);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
 }
