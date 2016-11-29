@@ -1,5 +1,7 @@
 package com.zyfz.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.TaskContractMapper;
 import com.zyfz.domain.TaskContract;
 import com.zyfz.model.Datagrid;
@@ -8,6 +10,7 @@ import com.zyfz.service.ITaskContractService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by ron on 16-11-28.
@@ -45,5 +48,14 @@ public class TaskContractServiceImpl implements ITaskContractService {
     @Override
     public TaskContract getByHhUserIdAndTaskInfoId(TaskContract taskContract) {
         return taskContractMapper.selectByHhUserIdAndTaskInfoId(taskContract);
+    }
+
+    @Override
+    public Datagrid getByTaskInfoId(Integer taskInfoId,PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<TaskContract> taskContracts = taskContractMapper.selectByTaskInfoId(taskInfoId);
+        PageInfo pageInfo = new PageInfo(taskContracts);
+        Datagrid datagrid = new Datagrid(pageInfo.getTotal(),taskContracts);
+        return datagrid;
     }
 }

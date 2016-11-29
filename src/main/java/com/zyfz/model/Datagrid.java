@@ -8,6 +8,15 @@ public class Datagrid {
 	private Long total = 0L;
 	private List rows = new ArrayList();
 
+	public Datagrid() {
+		super();
+	}
+
+	public Datagrid(Long total, List rows) {
+		this.total = total;
+		this.rows = rows;
+	}
+
 	public Long getTotal() {
 		return total;
 	}

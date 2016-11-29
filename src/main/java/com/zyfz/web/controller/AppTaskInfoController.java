@@ -13,6 +13,7 @@ import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -177,7 +178,7 @@ public class AppTaskInfoController extends BaseController{
     /**
      * 有偿接受请求,无偿接受请求,有偿提价请求
      */
-    @RequestMapping(value = "/api/v1/anon/taskInfo/accept",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/taskInfo/accept",method = RequestMethod.POST)
     public void acceptTask(TaskContract taskContract,HttpServletResponse response){
        try {
            /**
@@ -269,4 +270,20 @@ public class AppTaskInfoController extends BaseController{
        }
     }
 
+    @RequestMapping(value = "/api/v1/anon/taskContract",method = RequestMethod.GET)
+    public void getTaskContract(@RequestParam(value = "userId",required = false)Integer pn,@RequestParam(value = "assistanceId",required = true)Integer assistanceId,HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (pn == null || pn == 0){
+                pageModel = new PageModel(1,5);
+            }else{
+                pageModel = new PageModel(pn,5);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
 }

@@ -22,4 +22,6 @@ public interface TaskContractMapper {
     int updateByPrimaryKey(TaskContract record);
 
     TaskContract selectByHhUserIdAndTaskInfoId(TaskContract taskContract);
+
+    List<TaskContract> selectByTaskInfoId(Integer taskInfoId);
 }
