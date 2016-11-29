@@ -17,6 +17,8 @@ public class SystemMessage {
 
     private String pagemessage;
 
+    private Boolean isRead;
+
     public SystemMessage(){
         super();
     }
@@ -28,6 +30,14 @@ public class SystemMessage {
         this.title = title;
         this.content = content;
         this.pagemessage = pagemessage;
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Boolean read) {
+        isRead = read;
     }
 
     public Integer getId() {

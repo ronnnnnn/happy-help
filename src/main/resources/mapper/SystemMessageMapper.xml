@@ -9,10 +9,11 @@
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="content" property="content" jdbcType="VARCHAR" />
     <result column="pageMessage" property="pagemessage" jdbcType="VARCHAR" />
+    <result column="is_read" property="isRead" jdbcType="BIT" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, type, hhUserId, createTime, title, content, pageMessage
+    id, type, hhUserId, createTime, title, content, pageMessage,is_read
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -21,6 +22,18 @@
     from hh_system_message
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="com.zyfz.domain.SystemMessage" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_system_message
+    where hhUserId = #{hhuserid,jdbcType=INTEGER}
+    <if test="isRead != null" >
+      and is_read = #{isRead,jdbcType=BIT}
+    </if>
+    order by createTime DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hh_system_message
     where id = #{id,jdbcType=INTEGER}
@@ -29,10 +42,10 @@
   <insert id="insert" parameterType="com.zyfz.domain.SystemMessage" >
     insert into hh_system_message (id, type, hhUserId, 
       createTime, title, content, 
-      pageMessage)
+      pageMessage,is_read)
     values (#{id,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{hhuserid,jdbcType=INTEGER}, 
       #{createtime,jdbcType=TIMESTAMP}, #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR},
-      #{pagemessage,jdbcType=VARCHAR})
+      #{pagemessage,jdbcType=VARCHAR}, #{isRead,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.SystemMessage" >
     insert into hh_system_message
@@ -58,6 +71,9 @@
       <if test="pagemessage != null" >
         pageMessage,
       </if>
+      <if test="isRead != null" >
+        is_read,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -80,6 +96,9 @@
       </if>
       <if test="pagemessage != null" >
         #{pagemessage,jdbcType=VARCHAR},
+      </if>
+      <if test="isRead != null" >
+        #{isRead,jdbcType=BIT},
       </if>
     </trim>
   </insert>
@@ -104,6 +123,9 @@
       <if test="pagemessage != null" >
         pageMessage = #{pagemessage,jdbcType=VARCHAR},
       </if>
+      <if test="isRead != null" >
+        is_read = #{isRead,jdbcType=BIT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -114,7 +136,8 @@
       createTime = #{createtime,jdbcType=TIMESTAMP},
       title = #{title,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
-      pageMessage = #{pagemessage,jdbcType=VARCHAR}
+      pageMessage = #{pagemessage,jdbcType=VARCHAR},
+      is_read = #{isRead,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

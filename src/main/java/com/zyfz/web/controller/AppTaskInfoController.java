@@ -270,16 +270,39 @@ public class AppTaskInfoController extends BaseController{
        }
     }
 
-    @RequestMapping(value = "/api/v1/anon/taskContract",method = RequestMethod.GET)
-    public void getTaskContract(@RequestParam(value = "userId",required = false)Integer pn,@RequestParam(value = "assistanceId",required = true)Integer assistanceId,HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/taskContract",method = RequestMethod.GET)
+    public void getTaskContract(@RequestParam(value = "userId",required = false)Integer userId,@RequestParam(value = "pn",required = false)Integer pn,@RequestParam(value = "assistanceId",required = true)Integer assistanceId,HttpServletResponse response){
         try {
-            PageModel pageModel = null;
-            if (pn == null || pn == 0){
-                pageModel = new PageModel(1,5);
-            }else{
-                pageModel = new PageModel(pn,5);
+
+            /**
+             * 未登录用户，不显示议价信息
+             */
+            if (userId == null || userId == 0){
+                super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }
-            super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
+            /**
+             * 如果当前用户是当前求助信息的所有者即（该信息发布者）则显示最新对该求助议价的用户信息列表
+             *（包含每个用户对应的议价信息）
+             */
+            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(assistanceId));
+            if (taskInfo.getHhUserId() == userId){
+                PageModel pageModel = null;
+                if (pn == null || pn == 0){
+                    pageModel = new PageModel(1,5);
+                }else{
+                    pageModel = new PageModel(pn,5);
+                }
+                super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
+            }
+            /**
+             * 如果当前是对该求助议价的用户，则只显示最新的议价信息
+             */
+            TaskContract taskContract = taskContractService.getByHhUserIdAndTaskInfoId(new TaskContract(null,null,null,assistanceId,null,null,userId,null,null));
+            if (taskContract != null){
+                super.writeJson(new ResponseMessage<TaskContract>(0,"success",taskContract),response);
+            }
+
+
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());

@@ -18,4 +18,6 @@ public interface SystemMessageMapper {
     int updateByPrimaryKeySelective(SystemMessage record);
 
     int updateByPrimaryKey(SystemMessage record);
+
+    List<SystemMessage> selectByUserId(SystemMessage systemMessage);
 }

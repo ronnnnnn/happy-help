@@ -66,6 +66,42 @@ public class TaskInfo {
 
     private List<String> imageUrls[];
 
+
+    public TaskInfo(){
+        super();
+    }
+
+    public TaskInfo(Integer id) {
+        this.id = id;
+    }
+
+    public TaskInfo(Integer id, String title, String context, String imageUrl, Double money, String phone, Date createTime, Date endTime, Boolean isFree, Boolean isAccept, Boolean isTop, Boolean isCompeleted, Boolean isDeleted, Integer hhCategoryId, String categoryName, Integer hhUserId, String country, String province, String city, String area, String street, String detailPosition, User user, List<String>[] imageUrls) {
+        this.id = id;
+        this.title = title;
+        this.context = context;
+        this.imageUrl = imageUrl;
+        this.money = money;
+        this.phone = phone;
+        this.createTime = createTime;
+        this.endTime = endTime;
+        this.isFree = isFree;
+        this.isAccept = isAccept;
+        this.isTop = isTop;
+        this.isCompeleted = isCompeleted;
+        this.isDeleted = isDeleted;
+        this.hhCategoryId = hhCategoryId;
+        this.categoryName = categoryName;
+        this.hhUserId = hhUserId;
+        this.country = country;
+        this.province = province;
+        this.city = city;
+        this.area = area;
+        this.street = street;
+        this.detailPosition = detailPosition;
+        this.user = user;
+        this.imageUrls = imageUrls;
+    }
+
     public User getUser() {
         return user;
     }
