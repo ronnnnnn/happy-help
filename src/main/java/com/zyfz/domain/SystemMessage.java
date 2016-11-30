@@ -23,6 +23,11 @@ public class SystemMessage {
         super();
     }
 
+    public SystemMessage(Integer id) {
+        this.id = id;
+    }
+
+
     public SystemMessage(String type, Integer hhuserid, Date createtime, String title, String content, String pagemessage) {
         this.type = type;
         this.hhuserid = hhuserid;

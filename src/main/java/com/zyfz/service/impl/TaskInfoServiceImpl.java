@@ -50,7 +50,7 @@ public class TaskInfoServiceImpl implements ITaskInfoService {
 
     @Override
     public TaskInfo getOneById(TaskInfo taskInfo) {
-        return taskInfoMapper.selectByPrimaryKey(taskInfo.getId());
+        return taskInfoMapper.selectTaskInfoById(taskInfo.getId());
     }
 
     @Override

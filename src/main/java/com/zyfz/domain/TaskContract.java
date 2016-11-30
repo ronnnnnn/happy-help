@@ -59,6 +59,11 @@ public class TaskContract {
         super();
     }
 
+    public TaskContract(Integer hhTaskInfoId, Integer hhUserId) {
+        this.hhTaskInfoId = hhTaskInfoId;
+        this.hhUserId = hhUserId;
+    }
+
     public TaskContract(Integer id, Integer status, Double money, Integer hhTaskInfoId, String content, Integer talkTimes, Integer hhUserId, Date createTime, TaskInfo taskInfo) {
         this.id = id;
         this.status = status;

@@ -6,10 +6,7 @@ import com.zyfz.domain.TaskInfo;
 import com.zyfz.domain.TaskTradeRecord;
 import com.zyfz.global.SystemMessageString;
 import com.zyfz.global.TaskTrade;
-import com.zyfz.model.AppTaskInfoModel;
-import com.zyfz.model.Datagrid;
-import com.zyfz.model.PageModel;
-import com.zyfz.model.ResponseMessage;
+import com.zyfz.model.*;
 import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -175,11 +172,20 @@ public class AppTaskInfoController extends BaseController{
     }
 
     /**
-     * 有偿接受请求,无偿接受请求,有偿提价请求
+     * 有偿接受请求,无偿接受请求,有偿提价请求(用户行为)
      */
     @RequestMapping(value = "/api/v1/taskInfo/accept",method = RequestMethod.POST)
     public void acceptTask(@RequestBody TaskContract taskContract, HttpServletResponse response){
        try {
+
+           /**
+            * 存储pageMeassge
+            */
+           List<Integer> pageMessages = new ArrayList<Integer>();
+           pageMessages.add(taskContract.getHhTaskInfoId());
+           pageMessages.add(taskContract.getHhUserId());
+           String pageMessage = StringUtils.collectionToDelimitedString(pageMessages,",");
+
            /**
             * 获得帮助消息
             */
@@ -201,10 +207,10 @@ public class AppTaskInfoController extends BaseController{
                 *处理消息,推送给发布人
                 */
                if (taskContract.getStatus() == 6){ //提价才进行帮助,第一次提价,消息提醒,让用户进行同意或者还价(根据taskinfo的status进行判断显示)
-                   SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,String.valueOf(taskContract.getHhTaskInfoId()));
+                   SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
                    systemMessageService.save(systemMessage);
                }else { //其他情况进行帮助,无偿和有偿接受,消息提醒,让用户进行同意
-                   SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.ACCEPT_MESSAGE,String.valueOf(taskContract.getHhTaskInfoId()));
+                   SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.ACCEPT_MESSAGE,pageMessage);
                    systemMessageService.save(systemMessage);
                }
                /**
@@ -223,9 +229,9 @@ public class AppTaskInfoController extends BaseController{
                taskContract.setTalkTimes((taskContract1.getTalkTimes()+1));
                taskContractService.update(taskContract);
                /**
-                * 处理消息,让用户
+                * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,String.valueOf(taskContract.getHhTaskInfoId()));
+               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
                systemMessageService.save(systemMessage);
                /**
                 * 记录交易过程
@@ -249,9 +255,9 @@ public class AppTaskInfoController extends BaseController{
                taskContractService.update(taskContract1);
 
                /**
-                * 处理消息
+                * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.ING_MESSAGE,String.valueOf(taskContract.getHhTaskInfoId()));
+               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.ING_MESSAGE,pageMessage);
                systemMessageService.save(systemMessage);
 
                /**
@@ -308,4 +314,44 @@ public class AppTaskInfoController extends BaseController{
             super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
         }
     }
+
+    /**
+     * 点击信息后进入详情信息页
+     * @param response
+     */
+    @RequestMapping(value = "/api/v1/detailMessage",method = RequestMethod.GET)
+    public void getDetailMessage(@RequestParam(value = "messageId",required = true)Integer messageId,HttpServletResponse response){
+        try {
+            /**
+             * 设置消息为已读
+             */
+            SystemMessage systemMessage = systemMessageService.getOneById(new SystemMessage(messageId));
+            systemMessage.setIsRead(true);
+            systemMessageService.update(systemMessage);
+
+            /**
+             * 获取求助消息
+             */
+            String[] pageMessages = systemMessage.getPagemessage().split(",");
+            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(Integer.valueOf(pageMessages[0])));
+
+            TaskContract taskContract = null;
+            if (taskInfo.getHhUserId() == systemMessage.getHhuserid()){ //推送的对象为帮助消息发布者
+                /**
+                 * 获取议价信息
+                 */
+                taskContract = taskContractService.getByHhUserIdAndTaskInfoId(new TaskContract(Integer.valueOf(pageMessages[0]),Integer.valueOf(pageMessages[1])));
+            } else { //推送对象为帮助接受者
+                taskContract = taskContractService.getByHhUserIdAndTaskInfoId(new TaskContract(Integer.valueOf(pageMessages[0]),systemMessage.getHhuserid()));
+            }
+
+            AppTaskInfoAllModel appTaskInfoAllModel = new AppTaskInfoAllModel(taskInfo,taskContract);
+            super.writeJson(new ResponseMessage<AppTaskInfoAllModel>(0,"successs",appTaskInfoAllModel),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
+
 }
