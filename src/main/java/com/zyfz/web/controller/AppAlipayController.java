@@ -36,7 +36,7 @@ public class AppAlipayController {
      * @param response
      */
 
-    @RequestMapping(value = "/api/vi/anon/notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/anon/notify", method = RequestMethod.POST)
     public void receiveNotify(HttpServletRequest request, HttpServletResponse response) {
 
         try {
@@ -127,7 +127,7 @@ public class AppAlipayController {
     }
 
 
-    @RequestMapping(value = "/api/vi/anon/signatures",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/anon/signatures",method = RequestMethod.POST)
     public void signatures(HttpServletRequest request, HttpServletResponse response){
         try {
             PrintWriter printWriter = response.getWriter();
