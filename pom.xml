@@ -316,6 +316,15 @@
       <version>1.1.6</version>
     </dependency>
 
+    <!-- 支付宝2.0 -->
+    <dependency>
+      <groupId>com.alipay</groupId>
+      <artifactId>alipay</artifactId>
+      <version>20161129201425</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20161129201425.jar</systemPath>
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>happy-help</finalName>

@@ -1,5 +1,7 @@
 package com.zyfz.web.controller;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
 import com.zyfz.alipay.config.AlipayConfig;
 import com.zyfz.alipay.sign.RSA;
 import com.zyfz.alipay.util.AlipayCore;
@@ -126,8 +128,12 @@ public class AppAlipayController {
         }
     }
 
-
     @RequestMapping(value = "/api/v1/anon/signatures",method = RequestMethod.POST)
+    public void signatrues2(){
+
+    }
+
+    @RequestMapping(value = "/api/v1/anon/msignatures",method = RequestMethod.POST)
     public void signatures(HttpServletRequest request, HttpServletResponse response){
         try {
             PrintWriter printWriter = response.getWriter();
