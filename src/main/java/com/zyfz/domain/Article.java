@@ -1,6 +1,7 @@
 package com.zyfz.domain;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 好人好事文章表
@@ -27,6 +28,29 @@ public class Article {
     private Integer hhUserId;
 
     private User user;
+
+    private String[] imageUrls;
+
+    private List<UserClick> userClick;
+
+    private Integer clickNumber;
+
+    public List<UserClick> getUserClick() {
+        return userClick;
+    }
+
+    public void setUserClick(List<UserClick> userClick) {
+        this.userClick = userClick;
+    }
+
+    public Integer getClickNumber() {
+        if(userClick != null){
+            return userClick.size();
+        }else {
+            return 0;
+        }
+    }
+
 
     public Integer getId() {
         return id;
@@ -114,5 +138,14 @@ public class Article {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String[] getImageUrls(){
+        if(imageUrl == null){
+            String[] strings = {"nono"};
+            return strings;
+        } else {
+            return imageUrl.split(",");
+        }
     }
 }

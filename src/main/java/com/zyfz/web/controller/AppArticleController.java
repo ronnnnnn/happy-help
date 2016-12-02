@@ -1,0 +1,90 @@
+package com.zyfz.web.controller;
+
+import com.zyfz.domain.Article;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
+import com.zyfz.model.ResponseMessage;
+import com.zyfz.service.IArticleService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by ron on 16-12-2.
+ */
+@Controller
+public class AppArticleController extends BaseController {
+    @Resource
+    IArticleService articleService;
+
+    /**
+     * 请求好人好事文章列表
+     * @param page
+     * @param response
+     */
+    @RequestMapping(value = "/api/v1/anon/articles",method = RequestMethod.GET)
+    public void getArticles(@RequestParam(value = "page",required = false)Integer page,
+                            HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (page == null || page == 0){
+                pageModel = new PageModel(1,5);
+            }else {
+                pageModel = new PageModel(page,5);
+            }
+            Article article = new Article();
+            article.setIsPass(true);
+            article.setIsDeleted(false);
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",articleService.getWithUserInApp(pageModel,article)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败",map),response);
+        }
+    }
+
+    /**
+     * 请求我的文章列表
+     * @param page
+     * @param isPass
+     * @param isDelete
+     * @param userId
+     * @param response
+     */
+    @RequestMapping(value = "/api/v1/anon/my/articles",method = RequestMethod.GET)
+    public void getArticles(@RequestParam(value = "page",required = false)Integer page,
+                            @RequestParam(value = "isPass",required = false)Boolean isPass,
+                            @RequestParam(value = "isDelete",required = false)Boolean isDelete,
+                            @RequestParam(value = "userId",required = false)Integer userId,
+                            HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (page == null || page == 0){
+                pageModel = new PageModel(1,5);
+            }else {
+                pageModel = new PageModel(page,5);
+            }
+            Article article = new Article();
+            if (isPass != null) {
+                article.setIsPass(isPass);
+            }
+            if (userId != null) {
+                article.setHhUserId(userId);
+            }
+            if (isDelete != null) {
+                article.setIsDeleted(isDelete);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",articleService.getWithUserInApp(pageModel,article)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败",map),response);
+        }
+    }
+}

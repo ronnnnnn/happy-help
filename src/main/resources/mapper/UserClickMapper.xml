@@ -3,7 +3,7 @@
 <mapper namespace="com.zyfz.dao.UserClickMapper" >
   <resultMap id="BaseResultMap" type="com.zyfz.domain.UserClick" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="hh_article_id" property="hhArticleId" jdbcType="INTEGER" />
   </resultMap>
 
@@ -25,7 +25,7 @@
   <insert id="insert" parameterType="com.zyfz.domain.UserClick" >
     insert into hh_user_click (id, user_id, hh_article_id
       )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{hhArticleId,jdbcType=INTEGER}
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{hhArticleId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.UserClick" >
@@ -46,7 +46,7 @@
         #{id,jdbcType=INTEGER},
       </if>
       <if test="userId != null" >
-        #{userId,jdbcType=VARCHAR},
+        #{userId,jdbcType=INTEGER},
       </if>
       <if test="hhArticleId != null" >
         #{hhArticleId,jdbcType=INTEGER},
@@ -58,7 +58,7 @@
     update hh_user_click
     <set >
       <if test="userId != null" >
-        user_id = #{userId,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=INTEGER},
       </if>
       <if test="hhArticleId != null" >
         hh_article_id = #{hhArticleId,jdbcType=INTEGER},
@@ -68,7 +68,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.UserClick" >
     update hh_user_click
-    set user_id = #{userId,jdbcType=VARCHAR},
+    set user_id = #{userId,jdbcType=INTEGER},
       hh_article_id = #{hhArticleId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>

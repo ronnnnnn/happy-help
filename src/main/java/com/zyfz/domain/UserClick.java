@@ -6,7 +6,7 @@ package com.zyfz.domain;
 public class UserClick {
     private Integer id;
 
-    private String userId; //点赞用户id
+    private Integer userId; //点赞用户id
 
     private Integer hhArticleId; //文章ID
 
@@ -18,11 +18,11 @@ public class UserClick {
         this.id = id;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
