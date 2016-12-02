@@ -313,11 +313,8 @@ public class TaskInfo {
         if(imageUrl == null){
             String[] strings = {"nono"};
             return strings;
-        } else if (imageUrl!=null || imageUrl.intern() != "nono".intern()){
+        } else {
             return imageUrl.split(",");
-        }else {
-            String[] strings = {"nono"};
-            return strings;
         }
     }
 

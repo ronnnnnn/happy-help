@@ -12,4 +12,6 @@ public interface IArticleService extends IBaseService<Article>{
     public Datagrid getAllAritcleWithUser(PageModel pageModel);
 
     public Datagrid getArticlByContextLike(PageModel model,String title);
+
+    public Datagrid getWithUserInApp(PageModel pageModel,Article article);
 }

@@ -26,6 +26,23 @@
     </association>
   </resultMap>
 
+  <resultMap id="articleClickMap" type="Article" extends="BaseResultMap" >
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
+      <result column="phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+    </association>
+    <collection property="userClick" ofType="UserClick">
+      <id column="clickId" property="id" jdbcType="INTEGER" />
+      <result column="hh_article_id" property="hhArticleId" jdbcType="INTEGER" />
+      <result column="user_id" property="userId" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+
 
   <sql id="Base_Column_List" >
     id, title, context, image_url, create_time, visit_click, is_checked, is_deleted, 
@@ -50,7 +67,7 @@
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from hh_article
+    from hh_article ORDER BY create_time DESC
   </select>
 
   <select id="selectAllWithUser" resultMap="articleUserMap" parameterType="java.lang.Integer" >
@@ -58,6 +75,24 @@
     FROM happy_help.hh_article a left join happy_help.hh_user u
     on a.hh_user_id = u.id
     ORDER BY a.create_time DESC
+  </select>
+
+  <select id="selectWithUserInApp" resultMap="articleClickMap" parameterType="com.zyfz.domain.Article" >
+    select au.* ,c.id as clickId ,c.user_id ,c.hh_article_id from (SELECT a.*,u.id as userid,u.photo, u.phone,u.username,u.real_name,u.nickname,u.email
+    FROM happy_help.hh_article a left join happy_help.hh_user u
+    on a.hh_user_id = u.id) au left join happy_help.hh_user_click c on au.id = c.hh_article_id
+    <where>
+      <if test="isDeleted != null" >
+        is_deleted = #{isDeleted,jdbcType=BIT}
+      </if>
+      <if test="isPass != null" >
+        and is_pass = #{isPass,jdbcType=BIT}
+      </if>
+      <if test="hhUserId != null" >
+        and hh_user_id = #{hhUserId,jdbcType=INTEGER}
+      </if>
+    </where>
+    ORDER BY create_time DESC
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
