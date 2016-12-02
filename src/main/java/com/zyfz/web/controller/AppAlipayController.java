@@ -98,7 +98,7 @@ public class AppAlipayController {
                             printWriter.print("success");//请不要修改或删除
                         }
                         //调试打印log
-                        //AlipayCore.logResult("notify_url success!","notify_url");
+                        AlipayCore.logResult("notify_url success!","notify_url");
                     } else//验证签名失败
                     {
                         if (printWriter != null) {
@@ -155,7 +155,7 @@ public class AppAlipayController {
                     AlipayCore.logResult(data,"datashuju");
 
                     //将待签名字符串使用私钥签名。
-                    String rsa_sign= URLEncoder.encode(RSA.sign(data, AlipayConfig.private_key, AlipayConfig.input_charset),AlipayConfig.input_charset);
+                    String rsa_sign= URLEncoder.encode(RSA.sign(data, AlipayConfig.RSA_PRIVATE, AlipayConfig.input_charset),AlipayConfig.input_charset);
 
                     //把签名得到的sign和签名类型sign_type拼接在待签名字符串后面。
                     data=data+"&sign=\""+rsa_sign+"\"&sign_type=\""+AlipayConfig.sign_type+"\"";
