@@ -1,14 +1,14 @@
 package com.zyfz.web.controller;
 
-import com.zyfz.domain.SystemMessage;
-import com.zyfz.domain.TaskContract;
-import com.zyfz.domain.TaskInfo;
-import com.zyfz.domain.TaskTradeRecord;
+import com.zyfz.alipay.util.UtilDate;
+import com.zyfz.dao.TaskContractMapper;
+import com.zyfz.domain.*;
 import com.zyfz.global.SystemMessageString;
 import com.zyfz.global.TaskTrade;
 import com.zyfz.model.*;
 import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +20,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
+
+import static com.zyfz.global.SystemMessageString.*;
 
 /**
  * Created by ron on 16-11-14.
@@ -44,6 +46,12 @@ public class AppTaskInfoController extends BaseController{
 
     @Resource
     ITaskTradeRecordService taskTradeRecordService;
+
+    @Resource
+    TaskContractMapper taskContractMapper;
+
+    @Resource
+    IOrderRecordService orderRecordService;
 
     /**
      *
@@ -354,4 +362,169 @@ public class AppTaskInfoController extends BaseController{
         }
     }
 
+
+    /**
+     * 帮助消息发布者处理请求
+     *  ++++++++++status状态++++++++++++++++
+     1表示任务发布者同意其完成任务，
+     3表示任务发布者确认完成任务。
+     7表示发布者还价阶段
+     9发布者接受议价 (双方达成共识,任务进行,隐含10属性)
+     10表示任务发布者同意其完成任务
+     12发布者确认完成任务
+     13终止
+
+     */
+    @RequestMapping(value = "/api/v1/contract/handle",method = RequestMethod.POST)
+    public void handleContract(AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
+
+        try {
+            TaskContract taskContract = taskContractService.getOneById(new TaskContract(appTaskHandleModel.getBargainingId()));
+            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(taskContract.getHhTaskInfoId()));
+            Integer status = appTaskHandleModel.getStatus();
+            Integer oldStatus = taskContract.getStatus();
+            /**
+             * 表示任务发布者同意其完成任务(无偿任务和有偿)
+             */
+            if (((status == 1 && oldStatus == 0)|| (status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5)) && status != oldStatus){
+                //处理普通消息
+                taskInfo.setIsAccept(true);
+                taskInfoService.update(taskInfo);
+                //处理其他请求者,终止其他请求者
+                List<TaskContract> taskContracts = taskContractMapper.selectByTaskInfoId(taskContract.getId());
+                for (TaskContract taskContract1 : taskContracts){
+                    if (taskContract1.getId() != taskContract.getId()){
+                        //设置为终止态
+                        taskContract1.setStatus(13);
+                        taskContractService.update(taskContract1);
+                        //发送消息
+                        SystemMessage systemMessage = new SystemMessage("taskinfo",
+                                taskContract1.getHhUserId(),
+                                new Date(),
+                                REQUEST_TITLE,
+                                REJECT_CONTENT,
+                                String.valueOf(taskContract.getHhTaskInfoId()));
+                        systemMessageService.save(systemMessage);
+                    }
+                }
+                //处理当前请求者
+                taskContract.setStatus(status);
+                if (appTaskHandleModel.getBargainingMoney() != null && appTaskHandleModel.getBargainingContent() != null){
+                    taskContract.setMoney(appTaskHandleModel.getBargainingMoney());
+                    taskContract.setContent(appTaskHandleModel.getBargainingContent());
+                }else {
+                    taskContract.setMoney(appTaskHandleModel.getBargainingMoney());
+                    taskContract.setContent(appTaskHandleModel.getBargainingContent());
+                }
+                taskContractService.update(taskContract);
+                //发布消息给当前请求者
+                SystemMessage systemMessage = new SystemMessage("taskinfo",
+                        taskContract.getHhUserId(),
+                        new Date(),
+                        REQUEST_TITLE,
+                        AGREE_CONTENT,
+                        String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage);
+                super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+            }
+
+            /**
+             * 发布者确认其完成
+             */
+            if(((status == 3 && oldStatus == 2) || (status == 12 && oldStatus == 11)) && status != oldStatus){
+                //处理taskInfo
+                if (taskInfo.getIsAccept() == true){
+                    taskInfo.setIsCompeleted(true);
+                    taskInfoService.update(taskInfo);
+                } else {
+                    super.writeJson(new ResponseMessage<String>(40403,"非法请求！",""),response);
+                }
+                //处理taskContract
+                taskContract.setStatus(status);
+                if(appTaskHandleModel.getBargainingContent() != null){
+                    taskContract.setContent(appTaskHandleModel.getBargainingContent());
+                }
+                taskContractService.update(taskContract);
+
+                //处理消息
+                SystemMessage systemMessage = new SystemMessage("taskinfo",
+                        taskContract.getHhUserId(),
+                        new Date(),
+                        REQUEST_TITLE,
+                        COMPELETE_CONTENT,
+                        String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage);
+
+                //记录订单记录
+                String tradeNo = UtilDate.getOrderNum();
+                String secondType = null;
+                if (status == 3){
+                    secondType = "free";
+                }else if (status == 12){
+                    secondType = "notFree";
+                }
+
+                OrderRecord orderRecord = new OrderRecord(
+                        null,
+                        tradeNo,
+                        "taskInfo",
+                        secondType,
+                        String.valueOf(appTaskHandleModel.getUserIdOfBargaining()),
+                        String.valueOf(appTaskHandleModel.getUserIdOfAssistance()),
+                        taskContract.getMoney(),
+                        taskContract.getHhTaskInfoId(),
+                        null,
+                        new Date()
+                );
+
+                orderRecordService.save(orderRecord);
+                super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+            }
+
+            /**
+             * 发布者还价
+             */
+             if ((status == 7 && oldStatus == 6) && status != oldStatus){
+                 //处理taskcontrct
+                 taskContract.setStatus(status);
+                 taskContract.setMoney(appTaskHandleModel.getBargainingMoney());
+                 taskContract.setContent(appTaskHandleModel.getBargainingContent());
+                 Integer times = taskContract.getTalkTimes() + 1 ;
+                 taskContract.setTalkTimes(times);
+                 taskContractService.update(taskContract);
+                 //处理消息
+                 SystemMessage systemMessage = new SystemMessage("taskinfo",
+                         taskContract.getHhUserId(),
+                         new Date(),
+                         REQUEST_TITLE,
+                         DOWN_PRICE_MESSAGE,
+                         String.valueOf(taskContract.getHhTaskInfoId()));
+                 systemMessageService.save(systemMessage);
+                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+             }
+
+            /**
+             * 发布者终止交易
+             */
+            if (status == 13 && status != oldStatus){
+                //处理taskcontrct
+                taskContract.setStatus(status);
+                taskContractService.update(taskContract);
+                //处理消息
+                SystemMessage systemMessage = new SystemMessage("taskinfo",
+                        taskContract.getHhUserId(),
+                        new Date(),
+                        REQUEST_TITLE,
+                        REJECT_CONTENT,
+                        String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage);
+                super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+            }else if (status == oldStatus){
+                super.writeJson(new ResponseMessage<String>(40402,"您已经进行过此操作了！","null"),response);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

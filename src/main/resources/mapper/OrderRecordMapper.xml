@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zyfz.dao.OrderRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.zyfz.domain.OrderRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="trade_no" property="tradeNo" jdbcType="VARCHAR" />
+    <result column="order_type" property="orderType" jdbcType="VARCHAR" />
+    <result column="second_type" property="secondType" jdbcType="VARCHAR" />
+    <result column="pay_user" property="payUser" jdbcType="VARCHAR" />
+    <result column="accept_user" property="acceptUser" jdbcType="VARCHAR" />
+    <result column="deal_money" property="dealMoney" jdbcType="DOUBLE" />
+    <result column="hh_target_id" property="hhTargetId" jdbcType="INTEGER" />
+    <result column="descript" property="descript" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, trade_no, order_type, second_type, pay_user, accept_user, deal_money, hh_target_id, 
+    descript, create_time
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from hh_order_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_order_record
+    ORDER BY create_time DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from hh_order_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.zyfz.domain.OrderRecord" >
+    insert into hh_order_record (id, trade_no, order_type, 
+      second_type, pay_user, accept_user, 
+      deal_money, hh_target_id, descript, 
+      create_time)
+    values (#{id,jdbcType=INTEGER}, #{tradeNo,jdbcType=VARCHAR}, #{orderType,jdbcType=VARCHAR}, 
+      #{secondType,jdbcType=VARCHAR}, #{payUser,jdbcType=VARCHAR}, #{acceptUser,jdbcType=VARCHAR}, 
+      #{dealMoney,jdbcType=DOUBLE}, #{hhTargetId,jdbcType=INTEGER}, #{descript,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zyfz.domain.OrderRecord" >
+    insert into hh_order_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tradeNo != null" >
+        trade_no,
+      </if>
+      <if test="orderType != null" >
+        order_type,
+      </if>
+      <if test="secondType != null" >
+        second_type,
+      </if>
+      <if test="payUser != null" >
+        pay_user,
+      </if>
+      <if test="acceptUser != null" >
+        accept_user,
+      </if>
+      <if test="dealMoney != null" >
+        deal_money,
+      </if>
+      <if test="hhTargetId != null" >
+        hh_target_id,
+      </if>
+      <if test="descript != null" >
+        descript,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tradeNo != null" >
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="secondType != null" >
+        #{secondType,jdbcType=VARCHAR},
+      </if>
+      <if test="payUser != null" >
+        #{payUser,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUser != null" >
+        #{acceptUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dealMoney != null" >
+        #{dealMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="hhTargetId != null" >
+        #{hhTargetId,jdbcType=INTEGER},
+      </if>
+      <if test="descript != null" >
+        #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.zyfz.domain.OrderRecord" >
+    update hh_order_record
+    <set >
+      <if test="tradeNo != null" >
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        order_type = #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="secondType != null" >
+        second_type = #{secondType,jdbcType=VARCHAR},
+      </if>
+      <if test="payUser != null" >
+        pay_user = #{payUser,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptUser != null" >
+        accept_user = #{acceptUser,jdbcType=VARCHAR},
+      </if>
+      <if test="dealMoney != null" >
+        deal_money = #{dealMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="hhTargetId != null" >
+        hh_target_id = #{hhTargetId,jdbcType=INTEGER},
+      </if>
+      <if test="descript != null" >
+        descript = #{descript,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.OrderRecord" >
+    update hh_order_record
+    set trade_no = #{tradeNo,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=VARCHAR},
+      second_type = #{secondType,jdbcType=VARCHAR},
+      pay_user = #{payUser,jdbcType=VARCHAR},
+      accept_user = #{acceptUser,jdbcType=VARCHAR},
+      deal_money = #{dealMoney,jdbcType=DOUBLE},
+      hh_target_id = #{hhTargetId,jdbcType=INTEGER},
+      descript = #{descript,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -14,6 +14,7 @@ public class TaskContract {
      2表示请求任务的人完成任务，
      3表示任务发布者完成任务。
 
+
      ----无偿任务流程-------------
      0->1->2->3
 
@@ -26,7 +27,7 @@ public class TaskContract {
      10表示任务发布者同意其完成任务
      11接受者完成任务
      12发布者确认完成任务
-
+     13终止
      ----无偿任务,有偿接受  or 有偿任务,提价接受----
 
      6->9->11->12 (无偿任务,用户有偿接受,发布者接受提价) 一次议价
@@ -57,6 +58,10 @@ public class TaskContract {
 
     public TaskContract() {
         super();
+    }
+
+    public TaskContract(Integer id) {
+        this.id = id;
     }
 
     public TaskContract(Integer hhTaskInfoId, Integer hhUserId) {

@@ -137,8 +137,7 @@ public class AppAlipayController {
     }
 
     @RequestMapping(value = "/api/v1/anon/signatures",method = RequestMethod.POST)
-    @ResponseBody
-    public Object signatrues2(@RequestParam Map<String,String> params){
+    public void signatrues2(@RequestParam Map<String,String> params,HttpServletRequest request, HttpServletResponse response){
         Map<String, String> resultMap = new HashMap<String, String>();
 
         resultMap = params;
@@ -158,12 +157,15 @@ public class AppAlipayController {
         resultMap.put("version",VERSION);
 
         try {
+            PrintWriter printWriter = response.getWriter();
             resultMap.put("sign",AlipaySignature.rsaSign(resultMap,RSA_PRIVATE,INPUT_CHARSET));
-            return OrderInfoUtil2_0.buildOrderParam(resultMap);
+            printWriter.flush();
+            printWriter.print(OrderInfoUtil2_0.buildOrderParam(resultMap));
         } catch (AlipayApiException e) {
             e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
         }
-        return null;
     }
 
     @RequestMapping(value = "/api/v1/anon/msignatures",method = RequestMethod.POST)
