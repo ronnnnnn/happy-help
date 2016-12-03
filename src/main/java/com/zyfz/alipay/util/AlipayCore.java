@@ -1,5 +1,6 @@
 package com.zyfz.alipay.util;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class AlipayCore {
     public static void logResult(String sWord,String filename) {
         FileWriter writer = null;
         try {
-            writer = new FileWriter(AlipayConfig.log_path + "alipay_log_" + System.currentTimeMillis()+filename+".txt");
+            writer = new FileWriter(AlipayConfig.log_path + File.separator+ "alipay_log_" + System.currentTimeMillis()+filename+".txt");
             writer.write(sWord);
         } catch (Exception e) {
             e.printStackTrace();

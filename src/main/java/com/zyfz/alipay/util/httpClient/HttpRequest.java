@@ -14,7 +14,6 @@ import org.apache.commons.httpclient.NameValuePair;
  */
 
 public class HttpRequest {
-
     /** HTTP GET method */
     public static final String METHOD_GET        = "GET";
 
@@ -48,7 +47,7 @@ public class HttpRequest {
     /**
      * 默认的请求编码方式
      */
-    private String             charset           = "GBK";
+    private String             charset           = "UTF-8";
 
     /**
      * 请求发起方的ip地址
