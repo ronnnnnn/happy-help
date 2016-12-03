@@ -1,16 +1,21 @@
 package com.zyfz.web.controller;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.zyfz.alipay.config.AlipayConfig;
 import com.zyfz.alipay.sign.RSA;
 import com.zyfz.alipay.util.AlipayCore;
 import com.zyfz.alipay.util.AlipayNotify;
+import com.zyfz.alipay.util.OrderInfoUtil2_0;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +23,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import static com.zyfz.alipay.config.AlipayConfig.*;
 
 /**
  * Created by ron on 16-12-1.
@@ -129,8 +137,33 @@ public class AppAlipayController {
     }
 
     @RequestMapping(value = "/api/v1/anon/signatures",method = RequestMethod.POST)
-    public void signatrues2(){
+    @ResponseBody
+    public Object signatrues2(@RequestParam Map<String,String> params){
+        Map<String, String> resultMap = new HashMap<String, String>();
 
+        resultMap = params;
+
+        resultMap.put("charset", INPUT_CHARSET);
+
+        resultMap.put("method", SERVICE);
+
+        resultMap.put("format",FORMAT);
+
+        resultMap.put("sign_type", SIGN_TYPE);
+
+        resultMap.put("timestamp", new Date().toString());
+
+        resultMap.put("notify_url",NOTIFY_URL);
+
+        resultMap.put("version",VERSION);
+
+        try {
+            resultMap.put("sign",AlipaySignature.rsaSign(resultMap,RSA_PRIVATE,INPUT_CHARSET));
+            return OrderInfoUtil2_0.buildOrderParam(resultMap);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @RequestMapping(value = "/api/v1/anon/msignatures",method = RequestMethod.POST)
@@ -152,7 +185,7 @@ public class AppAlipayController {
                 String service=request.getParameter("service");
                 //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
-                if(partner.replace("\"","").equals(AlipayConfig.partner)&& service.replace("\"","").equals(AlipayConfig.service)){//确认PID和接口名称。
+                if(partner.replace("\"","").equals(AlipayConfig.PARTNER)&& service.replace("\"","").equals(AlipayConfig.SERVICE)){//确认PID和接口名称。
 
                     //将post接收到的数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串。需要排序。
                     String data=AlipayCore.createLinkString(params);
@@ -161,10 +194,10 @@ public class AppAlipayController {
                     AlipayCore.logResult(data,"datashuju");
 
                     //将待签名字符串使用私钥签名。
-                    String rsa_sign= URLEncoder.encode(RSA.sign(data, AlipayConfig.RSA_PRIVATE, AlipayConfig.input_charset),AlipayConfig.input_charset);
+                    String rsa_sign= URLEncoder.encode(RSA.sign(data, RSA_PRIVATE, AlipayConfig.INPUT_CHARSET),AlipayConfig.INPUT_CHARSET);
 
                     //把签名得到的sign和签名类型sign_type拼接在待签名字符串后面。
-                    data=data+"&sign=\""+rsa_sign+"\"&sign_type=\""+AlipayConfig.sign_type+"\"";
+                    data=data+"&sign=\""+rsa_sign+"\"&sign_type=\""+AlipayConfig.SIGN_TYPE+"\"";
 
                     //返回给客户端,建议在客户端使用私钥对应的公钥做一次验签，保证不是他人传输。
                     printWriter.flush();

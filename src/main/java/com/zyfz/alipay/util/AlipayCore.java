@@ -52,7 +52,6 @@ public class AlipayCore {
     /** 
      * 把数组所有元素，并按照“参数=参数值”的模式用“&”字符拼接成字符串
      * @param params 需要参与字符拼接的参数组
-     * @param sorts   是否需要排序 true 或者 false
      * @return 拼接后字符串
      */
     public static String createLinkString(Map<String, String> params) {
@@ -85,7 +84,7 @@ public class AlipayCore {
     public static void logResult(String sWord,String filename) {
         FileWriter writer = null;
         try {
-            writer = new FileWriter(AlipayConfig.log_path + File.separator+ "alipay_log_" + System.currentTimeMillis()+filename+".txt");
+            writer = new FileWriter(AlipayConfig.LOG_PATH + File.separator+ "alipay_log_" + System.currentTimeMillis()+filename+".txt");
             writer.write(sWord);
         } catch (Exception e) {
             e.printStackTrace();
