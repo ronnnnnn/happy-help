@@ -1,5 +1,6 @@
 package com.zyfz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.zyfz.domain.TaskInfo;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
@@ -13,4 +14,6 @@ public interface ITaskInfoService extends IBaseService<TaskInfo> {
      public Datagrid getTaskInfoWithUserByKey(String taskinfoKey,PageModel pageModel);
 
      public Datagrid getTaskInfoWithUserByCategoryAndStatus(TaskInfo taskInfo,PageModel pageModel);
+
+     public Datagrid getMTaskInfoWithUser(PageModel pageModel, Integer userId);
 }

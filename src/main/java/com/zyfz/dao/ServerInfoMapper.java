@@ -21,4 +21,9 @@ public interface ServerInfoMapper {
     int updateByPrimaryKeySelective(ServerInfo record);
 
     int updateByPrimaryKey(ServerInfo record);
+
+    List<ServerInfo> select4App(ServerInfo serverInfo);
+
+    List<ServerInfo> select4AppInMine(Integer userId);
+
 }

@@ -1,6 +1,10 @@
 package com.zyfz.domain;
 
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 公共服务表
@@ -55,11 +59,86 @@ public class ServerInfo {
 
     private String imageUrl;
 
+    private String categoryName;
+
+    private Boolean isImages;
+
+    private String[] imageUrls;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    private String detailAddress;
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public ServerInfo() {
         super();
     }
 
+    public ServerInfo(Integer id) {
+        this.id = id;
+    }
 
+    public String getDetailAddress() {
+        List<String> da = new ArrayList<String>();
+        if (country != null){
+            da.add(country);
+        }
+        if (province != null){
+            da.add(province);
+        }
+        if (city != null){
+            da.add(city);
+        }
+        if (area != null){
+            da.add(area);
+        }
+        if (street != null){
+            da.add(street);
+        }
+        if (address != null){
+            da.add(address);
+        }
+        return StringUtils.collectionToDelimitedString(da,",");
+    }
+
+    public Boolean getIsImages() {
+        if (imageUrl == null || imageUrl.intern() != "none".intern()){
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    public String[] getImageUrls() {
+            if(imageUrl == null || imageUrl.intern() == "none".intern()){
+            String[] strings = {"none"};
+            return strings;
+        } else {
+            return imageUrl.split(",");
+        }
+    }
+
+    //    public Boolean getIsImages() {
+//        if (imageUrl == null && imageUrl.intern() != "none".intern()){
+//            return false;
+//        } else{
+//            return true;
+//        }
+//    }
+//
+//    public String[] getImageUrls() {
+//        if(imageUrl == null || imageUrl.intern() == "none".intern()){
+//            String[] strings = {"none"};
+//            return strings;
+//        } else {
+//            return imageUrl.split(",");
+//        }
+//    }
     public String getImageUrl() {
         return imageUrl;
     }
@@ -74,10 +153,6 @@ public class ServerInfo {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public ServerInfo(Integer id) {
-        this.id = id;
     }
 
     public Integer getId() {
@@ -199,4 +274,6 @@ public class ServerInfo {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }

@@ -20,6 +20,14 @@ public class Category {
 
     private String topic;
 
+    public Category() {
+        super();
+    }
+
+    public Category(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public String getTopic() {
         return topic;
     }

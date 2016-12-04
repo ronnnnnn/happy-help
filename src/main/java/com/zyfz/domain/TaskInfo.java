@@ -296,21 +296,22 @@ public class TaskInfo {
         if (street != null){
             da.add(street);
         }
+        if (detailPosition != null){
+            da.add(detailPosition);
+        }
         return StringUtils.collectionToDelimitedString(da,",");
     }
 
     public Boolean getIsImage(){
-        if (imageUrl == null){
+        if (imageUrl == null || imageUrl.intern() != "none".intern()){
             return false;
-        } else if(imageUrl.intern() == "nono".intern()){
-            return false;
-        }else {
+        } else{
             return true;
         }
     }
 
     public String[] getImageUrls(){
-        if(imageUrl == null){
+        if(imageUrl == null || imageUrl.intern() == "none".intern()){
             String[] strings = {"nono"};
             return strings;
         } else {

@@ -18,6 +18,7 @@
     <result column="street" jdbcType="VARCHAR" property="street" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
   </resultMap>
 
   <resultMap id="ServerInfoWithUserMap" type="ServerInfo" extends="BaseResultMap">
@@ -51,6 +52,43 @@
      SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
      FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
      where si.hh_category_id = #{categoryId,jdbcType=INTEGER}
+  </select>
+
+  <select id="select4App"  parameterType="com.zyfz.domain.ServerInfo" resultMap="ServerInfoWithUserMap" flushCache="false">
+    select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id) siu left join happy_help.hh_category c on siu.hh_category_id = c.id
+    <where>
+      <if test="hhUserId != null">
+        siu.hh_user_id = #{hhUserId,jdbcType=INTEGER}
+      </if>
+      <if test="isPass != null">
+        and siu.is_pass = #{isPass,jdbcType=BIT}
+      </if>
+      <if test="isDeleted != null">
+        and siu.is_deleted = #{isDeleted,jdbcType=BIT}
+      </if>
+      <if test="hhCategoryId != null">
+        and siu.hh_category_id = #{hhCategoryId,jdbcType=INTEGER}
+      </if>
+      <if test="province != null">
+        and siu.province = #{province,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null">
+        and siu.city = #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null">
+        and siu.area = #{area,jdbcType=VARCHAR}
+      </if>
+      <if test="street != null">
+        and siu.street = #{street,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="select4AppInMine" resultMap="ServerInfoWithUserMap" parameterType="java.lang.Integer">
+    select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id) siu left join happy_help.hh_category c on siu.hh_category_id = c.id
+    WHERE siu.id in (SELECT DISTINCT(sc.hh_server_info_id) FROM happy_help.hh_server_contract sc where sc.hh_user_id = #{userId,jdbcType=INTEGER})
   </select>
 
   <select id="selectByCIDWithUserWithKey" parameterType="java.lang.String" resultMap="ServerInfoWithUserMap">

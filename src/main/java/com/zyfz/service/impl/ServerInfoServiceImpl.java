@@ -82,4 +82,20 @@ public class ServerInfoServiceImpl implements IServerInfoService{
         }
         return serverInfoMapper.deleteByPrimaryKey(serverInfo.getId());
     }
+
+    @Override
+    public Datagrid get4App(ServerInfo serverInfo, PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<ServerInfo> serverInfos = serverInfoMapper.select4App(serverInfo);
+        PageInfo pageInfo = new PageInfo(serverInfos);
+        return new Datagrid(pageInfo.getTotal(),serverInfos);
+    }
+
+    @Override
+    public Datagrid select4AppInMine(Integer userId, PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<ServerInfo> serverInfos = serverInfoMapper.select4AppInMine(userId);
+        PageInfo pageInfo = new PageInfo(serverInfos);
+        return new Datagrid(pageInfo.getTotal(),serverInfos);
+    }
 }

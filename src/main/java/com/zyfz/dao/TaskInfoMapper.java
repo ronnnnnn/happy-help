@@ -27,4 +27,6 @@ public interface TaskInfoMapper {
     int updateByPrimaryKey(TaskInfo record);
 
     TaskInfo selectTaskInfoById(Integer id);
+
+    List<TaskInfo> selectMTaskInfoWithUser(Integer userId);
 }

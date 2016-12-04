@@ -112,4 +112,13 @@ public class TaskInfoServiceImpl implements ITaskInfoService {
         datagrid.setTotal(pageInfo.getTotal());
         return datagrid;
     }
+
+    @Override
+    public Datagrid getMTaskInfoWithUser(PageModel pageModel, Integer userId) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<TaskInfo> taskInfos = taskInfoMapper.selectMTaskInfoWithUser(userId);
+        PageInfo pageInfo = new PageInfo(taskInfos);
+        Datagrid datagrid = new Datagrid(pageInfo.getTotal(),taskInfos);
+        return datagrid;
+    }
 }

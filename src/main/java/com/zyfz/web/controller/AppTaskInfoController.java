@@ -144,7 +144,7 @@ public class AppTaskInfoController extends BaseController{
                 }
                 mimageUrl = StringUtils.collectionToDelimitedString(imageUrl,",");
             }else {
-                mimageUrl = "nono";
+                mimageUrl = "none";
             }
 
             taskInfo.setImageUrl(mimageUrl);
@@ -525,6 +525,50 @@ public class AppTaskInfoController extends BaseController{
 
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 获取我的帮助
+     */
+    @RequestMapping(value = "/api/v1/my/taskInfo",method = RequestMethod.GET)
+    public void getMyTaskInfo(@RequestParam(value = "userId",required = true)Integer userId,
+                              @RequestParam(value = "page",required = false)Integer page,
+                              HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (page == null || page == 0){
+                pageModel = new PageModel(1,5);
+            }else {
+                pageModel = new PageModel(page,5);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskInfoService.getMTaskInfoWithUser(pageModel,userId)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
+
+    @RequestMapping(value = "/api/v1/anon/taskInfo/check",method = RequestMethod.GET)
+    public void getTaskInfo4Check(@RequestParam("assistanceId")Integer assistanceId,HttpServletResponse response){
+        try{
+            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(assistanceId));
+            Integer status = 0;
+            if (taskInfo.getIsAccept() == true && taskInfo.getIsCompeleted() == false){
+                status = 4;
+            } else if (taskInfo.getIsAccept() == false && taskInfo.getIsCompeleted() == false){
+                status = 3;
+            } else if(taskInfo.getIsAccept() == true && taskInfo.getIsCompeleted() == true ){
+                status = 5;
+            }
+            Map<String,Integer> map = new HashMap<String, Integer>();
+            map.put("status",status);
+            super.writeJson(new ResponseMessage<Map<String,Integer>>(0,"successs!",map),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
         }
     }
 }
