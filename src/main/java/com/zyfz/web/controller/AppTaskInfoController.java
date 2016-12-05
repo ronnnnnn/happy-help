@@ -8,7 +8,6 @@ import com.zyfz.global.TaskTrade;
 import com.zyfz.model.*;
 import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -376,7 +375,7 @@ public class AppTaskInfoController extends BaseController{
 
      */
     @RequestMapping(value = "/api/v1/contract/handle",method = RequestMethod.POST)
-    public void handleContract(AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
+    public void handleContract(@RequestBody AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
 
         try {
             TaskContract taskContract = taskContractService.getOneById(new TaskContract(appTaskHandleModel.getBargainingId()));

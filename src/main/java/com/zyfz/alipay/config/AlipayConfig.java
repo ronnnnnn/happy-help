@@ -38,11 +38,11 @@ public class AlipayConfig {
 	public static String INPUT_CHARSET = "utf-8";
 
 	// 接收通知的接口名
-	public static String SERVICE = "mobile.securitypay.pay";
+	public static String SERVICE = "alipay.trade.app.pay";
 
 	public static String NOTIFY_URL = "http://localhost:8080/happy-help/api/v1/anon/notify";
 
-	public static String FORMAT = "JSON";
+	public static String FORMAT = "json";
 
 	public static String VERSION = "1.0";
 
