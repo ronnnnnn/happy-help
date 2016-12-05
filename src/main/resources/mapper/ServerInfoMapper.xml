@@ -32,6 +32,7 @@
       <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
       <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
       <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
     </association>
   </resultMap>
 
@@ -55,7 +56,7 @@
   </select>
 
   <select id="select4App"  parameterType="com.zyfz.domain.ServerInfo" resultMap="ServerInfoWithUserMap" flushCache="false">
-    select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id) siu left join happy_help.hh_category c on siu.hh_category_id = c.id
     <where>
       <if test="hhUserId != null">
@@ -86,7 +87,7 @@
   </select>
 
   <select id="select4AppInMine" resultMap="ServerInfoWithUserMap" parameterType="com.zyfz.domain.ServerContract">
-   select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+   select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id) siu left join happy_help.hh_category c on siu.hh_category_id = c.id
     WHERE siu.id in (SELECT DISTINCT(sc.hh_server_info_id) FROM happy_help.hh_server_contract sc
     <where>
