@@ -1,24 +1,43 @@
 package com.zyfz.domain;
 
-/**
- * 服务状态表
- */
+import java.util.Date;
+
 public class ServerContract {
     private Integer id;
 
-    private String detail;  //客户要求详情
     /**
      * 记录订单的状态
-     *  0表示用户预约服务
-     *  1表示服务提供者接单并服务中
-     *  2表示服务提供商完成服务
-     *  3用户确认服务
+     * 0表示用户下单
+     * 1表示服务发布者接单
+     * 2表示服务发布者完成订单
+     * 3表示用户确认完成
      */
     private Integer status;
 
-    private Integer hhServerInfoId; //服务
+    private Integer hhServerInfoId;
 
-    private Integer hhUserId; //预约服务者
+    private Integer hhUserId;
+
+    private Double money;
+
+    private String content;
+
+    private String detail;
+
+    private Date createTime;
+
+    public ServerContract() {
+        super();
+    }
+
+    public ServerContract(Integer id) {
+        this.id = id;
+    }
+
+    public ServerContract(Integer status, Integer hhUserId) {
+        this.status = status;
+        this.hhUserId = hhUserId;
+    }
 
     public Integer getId() {
         return id;
@@ -26,14 +45,6 @@ public class ServerContract {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
     }
 
     public Integer getStatus() {
@@ -58,5 +69,37 @@ public class ServerContract {
 
     public void setHhUserId(Integer hhUserId) {
         this.hhUserId = hhUserId;
+    }
+
+    public Double getMoney() {
+        return money;
+    }
+
+    public void setMoney(Double money) {
+        this.money = money;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

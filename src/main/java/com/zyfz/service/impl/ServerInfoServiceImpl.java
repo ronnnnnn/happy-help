@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.CommentMapper;
 import com.zyfz.dao.ServerInfoMapper;
 import com.zyfz.domain.Comment;
+import com.zyfz.domain.ServerContract;
 import com.zyfz.domain.ServerInfo;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
@@ -92,9 +93,9 @@ public class ServerInfoServiceImpl implements IServerInfoService{
     }
 
     @Override
-    public Datagrid select4AppInMine(Integer userId, PageModel pageModel) {
+    public Datagrid select4AppInMine(ServerContract serverContract, PageModel pageModel) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
-        List<ServerInfo> serverInfos = serverInfoMapper.select4AppInMine(userId);
+        List<ServerInfo> serverInfos = serverInfoMapper.select4AppInMine(serverContract);
         PageInfo pageInfo = new PageInfo(serverInfos);
         return new Datagrid(pageInfo.getTotal(),serverInfos);
     }

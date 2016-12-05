@@ -1,6 +1,7 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.Category;
+import com.zyfz.domain.ServerContract;
 import com.zyfz.domain.ServerInfo;
 import com.zyfz.model.AppServerModel;
 import com.zyfz.model.Datagrid;
@@ -13,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -76,6 +78,11 @@ public class AppServerController extends BaseController {
 
     }
 
+    /**
+     * 获取我的服务及服务列表
+     * @param params
+     * @param response
+     */
     @RequestMapping(value = "/api/v1/anon/ServerInfo",method = RequestMethod.GET)
     public void getServerInfo(@RequestParam Map<String, Object> params,HttpServletResponse response){
         try {
@@ -117,4 +124,27 @@ public class AppServerController extends BaseController {
             super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
         }
     }
+
+    /**
+     * 获取我的服务订单
+     */
+    @RequestMapping(value = "/api/v1/my-order/serverInfo",method = RequestMethod.GET)
+    public void getMyServerInfo(@RequestParam(value = "userId",required = true)Integer userId ,
+                                @RequestParam(value = "page",required = false)Integer page,
+                                HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (page == null || page == 0){
+                pageModel = new PageModel(1,5);
+            }else {
+                pageModel = new PageModel(page,5);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",serverInfoService.select4AppInMine(new ServerContract(null,userId),pageModel)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
+    }
+
 }

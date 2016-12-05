@@ -1,5 +1,6 @@
 package com.zyfz.dao;
 
+import com.zyfz.domain.ServerContract;
 import com.zyfz.domain.ServerInfo;
 
 import java.util.List;
@@ -24,6 +25,6 @@ public interface ServerInfoMapper {
 
     List<ServerInfo> select4App(ServerInfo serverInfo);
 
-    List<ServerInfo> select4AppInMine(Integer userId);
+    List<ServerInfo> select4AppInMine(ServerContract serverContract);
 
 }

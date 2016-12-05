@@ -1,5 +1,6 @@
 package com.zyfz.service;
 
+import com.zyfz.domain.ServerContract;
 import com.zyfz.domain.ServerInfo;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
@@ -15,6 +16,6 @@ public interface IServerInfoService extends IBaseService<ServerInfo>{
 
     public Datagrid get4App(ServerInfo serverInfo,PageModel pageModel);
 
-    public Datagrid select4AppInMine(Integer userId,PageModel pageModel);
+    public Datagrid select4AppInMine(ServerContract serverContract, PageModel pageModel);
 
 }

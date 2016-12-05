@@ -107,7 +107,7 @@ public class ServerInfo {
     }
 
     public Boolean getIsImages() {
-        if (imageUrl == null || imageUrl.intern() != "none".intern()){
+        if (imageUrl == null || imageUrl.intern() == "none".intern()){
             return false;
         } else{
             return true;
