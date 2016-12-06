@@ -8,6 +8,7 @@ import com.zyfz.model.*;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.IServerContractService;
 import com.zyfz.service.IServerInfoService;
+import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,12 +24,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Created by ron on 16-12-3.
  */
 @Controller
 public class AppServerController extends BaseController {
+
+    private static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AppServerController.class);
 
     @Resource
     IServerInfoService serverInfoService;
@@ -190,6 +194,7 @@ public class AppServerController extends BaseController {
             }else {
                 pageModel = new PageModel(pn,5);
             }
+            logger.info("===========1========");
             super.writeJson(new ResponseMessage<Datagrid>(0,"success",serverContractService.selectByServerId(serviceId,pageModel)),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
