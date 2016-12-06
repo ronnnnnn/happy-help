@@ -1,5 +1,7 @@
 package com.zyfz.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.ServerContractMapper;
 import com.zyfz.domain.ServerContract;
 import com.zyfz.model.Datagrid;
@@ -8,6 +10,7 @@ import com.zyfz.service.IServerContractService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by ron on 16-12-6.
@@ -46,5 +49,13 @@ public class ServerContractServiceImpl implements IServerContractService {
     @Override
     public ServerContract getByUserAndServer(ServerContract serverContract) {
         return serverContractMapper.selectByUserAndServer(serverContract);
+    }
+
+    @Override
+    public Datagrid selectByServerId(Integer serverId, PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<ServerContract> serverContracts = serverContractMapper.selectByServerId(serverId);
+        PageInfo pageInfo = new PageInfo(serverContracts);
+        return new Datagrid(pageInfo.getTotal(),serverContracts);
     }
 }

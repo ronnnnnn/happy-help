@@ -15,4 +15,6 @@ public interface PushMapper {
     int updateByPrimaryKeySelective(Push record);
 
     int updateByPrimaryKey(Push record);
+
+    Push selectByUserId(Integer hhUserId);
 }
