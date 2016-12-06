@@ -36,11 +36,7 @@
       <result column="real_name" property="realName" jdbcType="VARCHAR" />
       <result column="email" property="email" jdbcType="VARCHAR" />
     </association>
-    <collection property="userClick" ofType="UserClick">
-      <id column="clickId" property="id" jdbcType="INTEGER" />
-      <result column="hh_article_id" property="hhArticleId" jdbcType="INTEGER" />
-      <result column="user_id" property="userId" jdbcType="INTEGER" />
-    </collection>
+    <collection property="userClick" column="id" ofType="UserClick" select="com.zyfz.dao.UserClickMapper.selectByArticleId"/>
   </resultMap>
 
 
@@ -78,9 +74,9 @@
   </select>
 
   <select id="selectWithUserInApp" resultMap="articleClickMap" parameterType="com.zyfz.domain.Article" >
-    select au.* ,c.id as clickId ,c.user_id ,c.hh_article_id from (SELECT a.*,u.id as userid,u.photo, u.phone,u.username,u.real_name,u.nickname,u.email
+    SELECT a.*,u.id as userid,u.photo, u.phone,u.username,u.real_name,u.nickname,u.email
     FROM happy_help.hh_article a left join happy_help.hh_user u
-    on a.hh_user_id = u.id) au left join happy_help.hh_user_click c on au.id = c.hh_article_id
+    on a.hh_user_id = u.id
     <where>
       <if test="isDeleted != null" >
         is_deleted = #{isDeleted,jdbcType=BIT}

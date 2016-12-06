@@ -1,6 +1,7 @@
 package com.zyfz.dao;
 
 import com.zyfz.domain.Article;
+import com.zyfz.domain.UserClick;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface ArticleMapper {
     int updateByPrimaryKey(Article record);
 
     List<Article> selectWithUserInApp(Article record);
+
+    //List<UserClick> getClick(Integer id);
 }

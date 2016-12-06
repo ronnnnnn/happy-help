@@ -84,7 +84,7 @@ public class ArticleServiceImpl implements IArticleService {
     public Datagrid getWithUserInApp(PageModel pageModel, Article article) {
         PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
         List<Article> articles = articleMapper.selectWithUserInApp(article);
-        PageInfo pageInfo = new PageInfo();
+        PageInfo<Article> pageInfo = new PageInfo<Article>(articles);
         Datagrid datagrid = new Datagrid(pageInfo.getTotal(),articles);
         return datagrid;
     }

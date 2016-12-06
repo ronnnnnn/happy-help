@@ -29,6 +29,8 @@ public class Article {
 
     private User user;
 
+    private Boolean isImage;
+
     private String[] imageUrls;
 
     private List<UserClick> userClick;
@@ -48,6 +50,14 @@ public class Article {
             return userClick.size();
         }else {
             return 0;
+        }
+    }
+
+    public Boolean getIsImage(){
+        if (imageUrl == null || imageUrl.intern() == "none".intern()){
+            return false;
+        } else{
+            return true;
         }
     }
 

@@ -1,8 +1,12 @@
 package com.zyfz.web.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.zyfz.alipay.util.OrderInfoUtil2_0;
+import com.zyfz.model.AppOrderModel;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -40,8 +44,15 @@ public class AppAlipayController {
             //获取支付宝POST过来反馈信息
             Map<String, String> params = new HashMap<String, String>();
             Map requestParams = request.getParameterMap();
-
             this.handleParam(params,requestParams);
+
+            PrintWriter printWriter = null;
+            try {
+                printWriter = response.getWriter();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             Map<String, String> paramsMap = requestParams; //将异步通知中收到的待验证所有参数都存放到map中
             boolean signVerified = false;//调用SDK验证签名
             try {
@@ -56,6 +67,7 @@ public class AppAlipayController {
                 // TODO 验签失败则记录异常日志，并在response中返回failure.
             }
     }
+
 //    @RequestMapping(value = "/api/v1/anon/notify", method = RequestMethod.POST)
 //    public void receiveNotify(HttpServletRequest request, HttpServletResponse response) {
 //
@@ -147,6 +159,12 @@ public class AppAlipayController {
 
     @RequestMapping(value = "/api/v1/anon/signatures",method = RequestMethod.POST)
     public void signatrues2(@RequestParam Map<String,String> reqParams, HttpServletResponse response){
+        //记录订单
+        String jsonString = reqParams.get("biz_content");
+        AppOrderModel appOrderModel = JSON.parseObject(jsonString,AppOrderModel.class);
+        logger.info("======="+appOrderModel.getOut_trade_no()+"========");
+        //map = JSONObject
+        //处理签名
         reqParams.put("charset", INPUT_CHARSET);
         reqParams.put("method", SERVICE);
         reqParams.put("notify_url",NOTIFY_URL);

@@ -2,6 +2,8 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.UserClick;
 
+import java.util.List;
+
 public interface UserClickMapper {
 
     int deleteByPrimaryKey(Integer id);
@@ -15,4 +17,6 @@ public interface UserClickMapper {
     int updateByPrimaryKeySelective(UserClick record);
 
     int updateByPrimaryKey(UserClick record);
+
+    List<UserClick> selectByArticleId(Integer articleId);
 }
