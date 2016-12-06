@@ -39,6 +39,7 @@ public class ServerContract {
         this.hhUserId = hhUserId;
     }
 
+
     public Integer getId() {
         return id;
     }

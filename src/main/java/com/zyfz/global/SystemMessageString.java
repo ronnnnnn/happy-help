@@ -13,6 +13,8 @@ public class SystemMessageString {
     public static String REJECT_CONTENT="您想帮助的求助消息,有人抢先一步完成了,快去看看吧!";
     public static String AGREE_CONTENT="您想帮助的求助消息,请您去帮忙,快去看看吧!";
     public static String COMPELETE_CONTENT="您想帮助的求助消息已完成,快去看看吧!";
-
+    public static String DEAL_MESSAGE_TITLE="交易提醒";
+    public static String DEAL_MESSAGE_CONTENT_ADD="您有一笔钱到达账户了,快去看看吧!";
+    public static String DEAL_MESSAGE_CONTENT_SUB="因交易失败,您有一笔钱离开了账户了,快去看看吧!";
 
 }

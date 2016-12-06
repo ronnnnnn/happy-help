@@ -52,6 +52,7 @@ public class AppTaskInfoController extends BaseController{
     @Resource
     IOrderRecordService orderRecordService;
 
+
     /**
      *
      * @param assistanceStatus 0为有偿求助列表，1为无偿求助列表, 2为综合，3为未帮助，4为帮助中，5为已帮助
@@ -424,6 +425,56 @@ public class AppTaskInfoController extends BaseController{
                         AGREE_CONTENT,
                         String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage);
+
+                //当是有偿任务进行转账
+                if((status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5)){
+                    User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
+                    User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+                    if (appTaskHandleModel.getBargainingMoney() != null && appTaskHandleModel.getBargainingMoney() > 0){
+                        Double serviceAccount = serviceUser.getAccount() + appTaskHandleModel.getBargainingMoney();
+                        Double paidAccount = paidUser.getAccount() - appTaskHandleModel.getBargainingMoney();
+                        serviceUser.setAccount(serviceAccount);
+                        paidUser.setAccount(paidAccount);
+                        userservice.update(serviceUser);
+                        userservice.update(paidUser);
+                    }
+                }
+
+                //处理消息,金钱变动提醒
+                SystemMessage systemMessage2 = new SystemMessage("taskinfo",
+                        appTaskHandleModel.getUserIdOfAssistance(),
+                        new Date(),
+                        DEAL_MESSAGE_TITLE,
+                        DEAL_MESSAGE_CONTENT_ADD,
+                        String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage2);
+
+                //记录订单记录
+                String tradeNo = UtilDate.getOrderNum();
+                String secondType = null;
+                if (status == 3){
+                    secondType = "free";
+                }else if (status == 12){
+                    secondType = "paid";
+                }
+
+                OrderRecord orderRecord = new OrderRecord(
+                        null,
+                        tradeNo,
+                        "taskInfo",
+                        secondType,
+                        String.valueOf(appTaskHandleModel.getUserIdOfBargaining()),
+                        String.valueOf(appTaskHandleModel.getUserIdOfAssistance()),
+                        taskContract.getMoney(),
+                        taskContract.getHhTaskInfoId(),
+                        null,
+                        new Date(),
+                        false,
+                        appTaskHandleModel.getBargainingId()
+                );
+
+                orderRecordService.save(orderRecord);
+
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }
 
@@ -454,29 +505,11 @@ public class AppTaskInfoController extends BaseController{
                         String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage);
 
-                //记录订单记录
-                String tradeNo = UtilDate.getOrderNum();
-                String secondType = null;
-                if (status == 3){
-                    secondType = "free";
-                }else if (status == 12){
-                    secondType = "notFree";
-                }
+                //订单记录设为完成态
+                OrderRecord orderRecord = orderRecordService.selectByContactId(appTaskHandleModel.getBargainingId());
+                orderRecord.setIsCompeleted(true);
+                orderRecordService.update(orderRecord);
 
-                OrderRecord orderRecord = new OrderRecord(
-                        null,
-                        tradeNo,
-                        "taskInfo",
-                        secondType,
-                        String.valueOf(appTaskHandleModel.getUserIdOfBargaining()),
-                        String.valueOf(appTaskHandleModel.getUserIdOfAssistance()),
-                        taskContract.getMoney(),
-                        taskContract.getHhTaskInfoId(),
-                        null,
-                        new Date()
-                );
-
-                orderRecordService.save(orderRecord);
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }
 
@@ -517,6 +550,36 @@ public class AppTaskInfoController extends BaseController{
                         REJECT_CONTENT,
                         String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage);
+                //退还金额
+                //获取应退还的金额
+                OrderRecord orderRecord = orderRecordService.selectByContactId(appTaskHandleModel.getBargainingId());
+                Double backMoney = orderRecord.getDealMoney();
+                User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
+                User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+                Double serviceAccount = serviceUser.getAccount() - backMoney;
+                Double paidAccount = paidUser.getAccount() + backMoney;
+                serviceUser.setAccount(serviceAccount);
+                paidUser.setAccount(paidAccount);
+                userservice.update(serviceUser);
+                userservice.update(paidUser);
+
+                //处理消息,金钱变动提醒
+                SystemMessage systemMessage2 = new SystemMessage("taskinfo",
+                        appTaskHandleModel.getUserIdOfBargaining(),
+                        new Date(),
+                        DEAL_MESSAGE_TITLE,
+                        DEAL_MESSAGE_CONTENT_ADD,
+                        String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage2);
+
+                SystemMessage systemMessage3 = new SystemMessage("taskinfo",
+                        appTaskHandleModel.getUserIdOfAssistance(),
+                        new Date(),
+                        DEAL_MESSAGE_TITLE,
+                        DEAL_MESSAGE_CONTENT_SUB,
+                        String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage2);
+
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }else if (status == oldStatus){
                 super.writeJson(new ResponseMessage<String>(40402,"您已经进行过此操作了！","null"),response);

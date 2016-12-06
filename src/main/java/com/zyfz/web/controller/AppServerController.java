@@ -3,11 +3,10 @@ package com.zyfz.web.controller;
 import com.zyfz.domain.Category;
 import com.zyfz.domain.ServerContract;
 import com.zyfz.domain.ServerInfo;
-import com.zyfz.model.AppServerModel;
-import com.zyfz.model.Datagrid;
-import com.zyfz.model.PageModel;
-import com.zyfz.model.ResponseMessage;
+import com.zyfz.domain.TaskContract;
+import com.zyfz.model.*;
 import com.zyfz.service.ICategoryService;
+import com.zyfz.service.IServerContractService;
 import com.zyfz.service.IServerInfoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -37,7 +36,8 @@ public class AppServerController extends BaseController {
     @Resource
     ICategoryService categoryService;
 
-
+    @Resource
+    IServerContractService serverContractService;
 
     @RequestMapping(value = "/api/v1/server",method = RequestMethod.POST)
     public void addServer(AppServerModel appServerModel, HttpServletResponse response, HttpServletRequest request){
@@ -89,7 +89,7 @@ public class AppServerController extends BaseController {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             resultMap = params;
             ServerInfo serverInfo = new ServerInfo();
-            if (resultMap.get("userId") != null){
+            if (resultMap.get("userId") != null || Integer.valueOf((String) resultMap.get("userId")) != 0){
                 serverInfo.setHhUserId(Integer.valueOf((String) resultMap.get("userId")));
             }
             if (resultMap.get("isPass") != null){
@@ -146,5 +146,36 @@ public class AppServerController extends BaseController {
             super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
         }
     }
+
+    /**
+     *
+     */
+    @RequestMapping(value = "/api/v1/custom/serverInfo",method = RequestMethod.POST)
+    public void updateContract(AppServerContractModel appServerContractModel,HttpServletResponse response){
+
+        try {
+            ServerContract serverContractts = new ServerContract();
+            serverContractts.setHhServerInfoId(appServerContractModel.getServiceId());
+            serverContractts.setHhUserId(appServerContractModel.getUserId());
+            ServerContract mServerContract = serverContractService.getByUserAndServer(serverContractts);
+            if (mServerContract == null){
+                ServerContract serverContract = new ServerContract();
+                serverContract.setStatus(0);
+                serverContract.setHhUserId(appServerContractModel.getUserId());
+                serverContract.setHhServerInfoId(appServerContractModel.getServiceId());
+                serverContractService.save(serverContract);
+            } else {
+                mServerContract.setStatus(3);
+                serverContractService.update(mServerContract);
+            }
+            super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
+
+    }
+
 
 }

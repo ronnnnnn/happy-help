@@ -22,6 +22,14 @@
     from hh_server_contract
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByUserAndServer" parameterType="com.zyfz.domain.ServerContract" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_server_contract
+    where hh_user_id = #{hhUserId,jdbcType=INTEGER} and hh_server_info_id = #{hhServerInfoId,jdbcType=INTEGER}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hh_server_contract
     where id = #{id,jdbcType=INTEGER}

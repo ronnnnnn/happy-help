@@ -49,4 +49,9 @@ public class OrderRecordServiceImpl implements IOrderRecordService {
     public Integer deleteOneById(OrderRecord orderRecord) {
         return orderRecordMapper.deleteByPrimaryKey(orderRecord.getId());
     }
+
+    @Override
+    public OrderRecord selectByContactId(Integer contractId) {
+        return orderRecordMapper.selectByContactId(contractId);
+    }
 }

@@ -81,6 +81,14 @@ public class User {
 
     private String description;
 
+    public User() {
+        super();
+    }
+
+    public User(Integer id) {
+        this.id = id;
+    }
+
     public String getNewPassword() {
         return newPassword;
     }

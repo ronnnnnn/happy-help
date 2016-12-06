@@ -20,4 +20,6 @@ public interface OrderRecordMapper {
     int updateByPrimaryKey(OrderRecord record);
 
     List<OrderRecord> selectAll();
+
+    OrderRecord selectByContactId(Integer contractId);
 }

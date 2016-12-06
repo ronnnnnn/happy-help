@@ -15,4 +15,6 @@ public interface ServerContractMapper {
     int updateByPrimaryKeySelective(ServerContract record);
 
     int updateByPrimaryKey(ServerContract record);
+
+    ServerContract selectByUserAndServer(ServerContract serverContract);
 }

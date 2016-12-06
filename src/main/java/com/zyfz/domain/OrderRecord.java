@@ -23,6 +23,10 @@ public class OrderRecord {
 
     private Date createTime;
 
+    private Boolean isCompeleted;
+
+    private Integer hhContractId;
+
     public OrderRecord(){
         super();
     }
@@ -42,6 +46,37 @@ public class OrderRecord {
         this.hhTargetId = hhTargetId;
         this.descript = descript;
         this.createTime = createTime;
+    }
+
+    public OrderRecord(Integer id, String tradeNo, String orderType, String secondType, String payUser, String acceptUser, Double dealMoney, Integer hhTargetId, String descript, Date createTime, Boolean isCompeleted, Integer hhContractId) {
+        this.id = id;
+        this.tradeNo = tradeNo;
+        this.orderType = orderType;
+        this.secondType = secondType;
+        this.payUser = payUser;
+        this.acceptUser = acceptUser;
+        this.dealMoney = dealMoney;
+        this.hhTargetId = hhTargetId;
+        this.descript = descript;
+        this.createTime = createTime;
+        this.isCompeleted = isCompeleted;
+        this.hhContractId = hhContractId;
+    }
+
+    public Integer getHhContractId() {
+        return hhContractId;
+    }
+
+    public void setHhContractId(Integer hhContractId) {
+        this.hhContractId = hhContractId;
+    }
+
+    public Boolean getIsCompeleted() {
+        return isCompeleted;
+    }
+
+    public void setIsCompeleted(Boolean compeleted) {
+        isCompeleted = compeleted;
     }
 
     public Integer getId() {
