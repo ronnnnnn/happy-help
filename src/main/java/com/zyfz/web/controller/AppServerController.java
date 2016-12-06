@@ -89,7 +89,7 @@ public class AppServerController extends BaseController {
             Map<String, Object> resultMap = new HashMap<String, Object>();
             resultMap = params;
             ServerInfo serverInfo = new ServerInfo();
-            if (resultMap.get("userId") != null || Integer.valueOf((String) resultMap.get("userId")) != 0){
+            if (Integer.valueOf((String) resultMap.get("userId")) != null || Integer.valueOf((String) resultMap.get("userId")) != 0){
                 serverInfo.setHhUserId(Integer.valueOf((String) resultMap.get("userId")));
             }
             if (resultMap.get("isPass") != null){
@@ -112,7 +112,7 @@ public class AppServerController extends BaseController {
                 serverInfo.setArea((String) resultMap.get("area"));
             }
             PageModel pageModel = null;
-            if (resultMap.get("pn") != null){
+            if (Integer.valueOf((String) resultMap.get("pn") )!= null){
                 pageModel = new PageModel(Integer.valueOf((String) resultMap.get("pn")),5);
             } else {
                 pageModel = new PageModel(1,5);
