@@ -19,6 +19,8 @@ public class AlipayConfig {
 	 */
 	public static final String APPID = "2016120103710069";
 
+	public static final String PID = "2088812779503152";
+
 	//合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串，查看地址：https://openhome.alipay.com/platform/keyManage.htm?keyType=partner
 	public static String PARTNER = "2088812779503152";
 
