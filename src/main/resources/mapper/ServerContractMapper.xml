@@ -12,6 +12,21 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
+  <resultMap id="ContractResultMap" type="ServerContract" extends="BaseResultMap">
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="u_phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
+      <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
+      <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, status, hh_server_info_id, hh_user_id, money, content, detail, create_time
   </sql>
@@ -28,6 +43,12 @@
     <include refid="Base_Column_List" />
     from hh_server_contract
     where hh_user_id = #{hhUserId,jdbcType=INTEGER} and hh_server_info_id = #{hhServerInfoId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByServerId" parameterType="java.lang.Integer" resultMap="ContractResultMap">
+    SELECT sc.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_server_contract sc left join happy_help.hh_user u on sc.hh_user_id = u.id
+    where sc.hh_server_info_id = #{serverId,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

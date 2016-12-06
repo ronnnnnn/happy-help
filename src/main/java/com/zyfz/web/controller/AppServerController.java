@@ -179,5 +179,24 @@ public class AppServerController extends BaseController {
 
     }
 
+    @RequestMapping(value = "/api/v1/anon/contract",method = RequestMethod.GET)
+    public void getContractUser(@RequestParam(value = "serviceId",required = true) Integer serviceId,
+                                @RequestParam(value = "pn",required = false)Integer pn,
+                                HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (pn == null || pn == 0){
+                pageModel = new PageModel(1,5);
+            }else {
+                pageModel = new PageModel(pn,5);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",serverContractService.selectByServerId(serviceId,pageModel)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
+    }
+
 
 }
