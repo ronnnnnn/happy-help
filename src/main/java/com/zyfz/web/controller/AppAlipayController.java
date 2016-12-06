@@ -1,14 +1,7 @@
 package com.zyfz.web.controller;
 
 import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.zyfz.alipay.config.AlipayConfig;
-import com.zyfz.alipay.sign.Base64;
-import com.zyfz.alipay.sign.RSA;
-import com.zyfz.alipay.util.AlipayCore;
-import com.zyfz.alipay.util.AlipayNotify;
 import com.zyfz.alipay.util.OrderInfoUtil2_0;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,18 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static com.zyfz.alipay.config.AlipayConfig.*;
 
@@ -158,32 +146,23 @@ public class AppAlipayController {
 //    }
 
     @RequestMapping(value = "/api/v1/anon/signatures",method = RequestMethod.POST)
-    public void signatrues2(@RequestParam Map<String,String> params,HttpServletRequest request, HttpServletResponse response){
-        Map<String, String> resultMap = new HashMap<String, String>();
+    public void signatrues2(@RequestParam Map<String,String> reqParams, HttpServletResponse response){
+        reqParams.put("charset", INPUT_CHARSET);
+        reqParams.put("method", SERVICE);
+        reqParams.put("notify_url",NOTIFY_URL);
+        reqParams.put("sign_type", SIGN_TYPE);
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+        reqParams.put("timestamp", timestamp);
+        reqParams.put("version",VERSION);
 
-        resultMap = params;
-
-        resultMap.put("charset", INPUT_CHARSET);
-
-        resultMap.put("method", SERVICE);
-
-        resultMap.put("format",FORMAT);
-
-        resultMap.put("sign_type", SIGN_TYPE);
-
-        resultMap.put("timestamp", new Date().toString());
-
-        resultMap.put("notify_url",NOTIFY_URL);
-
-        resultMap.put("version",VERSION);
-
+        String orderParam = OrderInfoUtil2_0.buildOrderParam(reqParams);
+        String sign = OrderInfoUtil2_0.getSign(reqParams, RSA_PRIVATE);
+        String orderInfo = orderParam + "&" + sign;   // 订单信息
+        logger.info("signatrues2: 订单信息 ==>" + orderInfo);
         try {
             PrintWriter printWriter = response.getWriter();
-            resultMap.put("sign",AlipaySignature.rsaSign(resultMap,RSA_PRIVATE,INPUT_CHARSET));
             printWriter.flush();
-            printWriter.print(OrderInfoUtil2_0.buildOrderParam(resultMap));
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
+            printWriter.print(orderInfo);
         } catch (IOException e){
             e.printStackTrace();
         }
