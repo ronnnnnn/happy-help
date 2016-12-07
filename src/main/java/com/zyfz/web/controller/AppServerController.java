@@ -207,7 +207,7 @@ public class AppServerController extends BaseController {
      * @param status
      * @param response
      */
-    @RequestMapping(value = "/api/v1/anon/publish/serverContract",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/publish/serverContract",method = RequestMethod.POST)
     public void handleServerContract(@RequestParam(value= "userId",required = true)Integer userId,
                                      @RequestParam(value= "userIdOfBespeak",required = true)Integer userIdOfBespeak,
                                      @RequestParam(value= "serviceId",required = true)Integer serviceId,

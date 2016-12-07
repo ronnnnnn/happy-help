@@ -1,12 +1,11 @@
 package com.zyfz.web.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.zyfz.alipay.util.OrderInfoUtil2_0;
+import com.zyfz.domain.MoneyRecord;
 import com.zyfz.model.AppOrderModel;
-import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -163,6 +162,7 @@ public class AppAlipayController {
         String jsonString = reqParams.get("biz_content");
         AppOrderModel appOrderModel = JSON.parseObject(jsonString,AppOrderModel.class);
         logger.info("======="+appOrderModel.getOut_trade_no()+"========");
+      //  MoneyRecord moneyRecord = new MoneyRecord(null,);
         //map = JSONObject
         //处理签名
         reqParams.put("charset", INPUT_CHARSET);
