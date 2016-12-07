@@ -41,6 +41,8 @@ public class ServerContract {
         this.hhUserId = hhUserId;
     }
 
+
+
     public User getUser() {
         return user;
     }

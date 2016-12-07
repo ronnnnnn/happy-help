@@ -154,7 +154,7 @@ public class AppServerController extends BaseController {
     }
 
     /**
-     *
+     *用户操作(预约,确认完成)
      */
     @RequestMapping(value = "/api/v1/custom/serverInfo",method = RequestMethod.POST)
     public void updateContract(AppServerContractModel appServerContractModel,HttpServletResponse response){
@@ -181,6 +181,28 @@ public class AppServerController extends BaseController {
             super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
         }
 
+    }
+
+    @RequestMapping(value = "/api/v1/anon/publish/serverContract",method = RequestMethod.POST)
+    public void handleServerContract(@RequestParam(value= "userId",required = true)Integer userId,
+                                     @RequestParam(value= "userIdOfBespeak",required = true)Integer userIdOfBespeak,
+                                     @RequestParam(value= "serviceId",required = true)Integer serviceId,
+                                     @RequestParam(value = "status",required = true)Integer  status,
+                                     HttpServletResponse response
+                                     ){
+        try{
+            ServerContract serverContractts = new ServerContract();
+            serverContractts.setHhServerInfoId(serviceId);
+            serverContractts.setHhUserId(userIdOfBespeak);
+            ServerContract mServerContract = serverContractService.getByUserAndServer(serverContractts);
+            mServerContract.setStatus(status);
+            serverContractService.update(mServerContract);
+            super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
     }
 
     @RequestMapping(value = "/api/v1/anon/contract",method = RequestMethod.GET)
