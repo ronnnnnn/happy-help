@@ -249,9 +249,31 @@
 				handler : function() {
 					taskinfoUpdateStatus("up");
 				}
+			}, '-', {
+				text : '交易管理',
+				iconCls : 'icon-edit',
+				handler : function() {
+					taskinfoContractView();
+				}
 			}]
         });
     }
+
+    function taskinfoContractView() {
+		var rows = $('#admin_taskinfo_datagrid').datagrid('getChecked');
+		if (rows.length == 1) {
+			setCookie('taskinfoId',rows[0].id);
+			var url = '${pageContext.request.contextPath}/taskContract/list-panel/'+rows[0].id;
+			addTabs({
+				title : '交易管理',
+				href : url,
+				closable : true
+			});
+
+		} else {
+			$.messager.alert('提示', '请勾选一个要管理的文章！');
+		}
+	}
 
 	function tsshowMore(infos) {
 		var minfos = infos.split(",");

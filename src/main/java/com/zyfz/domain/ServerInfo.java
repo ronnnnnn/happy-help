@@ -65,6 +65,16 @@ public class ServerInfo {
 
     private String[] imageUrls;
 
+    private ServerContract serverContract;
+
+    public ServerContract getServerContract() {
+        return serverContract;
+    }
+
+    public void setServerContract(ServerContract serverContract) {
+        this.serverContract = serverContract;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

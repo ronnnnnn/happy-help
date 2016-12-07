@@ -127,6 +127,12 @@ public class AppTaskInfoController extends BaseController{
         }
     }
 
+    /**
+     * 添加
+     * @param appTaskInfoModel
+     * @param request
+     * @param response
+     */
     @RequestMapping(value = "/api/v1/taskInfo",method = RequestMethod.POST)
     public void addTaskInfo(AppTaskInfoModel appTaskInfoModel, HttpServletRequest request,HttpServletResponse response){
         try {
@@ -217,6 +223,11 @@ public class AppTaskInfoController extends BaseController{
                if (taskContract.getStatus() == 6){ //提价才进行帮助,第一次提价,消息提醒,让用户进行同意或者还价(根据taskinfo的status进行判断显示)
                    SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
                    systemMessageService.save(systemMessage);
+
+                   //如果无偿转化为有偿修改taskinfo信息
+                   mtaskInfo.setIsFree(false);
+                   taskInfoService.update(mtaskInfo);
+
                }else { //其他情况进行帮助,无偿和有偿接受,消息提醒,让用户进行同意
                    SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.ACCEPT_MESSAGE,pageMessage);
                    systemMessageService.save(systemMessage);
@@ -626,7 +637,7 @@ public class AppTaskInfoController extends BaseController{
             }
             Map<String,Integer> map = new HashMap<String, Integer>();
             map.put("status",status);
-            super.writeJson(new ResponseMessage<Map<String,Integer>>(0,"successs!",map),response);
+            super.writeJson(new ResponseMessage<Map<String,Integer>>(0,"success!",map),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());

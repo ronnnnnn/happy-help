@@ -36,6 +36,22 @@
     </association>
   </resultMap>
 
+  <resultMap id="ServerInfoWithUserAndContractMap" type="ServerInfo" extends="BaseResultMap">
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="u_phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
+      <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
+      <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
+    </association>
+
+  </resultMap>
+
 
   <sql id="Base_Column_List">
     id, title, context, phone, create_time, hh_user_id, is_pass, is_deleted, hh_category_id, 
