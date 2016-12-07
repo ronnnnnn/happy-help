@@ -1,26 +1,24 @@
 package com.zyfz.web.controller;
 
-import com.github.pagehelper.PageInfo;
-import com.zyfz.domain.*;
+import com.zyfz.domain.ServerContract;
+import com.zyfz.domain.ServerInfo;
+import com.zyfz.domain.SystemMessage;
 import com.zyfz.model.*;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.IServerContractService;
 import com.zyfz.service.IServerInfoService;
 import com.zyfz.service.ISystemMessageService;
-import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static com.zyfz.global.SystemMessageString.*;
 
@@ -135,7 +133,7 @@ public class AppServerController extends BaseController {
     /**
      * 获取我的服务订单
      */
-    @RequestMapping(value = "/api/v1/anon/my-order/serverInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/my-order/serverInfo",method = RequestMethod.GET)
     public void getMyServerInfo(@RequestParam(value = "userId",required = true)Integer userId ,
                                 @RequestParam(value = "pn",required = false)Integer page,
                                 @RequestParam(value = "status",required = false)Integer status,
