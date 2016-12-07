@@ -6,6 +6,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.zyfz.alipay.util.OrderInfoUtil2_0;
 import com.zyfz.domain.MoneyRecord;
 import com.zyfz.model.AppOrderModel;
+import com.zyfz.service.IMoneyRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -30,6 +32,8 @@ public class AppAlipayController {
 
     private static Logger logger = LoggerFactory.getLogger(AppAlipayController.class);
 
+    @Resource
+    IMoneyRecordService moneyRecordService;
     /**
      * 异步接受支付宝支付结果
      * 支付宝服务器调用
@@ -38,7 +42,7 @@ public class AppAlipayController {
      * @param response
      */
 
-        @RequestMapping(value = "/api/v1/anon/notify", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/anon/notify", method = RequestMethod.POST)
     public void receiveNotify(HttpServletRequest request, HttpServletResponse response) {
             //获取支付宝POST过来反馈信息
             Map<String, String> params = new HashMap<String, String>();
@@ -162,8 +166,15 @@ public class AppAlipayController {
         String jsonString = reqParams.get("biz_content");
         AppOrderModel appOrderModel = JSON.parseObject(jsonString,AppOrderModel.class);
         logger.info("======="+appOrderModel.getOut_trade_no()+"========");
-      //  MoneyRecord moneyRecord = new MoneyRecord(null,);
-        //map = JSONObject
+        MoneyRecord moneyRecord = new MoneyRecord(null,appOrderModel.getOut_trade_no(),
+                                                        appOrderModel.getUserId(),
+                                                        appOrderModel.getTotal_amount(),
+                                                        appOrderModel.getSubject(),
+                                                        appOrderModel.getBody(),
+                                                        false,
+                                                        new Date());
+
+        moneyRecordService.save(moneyRecord);
         //处理签名
         reqParams.put("charset", INPUT_CHARSET);
         reqParams.put("method", SERVICE);

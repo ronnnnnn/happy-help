@@ -95,7 +95,7 @@
         sc.hh_user_id = #{hhUserId,jdbcType=VARCHAR}
       </if>
       <if test="status != null">
-        sc.status = #{status,jdbcType=VARCHAR}
+        AND sc.status = #{status,jdbcType=VARCHAR}
       </if>
     </where>
     )

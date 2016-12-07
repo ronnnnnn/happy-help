@@ -8,12 +8,12 @@
     <result column="money" property="money" jdbcType="DOUBLE" />
     <result column="paid_type" property="paidType" jdbcType="VARCHAR" />
     <result column="descript" property="descript" jdbcType="VARCHAR" />
-    <result column="isValied" property="isvalied" jdbcType="TINYINT" />
+    <result column="is_valied" property="isValied" jdbcType="BIT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <sql id="Base_Column_List" >
-    id, trade_order_no, hh_user_id, money, paid_type, descript, isValied, create_time
+    id, trade_order_no, hh_user_id, money, paid_type, descript, is_valied, create_time
   </sql>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -38,10 +38,10 @@
   <insert id="insert" parameterType="com.zyfz.domain.MoneyRecord" >
     insert into hh_money_record (id, trade_order_no, hh_user_id, 
       money, paid_type, descript, 
-      isValied, create_time)
+      is_valied, create_time)
     values (#{id,jdbcType=INTEGER}, #{tradeOrderNo,jdbcType=VARCHAR}, #{hhUserId,jdbcType=INTEGER}, 
       #{money,jdbcType=DOUBLE}, #{paidType,jdbcType=VARCHAR}, #{descript,jdbcType=VARCHAR}, 
-      #{isvalied,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP})
+      #{isValied,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.MoneyRecord" >
     insert into hh_money_record
@@ -64,8 +64,8 @@
       <if test="descript != null" >
         descript,
       </if>
-      <if test="isvalied != null" >
-        isValied,
+      <if test="isValied != null" >
+        is_valied,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -90,8 +90,8 @@
       <if test="descript != null" >
         #{descript,jdbcType=VARCHAR},
       </if>
-      <if test="isvalied != null" >
-        #{isvalied,jdbcType=TINYINT},
+      <if test="isValied != null" >
+        #{isValied,jdbcType=BIT},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -116,8 +116,8 @@
       <if test="descript != null" >
         descript = #{descript,jdbcType=VARCHAR},
       </if>
-      <if test="isvalied != null" >
-        isValied = #{isvalied,jdbcType=TINYINT},
+      <if test="isValied != null" >
+        is_valied = #{isValied,jdbcType=BIT},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -132,7 +132,7 @@
       money = #{money,jdbcType=DOUBLE},
       paid_type = #{paidType,jdbcType=VARCHAR},
       descript = #{descript,jdbcType=VARCHAR},
-      isValied = #{isvalied,jdbcType=TINYINT},
+      is_valied = #{isValied,jdbcType=BIT},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

@@ -15,7 +15,7 @@ public class MoneyRecord {
 
     private String descript;
 
-    private Byte isvalied;
+    private Boolean isValied;
 
     private Date createTime;
 
@@ -23,14 +23,14 @@ public class MoneyRecord {
         super();
     }
 
-    public MoneyRecord(Integer id, String tradeOrderNo, Integer hhUserId, Double money, String paidType, String descript, Byte isvalied, Date createTime) {
+    public MoneyRecord(Integer id, String tradeOrderNo, Integer hhUserId, Double money, String paidType, String descript, Boolean isvalied, Date createTime) {
         this.id = id;
         this.tradeOrderNo = tradeOrderNo;
         this.hhUserId = hhUserId;
         this.money = money;
         this.paidType = paidType;
         this.descript = descript;
-        this.isvalied = isvalied;
+        this.isValied = isvalied;
         this.createTime = createTime;
     }
 
@@ -86,12 +86,12 @@ public class MoneyRecord {
         this.descript = descript;
     }
 
-    public Byte getIsvalied() {
-        return isvalied;
+    public Boolean getIsValied() {
+        return isValied;
     }
 
-    public void setIsvalied(Byte isvalied) {
-        this.isvalied = isvalied;
+    public void setIsValied(Boolean isvalied) {
+        this.isValied = isvalied;
     }
 
     public Date getCreateTime() {

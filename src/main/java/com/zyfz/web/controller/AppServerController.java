@@ -135,9 +135,10 @@ public class AppServerController extends BaseController {
     /**
      * 获取我的服务订单
      */
-    @RequestMapping(value = "/api/v1/my-order/serverInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/api/v1/anon/my-order/serverInfo",method = RequestMethod.GET)
     public void getMyServerInfo(@RequestParam(value = "userId",required = true)Integer userId ,
-                                @RequestParam(value = "page",required = false)Integer page,
+                                @RequestParam(value = "pn",required = false)Integer page,
+                                @RequestParam(value = "status",required = false)Integer status,
                                 HttpServletResponse response){
         try {
             PageModel pageModel = null;
@@ -146,7 +147,8 @@ public class AppServerController extends BaseController {
             }else {
                 pageModel = new PageModel(page,5);
             }
-            super.writeJson(new ResponseMessage<Datagrid>(0,"success",serverInfoService.select4AppInMine(new ServerContract(null,userId),pageModel)),response);
+
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",serverInfoService.select4AppInMine(new ServerContract(status,userId),pageModel)),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());
