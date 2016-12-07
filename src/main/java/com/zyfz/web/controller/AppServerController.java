@@ -1,13 +1,12 @@
 package com.zyfz.web.controller;
 
-import com.zyfz.domain.Category;
-import com.zyfz.domain.ServerContract;
-import com.zyfz.domain.ServerInfo;
-import com.zyfz.domain.TaskContract;
+import com.github.pagehelper.PageInfo;
+import com.zyfz.domain.*;
 import com.zyfz.model.*;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.IServerContractService;
 import com.zyfz.service.IServerInfoService;
+import com.zyfz.service.ISystemMessageService;
 import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -20,11 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
+
+import static com.zyfz.global.SystemMessageString.*;
 
 /**
  * Created by ron on 16-12-3.
@@ -42,6 +40,9 @@ public class AppServerController extends BaseController {
 
     @Resource
     IServerContractService serverContractService;
+
+    @Resource
+    ISystemMessageService systemMessageService;
 
     @RequestMapping(value = "/api/v1/server",method = RequestMethod.POST)
     public void addServer(AppServerModel appServerModel, HttpServletResponse response, HttpServletRequest request){
@@ -174,6 +175,21 @@ public class AppServerController extends BaseController {
                 mServerContract.setStatus(3);
                 serverContractService.update(mServerContract);
             }
+
+            //处理消息,发送服务发布者
+            List<String> pageMessage = new ArrayList<String>(); //pageMessage用户打开消息对应页面,格式(服务ID,预约者ID)
+            pageMessage.add(String.valueOf(appServerContractModel.getServiceId()));
+            pageMessage.add(String.valueOf(appServerContractModel.getUserId()));
+            ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(appServerContractModel.getServiceId()));
+            SystemMessage systemMessage = new SystemMessage("serverinfo",
+                    serverInfo.getHhUserId(),
+                    new Date(),
+                    SERVER_REQUEST_TITLE,
+                    SERVER_REQUEST_CONTENT,
+                    StringUtils.collectionToDelimitedString(pageMessage,","));
+            systemMessageService.save(systemMessage);
+
+
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
@@ -183,6 +199,14 @@ public class AppServerController extends BaseController {
 
     }
 
+    /**
+     * 发布者操作
+     * @param userId 发布者id
+     * @param userIdOfBespeak 预约者id
+     * @param serviceId
+     * @param status
+     * @param response
+     */
     @RequestMapping(value = "/api/v1/anon/publish/serverContract",method = RequestMethod.POST)
     public void handleServerContract(@RequestParam(value= "userId",required = true)Integer userId,
                                      @RequestParam(value= "userIdOfBespeak",required = true)Integer userIdOfBespeak,
@@ -197,6 +221,16 @@ public class AppServerController extends BaseController {
             ServerContract mServerContract = serverContractService.getByUserAndServer(serverContractts);
             mServerContract.setStatus(status);
             serverContractService.update(mServerContract);
+
+            //处理消息,发送服务预约者 pageMessage serverInfoId
+            SystemMessage systemMessage = new SystemMessage("serverinfo",
+                    userIdOfBespeak,
+                    new Date(),
+                    SERVER_CHECK_TITLE,
+                    SERVER_CHECK_CONTENT,
+                   String.valueOf(serviceId));
+            systemMessageService.save(systemMessage);
+
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();

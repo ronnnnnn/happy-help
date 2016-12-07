@@ -4,8 +4,8 @@ package com.zyfz.model;
  * Created by ron on 16-12-6.
  */
 public class AppServerContractModel {
-    private Integer userId;
-    private Integer serviceId;
+    private Integer userId; //预约该服务的用户id
+    private Integer serviceId; //被预约的服务Id
     private Integer status;
 
     public Integer getUserId() {
