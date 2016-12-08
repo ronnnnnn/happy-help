@@ -26,7 +26,8 @@ public class AppCommentController extends BaseController {
 
     @RequestMapping(value = "/api/v1/anon/{type}/comment",method = RequestMethod.GET)
     public void getServerComment(@PathVariable String type,
-                                 @RequestParam("serviceId")Integer serviceId,
+                                 @RequestParam(value = "serviceId",required = false)Integer serviceId,
+                                 @RequestParam(value = "gooddeedsId",required = false)Integer gooddeedsId,
                                  @RequestParam(value = "pn",required = false)Integer pn,
                                  HttpServletResponse response){
         try {
@@ -36,15 +37,15 @@ public class AppCommentController extends BaseController {
             } else {
                 pageModel = new PageModel(pn,5);
             }
-            if (type.intern() == "server".intern()) {
+            if (type.intern() == "server".intern() && serviceId != null) {
                 super.writeJson(new ResponseMessage<Datagrid>(0, "success", commentService.getCommentWithUserByTypeId(serviceId, "2", pageModel)), response);
-            }else if (type.intern() == "article".intern()){
-                super.writeJson(new ResponseMessage<Datagrid>(0, "success", commentService.getCommentWithUserByTypeId(serviceId, "1", pageModel)), response);
+            }else if (type.intern() == "article".intern() && gooddeedsId != null){
+                super.writeJson(new ResponseMessage<Datagrid>(0, "success", commentService.getCommentWithUserByTypeId(gooddeedsId, "1", pageModel)), response);
             }
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());
-            super.writeJson(new ResponseMessage<Map<String,String>>(500301,"请求失败",map),response);
+            super.writeJson(new ResponseMessage<Map<String,String>>(501001,"请求失败",map),response);
         }
     }
 }

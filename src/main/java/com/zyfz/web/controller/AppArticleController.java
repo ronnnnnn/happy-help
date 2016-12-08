@@ -16,10 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ron on 16-12-2.
@@ -63,8 +60,8 @@ public class AppArticleController extends BaseController {
      * @param userId
      * @param response
      */
-    @RequestMapping(value = "/api/v1/anon/my/articles",method = RequestMethod.GET)
-    public void getArticles(@RequestParam(value = "page",required = false)Integer page,
+    @RequestMapping(value = "/api/v1/my/articles",method = RequestMethod.GET)
+    public void getMyArticles(@RequestParam(value = "page",required = false)Integer page,
                             @RequestParam(value = "isPass",required = false)Boolean isPass,
                             @RequestParam(value = "isDelete",required = false)Boolean isDelete,
                             @RequestParam(value = "userId",required = false)Integer userId,
@@ -105,6 +102,7 @@ public class AppArticleController extends BaseController {
                 article.setTitle(appArticleModel.getGooddeedsTitle());
             }
             article.setHhUserId(appArticleModel.getUserId());
+            article.setCreateTime(new Date());
             //处理图片
             List<String> imageUrl = new ArrayList<String>();
             if (appArticleModel.getImages() != null){

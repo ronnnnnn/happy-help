@@ -303,29 +303,35 @@ public class AppTaskInfoController extends BaseController{
              */
             if (userId == null || userId == 0){
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
-            }
-            /**
-             * 如果当前用户是当前求助信息的所有者即（该信息发布者）则显示最新对该求助议价的用户信息列表
-             *（包含每个用户对应的议价信息）
-             */
-            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(assistanceId));
-            if (taskInfo.getHhUserId() == userId){
-                PageModel pageModel = null;
-                if (pn == null || pn == 0){
-                    pageModel = new PageModel(1,5);
-                }else{
-                    pageModel = new PageModel(pn,5);
+            }else {
+                TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(assistanceId));
+                TaskContract taskContract = taskContractService.getByHhUserIdAndTaskInfoId(new TaskContract(null,null,null,assistanceId,null,null,userId,null,null));
+                /**
+                 * 如果当前用户既不是对该求助议价的用户，也不是当前求助信息的所有者
+                 */
+                if (taskInfo == null && taskContract == null){
+                    super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+                } else if (taskInfo != null && taskContract == null){
+                    /**
+                     * 如果当前用户是当前求助信息的所有者即（该信息发布者）则显示最新对该求助议价的用户信息列表
+                     *（包含每个用户对应的议价信息）
+                     */
+                    if (taskInfo.getHhUserId() == userId){
+                        PageModel pageModel = null;
+                        if (pn == null || pn == 0){
+                            pageModel = new PageModel(1,5);
+                        }else{
+                            pageModel = new PageModel(pn,5);
+                        }
+                        super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
+                    }
+                } else if (taskInfo == null && taskContract != null){
+                    /**
+                     * 如果当前是对该求助议价的用户，则只显示最新的议价信息
+                     */
+                    super.writeJson(new ResponseMessage<TaskContract>(0,"success",taskContract),response);
                 }
-                super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
             }
-            /**
-             * 如果当前是对该求助议价的用户，则只显示最新的议价信息
-             */
-            TaskContract taskContract = taskContractService.getByHhUserIdAndTaskInfoId(new TaskContract(null,null,null,assistanceId,null,null,userId,null,null));
-            if (taskContract != null){
-                super.writeJson(new ResponseMessage<TaskContract>(0,"success",taskContract),response);
-            }
-
 
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();

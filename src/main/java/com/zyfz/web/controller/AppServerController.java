@@ -195,12 +195,19 @@ public class AppServerController extends BaseController {
                 //评星
                 ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(appServerContractModel.getServiceId()));
                 User user = userservice.getOneById(new User(serverInfo.getHhUserId()));
-                Double contributeScore = user.getContributeScore() + appServerContractModel.getStarCount()*Double.valueOf(settingService.selectBySysTypeAndTypeName(new Setting("公共服务","评星分数")).getTypeValue());
+                Double star = 1d;
+                try {
+                   star = Double.valueOf(settingService.selectBySysTypeAndTypeName(new Setting("公共服务","评星分数")).getTypeValue());
+                }catch (Exception e){
+                   e.printStackTrace();
+                }
+                Double contributeScore = user.getContributeScore() + appServerContractModel.getStarCount()*star;
                 user.setContributeScore(contributeScore);
                 userservice.update(user);
                 //评价
                 if (appServerContractModel.getContent() != null){
-                    Comment comment = new Comment(appServerContractModel.getContent(),new Date(),"2",appServerContractModel.getServiceId(),appServerContractModel.getUserId());
+                    String content = appServerContractModel.getContent();
+                    Comment comment = new Comment(content,new Date(),"2",appServerContractModel.getServiceId(),appServerContractModel.getUserId());
                     commentService.save(comment);
                 }
                 //处理消息,发送服务发布者
