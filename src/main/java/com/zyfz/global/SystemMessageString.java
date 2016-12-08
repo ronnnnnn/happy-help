@@ -20,6 +20,7 @@ public class SystemMessageString {
     public static String DEAL_MESSAGE_CONTENT_SUB="因交易失败,您有一笔钱离开了账户了,快去看看吧!";
     public static String SERVER_REQUEST_TITLE = "发布的服务状态更新";
     public static String SERVER_REQUEST_CONTENT = "您发布的服务状态有人预约了,快去看看吧!";
+    public static String SERVER_REQUEST_CONTENT2 = "您发布的服务顺利完成了,快去看看吧!";
     public static String SERVER_CHECK_TITLE = "预约的服务状态更新";
     public static String SERVER_CHECK_CONTENT = "您预约的服务状态被确认了,快去看看吧!";
 }

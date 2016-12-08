@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface ISettingService extends IBaseService<Setting>{
     public List<Setting> getSettingsBySysType(String sysType);
+
+    public Setting selectBySysTypeAndTypeName(Setting setting);
 }

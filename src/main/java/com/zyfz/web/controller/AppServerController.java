@@ -1,13 +1,8 @@
 package com.zyfz.web.controller;
 
-import com.zyfz.domain.ServerContract;
-import com.zyfz.domain.ServerInfo;
-import com.zyfz.domain.SystemMessage;
+import com.zyfz.domain.*;
 import com.zyfz.model.*;
-import com.zyfz.service.ICategoryService;
-import com.zyfz.service.IServerContractService;
-import com.zyfz.service.IServerInfoService;
-import com.zyfz.service.ISystemMessageService;
+import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +33,15 @@ public class AppServerController extends BaseController {
 
     @Resource
     IServerContractService serverContractService;
+
+    @Resource
+    IUserservice userservice;
+
+    @Resource
+    ISettingService settingService;
+
+    @Resource
+    ICommentService commentService;
 
     @Resource
     ISystemMessageService systemMessageService;
@@ -171,23 +175,46 @@ public class AppServerController extends BaseController {
                 serverContract.setHhUserId(appServerContractModel.getUserId());
                 serverContract.setHhServerInfoId(appServerContractModel.getServiceId());
                 serverContractService.save(serverContract);
-            } else {
+                //处理消息,发送服务发布者
+                List<String> pageMessage = new ArrayList<String>(); //pageMessage用户打开消息对应页面,格式(服务ID,预约者ID)
+                pageMessage.add(String.valueOf(appServerContractModel.getServiceId()));
+                pageMessage.add(String.valueOf(appServerContractModel.getUserId()));
+                ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(appServerContractModel.getServiceId()));
+                SystemMessage systemMessage = new SystemMessage("serverinfo",
+                        serverInfo.getHhUserId(),
+                        new Date(),
+                        SERVER_REQUEST_TITLE,
+                        SERVER_REQUEST_CONTENT,
+                        StringUtils.collectionToDelimitedString(pageMessage,","));
+                systemMessageService.save(systemMessage);
+            } else if (mServerContract.getStatus() == 2){
+
+                //确认完成
                 mServerContract.setStatus(3);
                 serverContractService.update(mServerContract);
+                //评星
+                ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(appServerContractModel.getServiceId()));
+                User user = userservice.getOneById(new User(serverInfo.getHhUserId()));
+                Double contributeScore = user.getContributeScore() + appServerContractModel.getStarCount()*Double.valueOf(settingService.selectBySysTypeAndTypeName(new Setting("公共服务","评星分数")).getTypeValue());
+                user.setContributeScore(contributeScore);
+                userservice.update(user);
+                //评价
+                if (appServerContractModel.getContent() != null){
+                    Comment comment = new Comment(appServerContractModel.getContent(),new Date(),"2",appServerContractModel.getServiceId(),appServerContractModel.getUserId());
+                    commentService.save(comment);
+                }
+                //处理消息,发送服务发布者
+                List<String> pageMessage = new ArrayList<String>(); //pageMessage用户打开消息对应页面,格式(服务ID,预约者ID)
+                pageMessage.add(String.valueOf(appServerContractModel.getServiceId()));
+                pageMessage.add(String.valueOf(appServerContractModel.getUserId()));
+                SystemMessage systemMessage = new SystemMessage("serverinfo",
+                        serverInfo.getHhUserId(),
+                        new Date(),
+                        SERVER_REQUEST_TITLE,
+                        SERVER_REQUEST_CONTENT2,
+                        StringUtils.collectionToDelimitedString(pageMessage,","));
+                systemMessageService.save(systemMessage);
             }
-
-            //处理消息,发送服务发布者
-            List<String> pageMessage = new ArrayList<String>(); //pageMessage用户打开消息对应页面,格式(服务ID,预约者ID)
-            pageMessage.add(String.valueOf(appServerContractModel.getServiceId()));
-            pageMessage.add(String.valueOf(appServerContractModel.getUserId()));
-            ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(appServerContractModel.getServiceId()));
-            SystemMessage systemMessage = new SystemMessage("serverinfo",
-                    serverInfo.getHhUserId(),
-                    new Date(),
-                    SERVER_REQUEST_TITLE,
-                    SERVER_REQUEST_CONTENT,
-                    StringUtils.collectionToDelimitedString(pageMessage,","));
-            systemMessageService.save(systemMessage);
 
 
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);

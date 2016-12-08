@@ -7,6 +7,24 @@ public class AppServerContractModel {
     private Integer userId; //预约该服务的用户id
     private Integer serviceId; //被预约的服务Id
     private Integer status;
+    private String content;
+    private Integer starCount;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getStarCount() {
+        return starCount;
+    }
+
+    public void setStarCount(Integer starCount) {
+        this.starCount = starCount;
+    }
 
     public Integer getUserId() {
         return userId;

@@ -28,6 +28,13 @@
     where sys_type = #{sysType,jdbcType=INTEGER}
   </select>
 
+  <select id="selectBySysTypeAndTypeName" resultMap="BaseResultMap" parameterType="com.zyfz.domain.Setting" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_setting
+    where sys_type = #{sysType,jdbcType=INTEGER} and type_name = #{typeName,jdbcType=INTEGER}
+  </select>
+
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />

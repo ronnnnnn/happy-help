@@ -22,4 +22,6 @@ public interface SettingMapper {
     int updateByPrimaryKey(Setting record);
 
     List<Setting> selectBySysType(String sysType);
+
+    Setting selectBySysTypeAndTypeName(Setting record);
 }

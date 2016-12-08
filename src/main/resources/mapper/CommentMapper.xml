@@ -20,6 +20,7 @@
       <result column="nickname" property="nickname" jdbcType="VARCHAR" />
       <result column="real_name" property="realName" jdbcType="VARCHAR" />
       <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
     </association>
   </resultMap>
 
@@ -36,7 +37,7 @@
   </select>
 
   <select id="selectCommentWithUserByTypeId"   resultMap="comentUserMap">
-    SELECT cm.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email
+    SELECT cm.*,u.id as userid, u.phone,u.username,u.real_name,u.nickname,u.email,u.photo
     FROM happy_help.hh_comment cm left join happy_help.hh_user u
     on cm.hh_user_id = u.id WHERE cm.type_id = #{0} and cm.type =#{1}
     order by  cm.create_time desc

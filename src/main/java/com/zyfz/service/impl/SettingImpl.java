@@ -55,4 +55,9 @@ public class SettingImpl implements ISettingService {
     public List<Setting> getSettingsBySysType(String sysType) {
         return settingMapper.selectBySysType(sysType);
     }
+
+    @Override
+    public Setting selectBySysTypeAndTypeName(Setting setting) {
+        return settingMapper.selectBySysTypeAndTypeName(setting);
+    }
 }

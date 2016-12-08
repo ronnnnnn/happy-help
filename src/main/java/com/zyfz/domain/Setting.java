@@ -14,6 +14,19 @@ public class Setting {
 
     private String typeDescription; //描述
 
+    public Setting() {
+        super();
+    }
+
+    public Setting(Integer id) {
+        this.id = id;
+    }
+
+    public Setting(String sysType, String typeName) {
+        this.sysType = sysType;
+        this.typeName = typeName;
+    }
+
     public Integer getId() {
         return id;
     }

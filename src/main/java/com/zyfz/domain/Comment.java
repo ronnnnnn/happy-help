@@ -24,6 +24,22 @@ public class Comment {
 
     private User user;
 
+    public Comment() {
+        super();
+    }
+
+    public Comment(Integer id) {
+        this.id = id;
+    }
+
+    public Comment(String context, Date createTime, String type, Integer typeId, Integer hhUserId) {
+        this.context = context;
+        this.createTime = createTime;
+        this.type = type;
+        this.typeId = typeId;
+        this.hhUserId = hhUserId;
+    }
+
     public User getUser() {
         return user;
     }
