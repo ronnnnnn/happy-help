@@ -325,7 +325,7 @@ public class AppTaskInfoController extends BaseController{
                         }
                         super.writeJson(new ResponseMessage<Datagrid>(0,"success",taskContractService.getByTaskInfoId(assistanceId,pageModel)),response);
                     }
-                } else if (taskInfo == null && taskContract != null){
+                } else if (taskContract != null){
                     /**
                      * 如果当前是对该求助议价的用户，则只显示最新的议价信息
                      */
