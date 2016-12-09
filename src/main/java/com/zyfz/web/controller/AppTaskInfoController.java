@@ -455,16 +455,18 @@ public class AppTaskInfoController extends BaseController{
                         userservice.update(serviceUser);
                         userservice.update(paidUser);
                     }
+
+                    //处理消息,金钱变动提醒
+                    SystemMessage systemMessage2 = new SystemMessage("taskinfo",
+                            appTaskHandleModel.getUserIdOfAssistance(),
+                            new Date(),
+                            DEAL_MESSAGE_TITLE,
+                            DEAL_MESSAGE_CONTENT_ADD,
+                            String.valueOf(taskContract.getHhTaskInfoId()));
+                    systemMessageService.save(systemMessage2);
+
                 }
 
-                //处理消息,金钱变动提醒
-                SystemMessage systemMessage2 = new SystemMessage("taskinfo",
-                        appTaskHandleModel.getUserIdOfAssistance(),
-                        new Date(),
-                        DEAL_MESSAGE_TITLE,
-                        DEAL_MESSAGE_CONTENT_ADD,
-                        String.valueOf(taskContract.getHhTaskInfoId()));
-                systemMessageService.save(systemMessage2);
 
                 //记录订单记录
                 String tradeNo = UtilDate.getOrderNum();
