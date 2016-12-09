@@ -408,7 +408,7 @@ public class AppTaskInfoController extends BaseController{
                 taskInfo.setIsAccept(true);
                 taskInfoService.update(taskInfo);
                 //处理其他请求者,终止其他请求者
-                List<TaskContract> taskContracts = taskContractMapper.selectByTaskInfoId(taskContract.getId());
+                List<TaskContract> taskContracts = taskContractMapper.selectByTaskInfoId(taskInfo.getId());
                 for (TaskContract taskContract1 : taskContracts){
                     if (taskContract1.getId() != taskContract.getId()){
                         //设置为终止态
@@ -429,9 +429,6 @@ public class AppTaskInfoController extends BaseController{
                 if (appTaskHandleModel.getBargainingMoney() != null && appTaskHandleModel.getBargainingContent() != null){
                     taskContract.setMoney(appTaskHandleModel.getBargainingMoney());
                     taskContract.setContent(appTaskHandleModel.getBargainingContent());
-                }else {
-                    taskContract.setMoney(appTaskHandleModel.getBargainingMoney());
-                    taskContract.setContent(appTaskHandleModel.getBargainingContent());
                 }
                 taskContractService.update(taskContract);
                 //发布消息给当前请求者
@@ -445,8 +442,8 @@ public class AppTaskInfoController extends BaseController{
 
                 //当是有偿任务进行转账
                 if((status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5)){
-                    User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
-                    User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+                    User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+                    User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance ()));
                     if (appTaskHandleModel.getBargainingMoney() != null && appTaskHandleModel.getBargainingMoney() > 0){
                         Double serviceAccount = serviceUser.getAccount() + appTaskHandleModel.getBargainingMoney();
                         Double paidAccount = paidUser.getAccount() - appTaskHandleModel.getBargainingMoney();
@@ -458,7 +455,7 @@ public class AppTaskInfoController extends BaseController{
 
                     //处理消息,金钱变动提醒
                     SystemMessage systemMessage2 = new SystemMessage("taskinfo",
-                            appTaskHandleModel.getUserIdOfAssistance(),
+                            appTaskHandleModel.getBargainingId(),
                             new Date(),
                             DEAL_MESSAGE_TITLE,
                             DEAL_MESSAGE_CONTENT_ADD,
@@ -485,8 +482,8 @@ public class AppTaskInfoController extends BaseController{
                         tradeNo,
                         "普通求助消息",
                         secondType,
-                        userOfBargaining.getUsername(),
                         userIdOfAssistance.getUsername(),
+                        userOfBargaining.getUsername(),
                         taskContract.getMoney(),
                         taskContract.getHhTaskInfoId(),
                         null,

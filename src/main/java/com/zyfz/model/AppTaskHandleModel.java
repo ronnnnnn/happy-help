@@ -5,8 +5,8 @@ package com.zyfz.model;
  */
 public class AppTaskHandleModel {
     private Integer bargainingId;
-    private Integer userIdOfBargaining; //发布者
-    private Integer userIdOfAssistance;  //求助者
+    private Integer userIdOfBargaining; //帮助者
+    private Integer userIdOfAssistance;  //发布者
     private String bargainingContent;
     private Double bargainingMoney;
     private Integer status;
