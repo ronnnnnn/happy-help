@@ -13,4 +13,5 @@ public class TaskTrade {
     public static String AGREE_HELP_WITH_MONEY = "同意进行帮助,但要求涨价";
     public static String OWER_ACCEPT = "接受涨价,同意进行帮助,帮助中";
     public static String GUEST_ACCEPT ="接受降价,愿意进行帮助,帮助中";
+    public static String GUEST_COMPELETE ="完成帮助";
 }

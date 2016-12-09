@@ -188,8 +188,8 @@ public class AppTaskInfoController extends BaseController{
     /**
      * 有偿接受请求,无偿接受请求,有偿提价请求(用户行为)
      */
-    @RequestMapping(value = "/api/v1/taskInfo/accept",method = RequestMethod.POST)
-    public void acceptTask(@RequestBody TaskContract taskContract, HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/anon/taskInfo/accept",method = RequestMethod.POST)
+    public void acceptTask(TaskContract taskContract, HttpServletResponse response){
        try {
 
            /**
@@ -286,6 +286,28 @@ public class AppTaskInfoController extends BaseController{
                taskTradeRecordService.save(taskTradeRecord);
                super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
 
+
+
+           } else if (taskContract.getStatus() == 11){
+               /**
+                * 处理订单
+                */
+               taskContract1.setStatus(taskContract.getStatus());
+               taskContractService.update(taskContract1);
+
+
+               /**
+                * 处理消息,推送给发布者
+                */
+               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.COMPELETE_MESSAGE,pageMessage);
+               systemMessageService.save(systemMessage);
+
+               /**
+                * 记录交易过程
+                */
+               TaskTradeRecord taskTradeRecord = new TaskTradeRecord(null,taskContract.getHhUserId(), TaskTrade.GUEST_COMPELETE,taskContract.getContent(),taskContract1.getMoney(),new Date(),taskContract.getHhTaskInfoId());
+               taskTradeRecordService.save(taskTradeRecord);
+               super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
            }
        }catch (Exception e){
            Map<String,String> map = new HashMap<String, String>();
