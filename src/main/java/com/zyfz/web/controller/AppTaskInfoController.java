@@ -188,8 +188,8 @@ public class AppTaskInfoController extends BaseController{
     /**
      * 有偿接受请求,无偿接受请求,有偿提价请求(用户行为)
      */
-    @RequestMapping(value = "/api/v1/anon/taskInfo/accept",method = RequestMethod.POST)
-    public void acceptTask(TaskContract taskContract, HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/taskInfo/accept",method = RequestMethod.POST)
+    public void acceptTask(@RequestBody TaskContract taskContract, HttpServletResponse response){
        try {
 
            /**
