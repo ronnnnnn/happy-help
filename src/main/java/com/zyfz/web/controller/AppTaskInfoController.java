@@ -570,35 +570,39 @@ public class AppTaskInfoController extends BaseController{
                         REJECT_CONTENT,
                         String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage);
-                //退还金额
-                //获取应退还的金额
-                OrderRecord orderRecord = orderRecordService.selectByContactId(appTaskHandleModel.getBargainingId());
-                Double backMoney = orderRecord.getDealMoney();
-                User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
-                User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
-                Double serviceAccount = serviceUser.getAccount() - backMoney;
-                Double paidAccount = paidUser.getAccount() + backMoney;
-                serviceUser.setAccount(serviceAccount);
-                paidUser.setAccount(paidAccount);
-                userservice.update(serviceUser);
-                userservice.update(paidUser);
 
-                //处理消息,金钱变动提醒
-                SystemMessage systemMessage2 = new SystemMessage("taskinfo",
-                        appTaskHandleModel.getUserIdOfBargaining(),
-                        new Date(),
-                        DEAL_MESSAGE_TITLE,
-                        DEAL_MESSAGE_CONTENT_ADD,
-                        String.valueOf(taskContract.getHhTaskInfoId()));
-                systemMessageService.save(systemMessage2);
+//                if (oldStatus >= 9){
+//                    //退还金额
+//                    //获取应退还的金额
+//                    OrderRecord orderRecord = orderRecordService.selectByContactId(appTaskHandleModel.getBargainingId());
+//                    Double backMoney = orderRecord.getDealMoney();
+//                    User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
+//                    User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+//                    Double serviceAccount = serviceUser.getAccount() - backMoney;
+//                    Double paidAccount = paidUser.getAccount() + backMoney;
+//                    serviceUser.setAccount(serviceAccount);
+//                    paidUser.setAccount(paidAccount);
+//                    userservice.update(serviceUser);
+//                    userservice.update(paidUser);
+//
+//                    //处理消息,金钱变动提醒
+//                    SystemMessage systemMessage2 = new SystemMessage("taskinfo",
+//                            appTaskHandleModel.getUserIdOfBargaining(),
+//                            new Date(),
+//                            DEAL_MESSAGE_TITLE,
+//                            DEAL_MESSAGE_CONTENT_ADD,
+//                            String.valueOf(taskContract.getHhTaskInfoId()));
+//                    systemMessageService.save(systemMessage2);
+//
+//                    SystemMessage systemMessage3 = new SystemMessage("taskinfo",
+//                            appTaskHandleModel.getUserIdOfAssistance(),
+//                            new Date(),
+//                            DEAL_MESSAGE_TITLE,
+//                            DEAL_MESSAGE_CONTENT_SUB,
+//                            String.valueOf(taskContract.getHhTaskInfoId()));
+//                    systemMessageService.save(systemMessage2);
+//                }
 
-                SystemMessage systemMessage3 = new SystemMessage("taskinfo",
-                        appTaskHandleModel.getUserIdOfAssistance(),
-                        new Date(),
-                        DEAL_MESSAGE_TITLE,
-                        DEAL_MESSAGE_CONTENT_SUB,
-                        String.valueOf(taskContract.getHhTaskInfoId()));
-                systemMessageService.save(systemMessage2);
 
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }else if (status == oldStatus){

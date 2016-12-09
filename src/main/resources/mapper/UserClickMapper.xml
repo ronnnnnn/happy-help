@@ -25,6 +25,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByUserIdAndArticleId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_user_click
+    where user_id = #{0} and hh_article_id = #{1}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hh_user_click
     where id = #{id,jdbcType=INTEGER}

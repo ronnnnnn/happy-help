@@ -19,4 +19,7 @@ public interface UserClickMapper {
     int updateByPrimaryKey(UserClick record);
 
     List<UserClick> selectByArticleId(Integer articleId);
+
+    UserClick selectByUserIdAndArticleId(Integer userId,Integer articleId);
+
 }
