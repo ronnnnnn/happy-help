@@ -35,6 +35,13 @@
     where hh_contract_id = #{contactId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByTradeNo" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_order_record
+    where trade_no LIKE  CONCAT(CONCAT('%', #{tradeNo,jdbcType=VARCHAR}), '%')
+  </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />

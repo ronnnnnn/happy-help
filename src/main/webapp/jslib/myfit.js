@@ -7,7 +7,7 @@ function fixHeight(percent)
 
 function fixWidth(percent)
 {
-    return (document.body.clientWidth - 5) * percent ;
+    return (document.body.clientWidth -5) * percent ;
 }
 
 function showMoreContent(obj) {

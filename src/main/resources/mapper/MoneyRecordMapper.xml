@@ -12,6 +12,21 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
 
+  <resultMap id="recordWithUserMap" type="MoneyRecord" extends="BaseResultMap">
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="u_phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
+      <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
+      <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+
   <sql id="Base_Column_List" >
     id, trade_order_no, hh_user_id, money, paid_type, descript, is_valied, create_time
   </sql>
@@ -23,10 +38,24 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from hh_money_record
+  <select id="selectByTradeOrderNo" resultMap="recordWithUserMap" parameterType="java.lang.String" >
+    SELECT m.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_money_record m left join happy_help.hh_user u
+    on m.hh_user_id = u.id
+    where trade_order_no LIKE CONCAT(CONCAT('%', #{tradeOrderNo}), '%')
+  </select>
+
+  <select id="selectByTimeRange" resultMap="recordWithUserMap">
+    SELECT m.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_money_record m left join happy_help.hh_user u
+    on m.hh_user_id = u.id
+    where create_time &gt;= #{1} and  create_time &lt;= #{2}
+  </select>
+
+  <select id="selectAll" resultMap="recordWithUserMap">
+    SELECT m.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_money_record m left join happy_help.hh_user u
+    on m.hh_user_id = u.id
     ORDER BY create_time DESC
   </select>
 
@@ -125,6 +154,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.zyfz.domain.MoneyRecord" >
     update hh_money_record
     set trade_order_no = #{tradeOrderNo,jdbcType=VARCHAR},
@@ -136,4 +166,5 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

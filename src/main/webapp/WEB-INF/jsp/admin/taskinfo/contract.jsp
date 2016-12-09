@@ -91,19 +91,9 @@
 					}
 				},
 			}] ],
-			toolbar : [ {
-				text : '删除',
-				iconCls : 'icon-remove',
-				handler : function() {
-					taskContractRemove();
-				}
-			}]
+			toolbar : [ ]
 		});
 	}
-
-
-
-
 
 
 

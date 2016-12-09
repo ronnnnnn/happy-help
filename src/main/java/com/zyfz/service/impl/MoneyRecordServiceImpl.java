@@ -9,6 +9,7 @@ import com.zyfz.model.PageModel;
 import com.zyfz.service.IMoneyRecordService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,5 +46,21 @@ public class MoneyRecordServiceImpl implements IMoneyRecordService{
     @Override
     public Integer deleteOneById(MoneyRecord moneyRecord) {
         return moneyRecordMapper.deleteByPrimaryKey(moneyRecord.getId());
+    }
+
+    @Override
+    public Datagrid getByTradeOrderNo(PageModel pageModel,String tradeOrderNo) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<MoneyRecord> moneyRecords = moneyRecordMapper.selectByTradeOrderNo(tradeOrderNo);
+        PageInfo pageInfo = new PageInfo(moneyRecords);
+        return new Datagrid(pageInfo.getTotal(),moneyRecords);
+    }
+
+    @Override
+    public Datagrid getByTimeRange(PageModel pageModel,Date startTime, Date endTime) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<MoneyRecord> moneyRecords = moneyRecordMapper.selectByTimeRange(startTime,endTime);
+        PageInfo pageInfo = new PageInfo(moneyRecords);
+        return new Datagrid(pageInfo.getTotal(),moneyRecords);
     }
 }

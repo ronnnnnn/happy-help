@@ -470,18 +470,21 @@ public class AppTaskInfoController extends BaseController{
                 String tradeNo = UtilDate.getOrderNum();
                 String secondType = null;
                 if (status == 3){
-                    secondType = "free";
+                    secondType = "无偿求助";
                 }else if (status == 12){
-                    secondType = "paid";
+                    secondType = "有偿求助";
                 }
+
+                User userOfBargaining = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+                User userIdOfAssistance = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
 
                 OrderRecord orderRecord = new OrderRecord(
                         null,
                         tradeNo,
-                        "taskInfo",
+                        "普通求助消息",
                         secondType,
-                        String.valueOf(appTaskHandleModel.getUserIdOfBargaining()),
-                        String.valueOf(appTaskHandleModel.getUserIdOfAssistance()),
+                        userOfBargaining.getUsername(),
+                        userIdOfAssistance.getUsername(),
                         taskContract.getMoney(),
                         taskContract.getHhTaskInfoId(),
                         null,

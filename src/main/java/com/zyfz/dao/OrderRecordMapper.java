@@ -22,4 +22,6 @@ public interface OrderRecordMapper {
     List<OrderRecord> selectAll();
 
     OrderRecord selectByContactId(Integer contractId);
+
+    List<OrderRecord> selectByTradeNo(String tradeNo);
 }

@@ -19,6 +19,8 @@ public class MoneyRecord {
 
     private Date createTime;
 
+    private User user;
+
     public MoneyRecord() {
         super();
     }
@@ -36,6 +38,14 @@ public class MoneyRecord {
 
     public MoneyRecord(Integer id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getId() {

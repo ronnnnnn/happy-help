@@ -2,6 +2,7 @@ package com.zyfz.dao;
 
 import com.zyfz.domain.MoneyRecord;
 
+import java.util.Date;
 import java.util.List;
 
 public interface MoneyRecordMapper {
@@ -19,4 +20,8 @@ public interface MoneyRecordMapper {
     int updateByPrimaryKey(MoneyRecord record);
 
     List<MoneyRecord> selectAll();
+
+    List<MoneyRecord>  selectByTradeOrderNo(String tradeOrderNo);
+
+    List<MoneyRecord> selectByTimeRange(Date startTime,Date endTime);
 }

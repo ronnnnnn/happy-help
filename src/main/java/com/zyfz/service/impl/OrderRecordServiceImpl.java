@@ -54,4 +54,13 @@ public class OrderRecordServiceImpl implements IOrderRecordService {
     public OrderRecord selectByContactId(Integer contractId) {
         return orderRecordMapper.selectByContactId(contractId);
     }
+
+    @Override
+    public Datagrid getByTradeNo(PageModel pageModel,String tradeNo) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<OrderRecord> orderRecords = orderRecordMapper.selectByTradeNo(tradeNo);
+        PageInfo pageInfo = new PageInfo(orderRecords);
+        Datagrid datagrid = new Datagrid(pageInfo.getTotal(),orderRecords);
+        return datagrid;
+    }
 }
