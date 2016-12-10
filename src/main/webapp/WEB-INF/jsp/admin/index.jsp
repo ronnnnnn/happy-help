@@ -22,9 +22,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/jslib/ajaxfileupload.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/jslib/jquery-easyui-1.4.4/themes/bootstrap/easyui.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/jslib/jquery-easyui-1.4.4/themes/icon.css" type="text/css">
-<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/ueditor/themes/default/css/ueditor.css">
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.config.js"></script>--%>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/ueditor/ueditor.all.js"></script>--%>
+<%--<link rel="stylesheet" href="${pageContext.request.contextPath}/ueditor/themes/default/css/ueditor.css">--%>
 	<script src="${pageContext.request.contextPath}/jquery-treetable/javascripts/src/jquery.treetable.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-treetable/stylesheets/jquery.treetable.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/jquery-treetable/stylesheets/jquery.treetable.theme.default.css">

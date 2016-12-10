@@ -58,10 +58,10 @@ public class AppCommentController extends BaseController {
                            @RequestParam("content")String content,
                            HttpServletResponse response){
         try {
-            if (type == "article"){
+            if (type.intern() == "article".intern()){
                 Comment comment = new Comment(content,new Date(),"1",targetId,userId);
                 commentService.save(comment);
-            } else if (type == "server"){
+            } else if (type.intern() == "server".intern()){
                 Comment comment = new Comment(content,new Date(),"2",targetId,userId);
                 commentService.save(comment);
             }

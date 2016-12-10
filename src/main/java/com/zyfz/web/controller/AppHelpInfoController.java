@@ -3,15 +3,15 @@ package com.zyfz.web.controller;
 import com.zyfz.domain.Category;
 import com.zyfz.domain.HelpInfo;
 import com.zyfz.model.AppHelpInfoModel;
+import com.zyfz.model.Datagrid;
+import com.zyfz.model.PageModel;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ICategoryService;
 import com.zyfz.service.IHelpInfoService;
 import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -79,5 +79,53 @@ public class AppHelpInfoController extends BaseController{
             map.put("MSG","系统内部错误!");
             super.writeJson(new ResponseMessage<Map<String,String>>(0,"请求失败!",map),response);
         }
+    }
+
+    @RequestMapping(value = "/api/v1/anon/helpInfo-list",method = RequestMethod.GET)
+    public void getHelpInfoList(@RequestParam(value = "userId",required = false)Integer userId,
+                                @RequestParam(value ="pn",required = false)Integer pn,
+                                @RequestParam(value ="categoryName",required = false)String categoryName,
+                                @RequestParam(value ="isCompeleted",required = false)Boolean isCompeleted,
+                                @RequestParam(value ="isDeleted",required = false)Boolean isDeleted,
+                                @RequestParam(value ="city",required = false)String city,
+                                HttpServletResponse response){
+        try {
+            PageModel pageModel = null;
+            if (pn == null || pn == 0){
+                pageModel = new PageModel(1,5);
+            } else {
+                pageModel = new PageModel(pn,5);
+            }
+            HelpInfo helpInfo = new HelpInfo();
+            if (userId != null && userId != 0){
+                helpInfo.setHhUserId(userId);
+            }
+            if (categoryName != null){
+                try {
+                    helpInfo.setHhCategoryId(categoryService.getByCategoryName(categoryName).getId());
+                }catch (Exception e){
+                    Map<String,String> map = new HashMap<String, String>();
+                    map.put("MSG","无此类别!");
+                    super.writeJson(new ResponseMessage<Map<String,String>>(401201,"无此类别!",map),response);
+                }
+            }
+            if (city != null){
+                helpInfo.setCity(city);
+            }
+            if (isCompeleted != null){
+                helpInfo.setIsCompeleted(isCompeleted);
+            }
+            if (isDeleted != null){
+                helpInfo.setIsDeleted(isDeleted);
+            } else {
+                helpInfo.setIsDeleted(false);
+            }
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",helpInfoService.selectAllWithParam(pageModel,helpInfo)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","系统内部错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+
     }
 }

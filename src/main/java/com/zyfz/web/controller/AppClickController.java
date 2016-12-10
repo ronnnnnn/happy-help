@@ -23,7 +23,7 @@ public class AppClickController extends BaseController{
     IUserClickService userClickService;
 
 
-    @RequestMapping(value = "/api/v1/anon/click",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/click",method = RequestMethod.POST)
     public void click(@RequestParam("userId")Integer userId,
                       @RequestParam("gooddeedsId")Integer gooddeedsId,
                       HttpServletResponse response){

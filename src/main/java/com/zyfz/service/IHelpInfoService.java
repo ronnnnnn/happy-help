@@ -1,5 +1,6 @@
 package com.zyfz.service;
 
+import com.github.pagehelper.PageInfo;
 import com.zyfz.domain.HelpInfo;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
@@ -14,4 +15,6 @@ public interface IHelpInfoService extends IBaseService<HelpInfo> {
     public Datagrid getHelpInfoWithUserByCIDAndTime(Integer categoryId, Date startTime, Date endTime, PageModel pageModel);
 
     public Datagrid getHelpInfoWithUserByKey(String key,PageModel pageModel);
+
+    public Datagrid selectAllWithParam(PageModel pageModel,HelpInfo helpInfo);
 }

@@ -14,4 +14,10 @@ public class TaskTrade {
     public static String OWER_ACCEPT = "接受涨价,同意进行帮助,帮助中";
     public static String GUEST_ACCEPT ="接受降价,愿意进行帮助,帮助中";
     public static String GUEST_COMPELETE ="完成帮助";
+
+    public static String PULISH_FINISH ="忽略";
+    public static String PULISH_DOWN ="要求降价";
+    public static String PULISH_COMPELETE ="确认完成";
+    public static String PULISH_AGREE ="确认完成";
+
 }

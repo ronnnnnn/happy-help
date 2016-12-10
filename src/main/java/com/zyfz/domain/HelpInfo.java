@@ -1,6 +1,10 @@
 package com.zyfz.domain;
 
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 紧急求助表
@@ -53,6 +57,16 @@ public class HelpInfo {
     private Integer republishTimes;  //发布时间
 
     private User user;
+
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public User getUser() {
         return user;
@@ -244,5 +258,45 @@ public class HelpInfo {
 
     public void setRepublishTimes(Integer republishTimes) {
         this.republishTimes = republishTimes;
+    }
+
+    public Boolean getIsImage(){
+        if (imageUrl == null || imageUrl.intern() == "none".intern()){
+            return false;
+        } else{
+            return true;
+        }
+    }
+
+    public String[] getImageUrls(){
+        if(imageUrl == null || imageUrl.intern() == "none".intern()){
+            String[] strings = {"nono"};
+            return strings;
+        } else {
+            return imageUrl.split(",");
+        }
+    }
+
+    public String getDetailAddress(){
+        List<String> da = new ArrayList<String>();
+        if (country != null){
+            da.add(country);
+        }
+        if (province != null){
+            da.add(province);
+        }
+        if (city != null){
+            da.add(city);
+        }
+        if (area != null){
+            da.add(area);
+        }
+        if (street != null){
+            da.add(street);
+        }
+        if (detailPosition != null){
+            da.add(detailPosition);
+        }
+        return StringUtils.collectionToDelimitedString(da,",");
     }
 }

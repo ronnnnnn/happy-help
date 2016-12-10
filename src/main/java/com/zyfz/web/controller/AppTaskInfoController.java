@@ -513,8 +513,22 @@ public class AppTaskInfoController extends BaseController{
                         false,
                         appTaskHandleModel.getBargainingId()
                 );
+                if (orderRecordService.selectByContactId(appTaskHandleModel.getBargainingId()) == null){
+                    orderRecordService.save(orderRecord);
+                }
 
-                orderRecordService.save(orderRecord);
+
+                /**
+                 * 记录交易过程
+                 */
+                TaskTradeRecord taskTradeRecord = new TaskTradeRecord(null,
+                        taskInfo.getHhUserId(),
+                        TaskTrade.PULISH_AGREE,
+                        taskContract.getContent(),
+                        taskContract.getMoney(),
+                        new Date(),
+                        taskContract.getHhTaskInfoId());
+                taskTradeRecordService.save(taskTradeRecord);
 
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }
@@ -551,6 +565,20 @@ public class AppTaskInfoController extends BaseController{
                 orderRecord.setIsCompeleted(true);
                 orderRecordService.update(orderRecord);
 
+                /**
+                 * 记录交易过程
+                 */
+                TaskTradeRecord taskTradeRecord = new TaskTradeRecord(null,
+                        taskInfo.getHhUserId(),
+                        TaskTrade.PULISH_COMPELETE,
+                        taskContract.getContent(),
+                        taskContract.getMoney(),
+                        new Date(),
+                        taskContract.getHhTaskInfoId());
+                taskTradeRecordService.save(taskTradeRecord);
+
+
+
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }
 
@@ -573,6 +601,19 @@ public class AppTaskInfoController extends BaseController{
                          DOWN_PRICE_MESSAGE,
                          String.valueOf(taskContract.getHhTaskInfoId()));
                  systemMessageService.save(systemMessage);
+
+                 /**
+                  * 记录交易过程
+                  */
+                 TaskTradeRecord taskTradeRecord = new TaskTradeRecord(null,
+                         taskInfo.getHhUserId(),
+                         TaskTrade.PULISH_DOWN,
+                         taskContract.getContent(),
+                         taskContract.getMoney(),
+                         new Date(),
+                         taskContract.getHhTaskInfoId());
+                 taskTradeRecordService.save(taskTradeRecord);
+
                  super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
              }
 
@@ -623,6 +664,17 @@ public class AppTaskInfoController extends BaseController{
 //                            String.valueOf(taskContract.getHhTaskInfoId()));
 //                    systemMessageService.save(systemMessage2);
 //                }
+                /**
+                 * 记录交易过程
+                 */
+                TaskTradeRecord taskTradeRecord = new TaskTradeRecord(null,
+                        taskInfo.getHhUserId(),
+                        TaskTrade.PULISH_FINISH,
+                        taskContract.getContent(),
+                        taskContract.getMoney(),
+                        new Date(),
+                        taskContract.getHhTaskInfoId());
+                taskTradeRecordService.save(taskTradeRecord);
 
 
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);

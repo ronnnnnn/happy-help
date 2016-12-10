@@ -70,4 +70,12 @@ public class HelpInfoServiceImpl implements IHelpInfoService {
         datagrid.setTotal(pageInfo.getTotal());
         return datagrid;
     }
+
+    @Override
+    public Datagrid selectAllWithParam(PageModel pageModel, HelpInfo helpInfo) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<HelpInfo> helpInfos = helpInfoMapper.selectAllWithParam(helpInfo);
+        PageInfo pageInfo = new PageInfo(helpInfos);
+        return new Datagrid(pageInfo.getTotal(),helpInfos);
+    }
 }

@@ -23,4 +23,6 @@ public interface HelpInfoMapper {
     int updateByPrimaryKeySelective(HelpInfo record);
 
     int updateByPrimaryKey(HelpInfo record);
+
+    List<HelpInfo> selectAllWithParam(HelpInfo helpInfo);
 }
