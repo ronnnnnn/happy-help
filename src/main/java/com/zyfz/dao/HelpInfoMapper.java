@@ -25,4 +25,6 @@ public interface HelpInfoMapper {
     int updateByPrimaryKey(HelpInfo record);
 
     List<HelpInfo> selectAllWithParam(HelpInfo helpInfo);
+
+    HelpInfo selectByUniq(Integer usrId ,Date createTime);
 }

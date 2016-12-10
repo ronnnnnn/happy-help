@@ -45,6 +45,13 @@
     where trade_order_no LIKE CONCAT(CONCAT('%', #{tradeOrderNo}), '%')
   </select>
 
+  <select id="selectByTradeOrderNoUniq" resultMap="recordWithUserMap" parameterType="java.lang.String" >
+    SELECT m.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_money_record m left join happy_help.hh_user u
+    on m.hh_user_id = u.id
+    where trade_order_no = #{tradeOrderNo,jdbcType=VARCHAR}
+  </select>
+
   <select id="selectByTimeRange" resultMap="recordWithUserMap">
     SELECT m.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_money_record m left join happy_help.hh_user u

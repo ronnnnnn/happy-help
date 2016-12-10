@@ -23,5 +23,7 @@ public interface MoneyRecordMapper {
 
     List<MoneyRecord>  selectByTradeOrderNo(String tradeOrderNo);
 
+    MoneyRecord selectByTradeOrderNoUniq(String tradeOrderNo);
+
     List<MoneyRecord> selectByTimeRange(Date startTime,Date endTime);
 }

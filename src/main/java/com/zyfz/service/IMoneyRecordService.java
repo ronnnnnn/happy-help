@@ -15,4 +15,6 @@ public interface IMoneyRecordService extends IBaseService<MoneyRecord> {
 
     public Datagrid getByTimeRange(PageModel pageModel, Date startTime, Date endTime);
 
+    public MoneyRecord getByTradeOrderNoUniq(String tradeOrderNo);
+
 }

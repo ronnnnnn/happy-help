@@ -78,4 +78,9 @@ public class HelpInfoServiceImpl implements IHelpInfoService {
         PageInfo pageInfo = new PageInfo(helpInfos);
         return new Datagrid(pageInfo.getTotal(),helpInfos);
     }
+
+    @Override
+    public HelpInfo selectByUniq(Integer usrId, Date createTime) {
+        return helpInfoMapper.selectByUniq(usrId,createTime);
+    }
 }

@@ -209,7 +209,7 @@ public class AppTaskInfoController extends BaseController{
 
            //处理订单
            TaskContract taskContract1 = taskContractService.getByHhUserIdAndTaskInfoId(taskContract);
-           if ( taskContract1 == null){        //有偿无偿接受(有偿不提价)
+           if ( taskContract1 == null){  //0,5      //有偿无偿接受(有偿不提价)
                /**
                 * 处理订单
                 */
@@ -288,7 +288,7 @@ public class AppTaskInfoController extends BaseController{
 
 
 
-           } else if (taskContract.getStatus() == 11){
+           } else if (taskContract.getStatus() == 11 || taskContract.getStatus() == 2){
                /**
                 * 处理订单
                 */

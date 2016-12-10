@@ -1,14 +1,12 @@
 package com.zyfz.web.controller;
 
-import com.zyfz.domain.Category;
-import com.zyfz.domain.HelpInfo;
+import com.zyfz.alipay.util.UtilDate;
+import com.zyfz.domain.*;
 import com.zyfz.model.AppHelpInfoModel;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.model.ResponseMessage;
-import com.zyfz.service.ICategoryService;
-import com.zyfz.service.IHelpInfoService;
-import com.zyfz.service.IUserservice;
+import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.xml.crypto.Data;
+import java.util.*;
 
 /**
  * Created by ron on 16-11-19.
@@ -36,6 +32,15 @@ public class AppHelpInfoController extends BaseController{
 
     @Resource
     ICategoryService categoryService;
+
+    @Resource
+    ISettingService settingService;
+
+    @Resource
+    IMoneyRecordService moneyRecordService;
+
+    @Resource
+    IOrderRecordService orderRecordService;
 
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
@@ -57,20 +62,54 @@ public class AppHelpInfoController extends BaseController{
             }else {
                 mimageUrl = "nono";
             }
-
+            User mUser = userservice.findByUsername(appHelpInfoModel.getUsername());
             helpInfo.setImageUrl(mimageUrl);
             helpInfo.setHhCategoryId(categoryService.getByCategoryName(appHelpInfoModel.getCategoryName()).getId());
-            helpInfo.setHhUserId(userservice.findByUsername(appHelpInfoModel.getUsername()).getId());
+            helpInfo.setHhUserId(mUser.getId());
             helpInfo.setContext(appHelpInfoModel.getAssistanceContent());
             helpInfo.setProvince(appHelpInfoModel.getProvince());
-            helpInfo.setCity(appHelpInfoModel.getProvince());
+            helpInfo.setCity(appHelpInfoModel.getCity());
             helpInfo.setArea(appHelpInfoModel.getArea());
             helpInfo.setDetailPosition(appHelpInfoModel.getContactAddress());
             helpInfo.setPhome(appHelpInfoModel.getContactPhone());
             helpInfo.setNeedUserNumber(Integer.valueOf(appHelpInfoModel.getMaxPersons()));
-            helpInfo.setAreaRange(appHelpInfoModel.getPushRange());
+            helpInfo.setAreaRange(appHelpInfoModel.getRange());
+            Date date = new Date();
+            helpInfo.setCreateTime(date);
 
             helpInfoService.save(helpInfo);
+
+
+            //处理推送
+
+
+            //处理转账
+            if (mUser.getIsNew() != null && mUser.getIsNew() == true){//新用户不扣款
+                mUser.setIsNew(false);
+            } {
+                Double afterMoney = mUser.getAccount() - Double.valueOf(appHelpInfoModel.getMoney());
+                mUser.setAccount(afterMoney);
+            }
+            userservice.update(mUser);
+
+
+            //记录订单
+            String tradeNo = UtilDate.getOrderNum();
+            OrderRecord orderRecord = new OrderRecord(  null,
+                                                        tradeNo,
+                                                       "紧急求助",
+                                                        appHelpInfoModel.getArea(),
+                                                        mUser.getUsername(),
+                                                        "系统",
+                                                        Double.valueOf(appHelpInfoModel.getMoney()),
+                                                        helpInfoService.selectByUniq(mUser.getId(),date).getId(),
+                                                        "系统收入",
+                                                        new Date(),
+                                                        true,
+                                                        null);
+            orderRecordService.save(orderRecord);
+
+
             Map<String,String> map = new HashMap<String, String>();
             map.put("MSG","成功返回!");
             super.writeJson(new ResponseMessage<Map<String,String>>(0,"success",map),response);

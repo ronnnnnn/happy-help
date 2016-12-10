@@ -63,4 +63,9 @@ public class MoneyRecordServiceImpl implements IMoneyRecordService{
         PageInfo pageInfo = new PageInfo(moneyRecords);
         return new Datagrid(pageInfo.getTotal(),moneyRecords);
     }
+
+    @Override
+    public MoneyRecord getByTradeOrderNoUniq(String tradeOrderNo) {
+        return moneyRecordMapper.selectByTradeOrderNoUniq(tradeOrderNo);
+    }
 }

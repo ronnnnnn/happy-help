@@ -12,7 +12,7 @@ public class AppHelpInfoModel {
     private String assistanceContent;//求助内容
     private MultipartFile[] images;//图片数组
     private String contactAddress;//详细地址
-    private String pushRange;//范围
+    private String range;//范围
     private String money;
     private String province;//省份(求助范围)
     private String city;//市区(范围)
@@ -69,12 +69,12 @@ public class AppHelpInfoModel {
         this.contactAddress = contactAddress;
     }
 
-    public String getPushRange() {
-        return pushRange;
+    public String getRange() {
+        return range;
     }
 
-    public void setPushRange(String pushRange) {
-        this.pushRange = pushRange;
+    public void setRange(String range) {
+        this.range = range;
     }
 
     public String getProvince() {

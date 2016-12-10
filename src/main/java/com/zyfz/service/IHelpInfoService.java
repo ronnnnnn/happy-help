@@ -17,4 +17,6 @@ public interface IHelpInfoService extends IBaseService<HelpInfo> {
     public Datagrid getHelpInfoWithUserByKey(String key,PageModel pageModel);
 
     public Datagrid selectAllWithParam(PageModel pageModel,HelpInfo helpInfo);
+
+    public HelpInfo selectByUniq(Integer usrId ,Date createTime);
 }

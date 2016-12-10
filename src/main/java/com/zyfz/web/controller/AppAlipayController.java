@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -44,31 +45,66 @@ public class AppAlipayController {
 
     @RequestMapping(value = "/api/v1/anon/notify", method = RequestMethod.POST)
     public void receiveNotify(HttpServletRequest request, HttpServletResponse response) {
+        try {
             //获取支付宝POST过来反馈信息
             Map<String, String> params = new HashMap<String, String>();
             Map requestParams = request.getParameterMap();
             this.handleParam(params,requestParams);
-
+            logger.info("============"+params.toString()+"=============");
             PrintWriter printWriter = null;
             try {
                 printWriter = response.getWriter();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            //获取参数
+            //商户订单号
+            String out_trade_no = null;
+            String total_amount = null;
+            String seller_id = null;
+            String app_id = null;
+            try {
+                out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"), "UTF-8");
+                total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"), "UTF-8");
+                seller_id = new String(request.getParameter("seller_id").getBytes("ISO-8859-1"), "UTF-8");
+                app_id = new String(request.getParameter("app_id").getBytes("ISO-8859-1"), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                logger.info(e.toString());
+            }
 
-            Map<String, String> paramsMap = requestParams; //将异步通知中收到的待验证所有参数都存放到map中
+            Map<String, String> paramsMap = params; //将异步通知中收到的待验证所有参数都存放到map中
             boolean signVerified = false;//调用SDK验证签名
             try {
                 signVerified = AlipaySignature.rsaCheckV1(paramsMap, ALIPAY_PUBLIC_KEY, INPUT_CHARSET);
             } catch (AlipayApiException e) {
                 e.printStackTrace();
+                logger.info(e.toString());
             }
             if(signVerified){
                 // TODO 验签成功后
                 //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
+                MoneyRecord moneyRecord = moneyRecordService.getByTradeOrderNoUniq(out_trade_no);
+                if (moneyRecord == null){
+                    if (moneyRecord.getMoney() == Double.valueOf(total_amount) && PID == seller_id && APPID == app_id ){
+                        moneyRecord.setIsValied(true);
+                        moneyRecordService.update(moneyRecord);
+                        if (printWriter != null) {
+                            printWriter.print("success");//请不要修改或删除
+                        }
+                    }
+                }
             }else{
                 // TODO 验签失败则记录异常日志，并在response中返回failure.
+                if (printWriter != null) {
+                    printWriter.print("failure");//请不要修改或删除
+                }
             }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.info(e.toString());
+        }
     }
 
 //    @RequestMapping(value = "/api/v1/anon/notify", method = RequestMethod.POST)
