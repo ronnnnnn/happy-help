@@ -9,7 +9,7 @@
 		</tr>
 		<tr>
 			<th>新密码</th>
-			<td><input id="password-nn" name="password-n" class="easyui-validatebox" style="width: 100%"/></td>
+			<td><input id="password-nn" type="password" name="password-n" class="easyui-validatebox" style="width: 100%"/></td>
 		</tr>
 		<tr align="center">
 

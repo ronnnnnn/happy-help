@@ -1,9 +1,12 @@
 package com.zyfz.domain;
 
 /**
- * 服务状态表
+ * 服务状态表,整张表可以看成一个大帐号(平台帐号),记录着收入和支出的情况
  */
 public class HelpContract {
+
+
+
     private Integer id;
 
     /**

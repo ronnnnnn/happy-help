@@ -52,6 +52,12 @@ public class AppTaskInfoController extends BaseController{
     @Resource
     IOrderRecordService orderRecordService;
 
+    @Resource
+    ISettingService settingService;
+
+    @Resource
+    IPlatformRecordService platformRecordService;
+
 
     /**
      *
@@ -414,8 +420,8 @@ public class AppTaskInfoController extends BaseController{
      13终止
 
      */
-    @RequestMapping(value = "/api/v1/contract/handle",method = RequestMethod.POST)
-    public void handleContract(@RequestBody AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/anon/contract/handle",method = RequestMethod.POST)
+    public void handleContract(AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
 
         try {
             TaskContract taskContract = taskContractService.getOneById(new TaskContract(appTaskHandleModel.getBargainingId()));
@@ -462,27 +468,52 @@ public class AppTaskInfoController extends BaseController{
                         String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage);
 
-                //当是有偿任务进行转账
+                //当是有偿任务进行扣款
                 if((status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5)){
-                    User serviceUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
                     User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance ()));
-                    if (appTaskHandleModel.getBargainingMoney() != null && appTaskHandleModel.getBargainingMoney() > 0){
-                        Double serviceAccount = serviceUser.getAccount() + appTaskHandleModel.getBargainingMoney();
-                        Double paidAccount = paidUser.getAccount() - appTaskHandleModel.getBargainingMoney();
-                        serviceUser.setAccount(serviceAccount);
+                    if ( taskContract.getMoney()!=null && taskContract.getMoney() > 0){
+
+                        //将款项打到平台上,并扣除手续费
+                        String value = null;
+                        try {
+                            value = settingService.selectBySysTypeAndTypeName(new Setting("普通求助","手续费")).getTypeValue();
+                        }catch (Exception e){
+                            //手续费获取错误默认为0
+                            value = "0";
+                            e.toString();
+                        }
+
+                        Double fee = taskContract.getMoney()*((Double.valueOf(value))/100);
+                        Double paidMoney =  taskContract.getMoney();
+                        Double paidAccount = paidUser.getAccount() - paidMoney - fee;
                         paidUser.setAccount(paidAccount);
-                        userservice.update(serviceUser);
                         userservice.update(paidUser);
+
+                        //处理平台收支记录
+                        //手续费收入
+                        PlatformRecord platformRecord4Fee = new PlatformRecord( "taskInfoFee",
+                                                                            "收入",
+                                                                            taskInfo.getId(),
+                                                                            paidUser.getId(),
+                                                                            fee,
+                                                                            "普通求助手续费",
+                                                                            new Date(),
+                                                                            taskContract.getId());
+                        platformRecordService.save(platformRecord4Fee);
+                        //交易金额暂时存放
+                        PlatformRecord platformRecord4Temp = new PlatformRecord( "taskInfoTemp",
+                                                                            "收入",
+                                                                            taskInfo.getId(),
+                                                                            paidUser.getId(),
+                                                                            paidMoney,
+                                                                            "普通求助服务费暂存平台,交易成功后付给服务方",
+                                                                            new Date(),
+                                                                            taskContract.getId());
+                        platformRecordService.save(platformRecord4Temp);
+
+
                     }
 
-                    //处理消息,金钱变动提醒
-                    SystemMessage systemMessage2 = new SystemMessage("taskinfo",
-                            appTaskHandleModel.getBargainingId(),
-                            new Date(),
-                            DEAL_MESSAGE_TITLE,
-                            DEAL_MESSAGE_CONTENT_ADD,
-                            String.valueOf(taskContract.getHhTaskInfoId()));
-                    systemMessageService.save(systemMessage2);
 
                 }
 
@@ -492,19 +523,19 @@ public class AppTaskInfoController extends BaseController{
                 String secondType = null;
                 if (status == 3){
                     secondType = "无偿求助";
-                }else if (status == 12){
+                }else if (status == 9 || status == 10){
                     secondType = "有偿求助";
                 }
 
-                User userOfBargaining = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
-                User userIdOfAssistance = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance()));
+                User userOfBargaining = userservice.getOneById(new User(taskContract.getHhUserId()));
+                User userOfAssistance = userservice.getOneById(new User(taskInfo.getHhUserId()));
 
                 OrderRecord orderRecord = new OrderRecord(
                         null,
                         tradeNo,
                         "普通求助消息",
                         secondType,
-                        userIdOfAssistance.getUsername(),
+                        userOfAssistance.getUsername(),
                         userOfBargaining.getUsername(),
                         taskContract.getMoney(),
                         taskContract.getHhTaskInfoId(),
@@ -551,7 +582,33 @@ public class AppTaskInfoController extends BaseController{
                 }
                 taskContractService.update(taskContract);
 
-                //处理消息
+                //付款给服务方
+                User serviceUser = userservice.getOneById(new User(taskContract.getHhUserId()));
+                Double finalAccount = serviceUser.getAccount() + taskContract.getMoney();
+                serviceUser.setAccount(finalAccount);
+                userservice.update(serviceUser);
+
+                //平台支出记录
+                PlatformRecord platformRecord4TempOut = new PlatformRecord( "taskInfoTemp",
+                        "支出",
+                        taskInfo.getId(),
+                        serviceUser.getId(),
+                        taskContract.getMoney(),
+                        "交易完成,平台将款项付给服务方",
+                        new Date(),
+                        taskContract.getId());
+                platformRecordService.save(platformRecord4TempOut);
+
+               //处理消息,金钱变动提醒,服务方金额增加
+                SystemMessage systemMessage2 = new SystemMessage("taskinfo",
+                            serviceUser.getId(),
+                            new Date(),
+                            DEAL_MESSAGE_TITLE,
+                            DEAL_MESSAGE_CONTENT_ADD,
+                            String.valueOf(taskContract.getHhTaskInfoId()));
+                systemMessageService.save(systemMessage2);
+
+                //处理消息,任务完结
                 SystemMessage systemMessage = new SystemMessage("taskinfo",
                         taskContract.getHhUserId(),
                         new Date(),
@@ -620,10 +677,14 @@ public class AppTaskInfoController extends BaseController{
             /**
              * 发布者终止交易
              */
-            if (status == 13 && status != oldStatus){
-                //处理taskcontrct
+            if (status == 13 && status != oldStatus && oldStatus < 9){
+                //求助者接受后不能终止交易,需要申请终止交易后台处理
+
+                //处理taskcontract
                 taskContract.setStatus(status);
                 taskContractService.update(taskContract);
+
+
                 //处理消息
                 SystemMessage systemMessage = new SystemMessage("taskinfo",
                         taskContract.getHhUserId(),
