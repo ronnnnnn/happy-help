@@ -42,6 +42,7 @@ public class AppHelpInfoController extends BaseController{
     @Resource
     IOrderRecordService orderRecordService;
 
+
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
         try {

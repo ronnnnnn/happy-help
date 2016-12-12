@@ -6,6 +6,6 @@
 
 2.配置tomcat虚拟路径保存图片
     在$CATALINA_BASE/conf/localhost/中添加一个.xml文件，(pic.xml)
-    pic.xml文件中的内容如下：
+    pic.xml文件中的内容如下：cd
     <Context docBase="/var/www/files" />
 
