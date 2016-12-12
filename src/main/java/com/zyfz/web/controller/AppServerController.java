@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.zyfz.global.SystemMessageString.*;
@@ -46,20 +47,39 @@ public class AppServerController extends BaseController {
     @Resource
     ISystemMessageService systemMessageService;
 
-    @RequestMapping(value = "/api/v1/server",method = RequestMethod.POST)
+
+    /**
+     * 添加服务
+     * @param appServerModel
+     * @param response
+     * @param request
+     */
+
+    @RequestMapping(value = "/api/v1/anon/server",method = RequestMethod.POST)
     public void addServer(AppServerModel appServerModel, HttpServletResponse response, HttpServletRequest request){
        try {
            ServerInfo serverInfo = new ServerInfo();
+           //内容
            serverInfo.setHhUserId(appServerModel.getUserId());
+           //用户
            serverInfo.setContext(appServerModel.getContent());
+           //处理地址
            String[] address = appServerModel.getAddress().split(",");//格式：省，市，区
-           serverInfo.setProvince(address[0]);
-           serverInfo.setCity(address[1]);
-           serverInfo.setArea(address[2]);
+           if (address.length == 1){
+               serverInfo.setProvince(address[0]);
+           }
+           if (address.length == 2){
+               serverInfo.setCity(address[1]);
+           }
+           if (address.length == 3){
+               serverInfo.setArea(address[2]);
+           }
            if (appServerModel.getDetailAddress() != null){
                serverInfo.setAddress(appServerModel.getDetailAddress());
            }
+           //联系方式
            serverInfo.setPhone(appServerModel.getContactPhone());
+           //图片
            MultipartFile[] images = appServerModel.getImages();
            List<String> mImages = new ArrayList<String>();
            if ( images != null){
@@ -73,6 +93,13 @@ public class AppServerController extends BaseController {
            }
            serverInfo.setImageUrl(StringUtils.collectionToDelimitedString(mImages,","));
            serverInfo.setHhCategoryId(categoryService.getByCategoryName(appServerModel.getCategory()).getId());
+           //处理服务时间段
+           String[] times = appServerModel.getTimeRange().split(",");
+           SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+           Date mStartTime = sim.parse(times[0]);
+           Date mEndTime = sim.parse(times[1]);
+           serverInfo.setServerTimeStart(mStartTime);
+           serverInfo.setServerTimeEnd(mEndTime);
            serverInfoService.save(serverInfo);
            Map<String,String> map = new HashMap<String, String>();
            map.put("MSG","添加成功！");

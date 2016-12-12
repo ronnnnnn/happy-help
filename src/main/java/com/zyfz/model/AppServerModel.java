@@ -13,7 +13,16 @@ public class AppServerModel {
     private String detailAddress;//（String）	详细地址（包括街道地址，没有则为空串）
     private String contactPhone;//（String）  //联系电话
     private String title;
+    private String timeRange;//开始时间,结束时间
     private MultipartFile[] images;//（Multipart）	图片
+
+    public String getTimeRange() {
+        return timeRange;
+    }
+
+    public void setTimeRange(String timeRange) {
+        this.timeRange = timeRange;
+    }
 
     public String getTitle() {
         return title;

@@ -67,6 +67,34 @@ public class ServerInfo {
 
     private ServerContract serverContract;
 
+    private Date serverTimeStart;
+
+    private Date serverTimeEnd;
+
+    public ServerInfo() {
+        super();
+    }
+
+    public ServerInfo(Integer id) {
+        this.id = id;
+    }
+
+    public Date getServerTimeStart() {
+        return serverTimeStart;
+    }
+
+    public void setServerTimeStart(Date serverTimeStart) {
+        this.serverTimeStart = serverTimeStart;
+    }
+
+    public Date getServerTimeEnd() {
+        return serverTimeEnd;
+    }
+
+    public void setServerTimeEnd(Date serverTimeEnd) {
+        this.serverTimeEnd = serverTimeEnd;
+    }
+
     public ServerContract getServerContract() {
         return serverContract;
     }
@@ -83,14 +111,6 @@ public class ServerInfo {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
-    }
-
-    public ServerInfo() {
-        super();
-    }
-
-    public ServerInfo(Integer id) {
-        this.id = id;
     }
 
     public String getDetailAddress() {

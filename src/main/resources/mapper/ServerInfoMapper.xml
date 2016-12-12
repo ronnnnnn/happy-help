@@ -19,6 +19,8 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="server_time_start" jdbcType="TIMESTAMP" property="serverTimeStart" />
+    <result column="server_time_end" jdbcType="TIMESTAMP" property="serverTimeEnd" />
   </resultMap>
 
   <resultMap id="ServerInfoWithUserMap" type="ServerInfo" extends="BaseResultMap">
@@ -55,7 +57,7 @@
 
   <sql id="Base_Column_List">
     id, title, context, phone, create_time, hh_user_id, is_pass, is_deleted, hh_category_id, 
-    country, province, city, area, street, address,image_url
+    country, province, city, area, street, address,image_url,server_time_start,server_time_end
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -193,6 +195,12 @@
       <if test="imageUrl != null">
         image_url,
       </if>
+      <if test="serverTimeStart!= null">
+        server_time_start,
+      </if>
+      <if test="serverTimeEnd != null">
+        server_time_end,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -242,6 +250,12 @@
       </if>
       <if test="imageUrl != null">
         #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="serverTimeStart != null">
+        #{serverTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serverTimeEnd != null">
+        #{serverTimeEnd,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -293,6 +307,12 @@
       </if>
       <if test="imageUrl != null">
         image_url = #{imageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="serverTimeStart != null">
+        server_time_start = #{serverTimeStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serverTimeEnd != null">
+        server_time_end = #{serverTimeEnd,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
