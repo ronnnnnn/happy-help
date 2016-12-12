@@ -55,7 +55,7 @@ public class AppServerController extends BaseController {
      * @param request
      */
 
-    @RequestMapping(value = "/api/v1/anon/server",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/server",method = RequestMethod.POST)
     public void addServer(AppServerModel appServerModel, HttpServletResponse response, HttpServletRequest request){
        try {
            ServerInfo serverInfo = new ServerInfo();
@@ -69,9 +69,12 @@ public class AppServerController extends BaseController {
                serverInfo.setProvince(address[0]);
            }
            if (address.length == 2){
+               serverInfo.setProvince(address[0]);
                serverInfo.setCity(address[1]);
            }
            if (address.length == 3){
+               serverInfo.setProvince(address[0]);
+               serverInfo.setCity(address[1]);
                serverInfo.setArea(address[2]);
            }
            if (appServerModel.getDetailAddress() != null){
@@ -95,7 +98,7 @@ public class AppServerController extends BaseController {
            serverInfo.setHhCategoryId(categoryService.getByCategoryName(appServerModel.getCategory()).getId());
            //处理服务时间段
            String[] times = appServerModel.getTimeRange().split(",");
-           SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd hh:mm");
+           SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd HH:mm");
            Date mStartTime = sim.parse(times[0]);
            Date mEndTime = sim.parse(times[1]);
            serverInfo.setServerTimeStart(mStartTime);
