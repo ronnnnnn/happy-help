@@ -3,10 +3,13 @@ package com.zyfz.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.zyfz.alipay.util.AlipayCore;
 import com.zyfz.alipay.util.OrderInfoUtil2_0;
 import com.zyfz.domain.MoneyRecord;
+import com.zyfz.domain.User;
 import com.zyfz.model.AppOrderModel;
 import com.zyfz.service.IMoneyRecordService;
+import com.zyfz.service.IUserservice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,9 @@ public class AppAlipayController {
 
     @Resource
     IMoneyRecordService moneyRecordService;
+
+    @Resource
+    IUserservice userservice;
     /**
      * 异步接受支付宝支付结果
      * 支付宝服务器调用
@@ -77,16 +83,27 @@ public class AppAlipayController {
             boolean signVerified = false;//调用SDK验证签名
             try {
                 signVerified = AlipaySignature.rsaCheckV1(paramsMap, ALIPAY_PUBLIC_KEY, INPUT_CHARSET);
+                logger.info("============="+signVerified+"==============");
             } catch (AlipayApiException e) {
                 e.printStackTrace();
                 logger.info(e.toString());
             }
+            logger.info(signVerified+"");
             if(signVerified){
                 // TODO 验签成功后
                 //按照支付结果异步通知中的描述，对支付结果中的业务内容进行1\2\3\4二次校验，校验成功后在response中返回success，校验失败返回failure
                 MoneyRecord moneyRecord = moneyRecordService.getByTradeOrderNoUniq(out_trade_no);
-                if (moneyRecord == null){
-                    if (moneyRecord.getMoney() == Double.valueOf(total_amount) && PID == seller_id && APPID == app_id ){
+
+                if (moneyRecord != null){
+                    Boolean step1 = String.valueOf(moneyRecord.getMoney()).intern() == total_amount.intern();
+                    Boolean step2 = PID.intern() == seller_id.intern();
+                    Boolean step3 = APPID.intern() == app_id.intern();
+                    if ( step1&& step2 && step3 ){
+                        //给用户账户加钱
+                        User user = userservice.getOneById(new User(moneyRecord.getHhUserId()));
+                        Double account = user.getAccount() + Double.valueOf(total_amount);
+                        user.setAccount(account);
+                        userservice.update(user);
                         moneyRecord.setIsValied(true);
                         moneyRecordService.update(moneyRecord);
                         if (printWriter != null) {

@@ -47,6 +47,9 @@ public class AppPushController extends BaseController {
                 if (push.getStreet() != null){
                     mPush2.setStreet(push.getStreet());
                 }
+                if (push.getTopic() != null){
+                    mPush2.setTopic(push.getTopic());
+                }
                 pushService.update(mPush2);
             }
             super.writeJson(new ResponseMessage<String>(0,"success!","null"),response);

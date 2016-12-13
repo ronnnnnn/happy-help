@@ -42,7 +42,7 @@ public class AlipayConfig {
 	// 接收通知的接口名
 	public static String SERVICE = "alipay.trade.app.pay";
 
-	public static String NOTIFY_URL = "http://localhost:8080/happy-help/api/v1/anon/notify";
+	public static String NOTIFY_URL = "http://120.77.59.76/happy-help/api/v1/anon/notify";
 
 	public static String FORMAT = "json";
 

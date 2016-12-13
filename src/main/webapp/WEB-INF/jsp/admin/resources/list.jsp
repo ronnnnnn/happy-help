@@ -65,7 +65,7 @@
             $("#mtreeTable").treetable({ expandable: true }).treetable("expandNode", 2);
             $(".deleteBtn").click(function() {
                 if(confirm("确认删除吗?")) {
-                    location.href = "${pageContext.request.contextPath}/resource/"+$(this).data("id")+"/delete";
+                   // location.href = "${pageContext.request.contextPath}/resource/"+$(this).data("id")+"/delete";
                 }
             });
 
