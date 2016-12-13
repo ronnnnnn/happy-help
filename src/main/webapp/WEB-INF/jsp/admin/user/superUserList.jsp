@@ -36,7 +36,7 @@
 				align : 'center',
 			},{
 				field : 'userIdentify',
-				title : '生份证',
+				title : '身份证',
 				width : fixWidth(0.15),
 				align : 'center',
 			},{
