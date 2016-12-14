@@ -420,8 +420,8 @@ public class AppTaskInfoController extends BaseController{
      13终止
 
      */
-    @RequestMapping(value = "/api/v1/anon/contract/handle",method = RequestMethod.POST)
-    public void handleContract(AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/contract/handle",method = RequestMethod.POST)
+    public void handleContract(@RequestBody AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
 
         try {
             TaskContract taskContract = taskContractService.getOneById(new TaskContract(appTaskHandleModel.getBargainingId()));
