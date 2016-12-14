@@ -1,5 +1,7 @@
 package com.zyfz.domain;
 
+import java.util.Date;
+
 /**
  * 服务状态表,整张表可以看成一个大帐号(平台帐号),记录着收入和支出的情况
  */
@@ -21,6 +23,46 @@ public class HelpContract {
     private Integer hhUserId; //提供帮助的人id
 
     private Integer hhHelpInfoId; //紧急求助id
+
+    private Date createTime;
+
+    private User user;
+
+    public HelpContract() {
+        super();
+    }
+
+    public HelpContract(Integer id) {
+        this.id = id;
+    }
+
+    public HelpContract(Integer hhUserId, Integer hhHelpInfoId) {
+        this.hhUserId = hhUserId;
+        this.hhHelpInfoId = hhHelpInfoId;
+    }
+
+    public HelpContract(Integer status, Integer hhUserId, Integer hhHelpInfoId, Date createTime) {
+        this.status = status;
+        this.hhUserId = hhUserId;
+        this.hhHelpInfoId = hhHelpInfoId;
+        this.createTime = createTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getId() {
         return id;

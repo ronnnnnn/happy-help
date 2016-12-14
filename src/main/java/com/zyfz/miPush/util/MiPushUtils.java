@@ -2,10 +2,14 @@ package com.zyfz.miPush.util;
 
 import com.xiaomi.xmpush.server.*;
 import com.zyfz.domain.Push;
+import com.zyfz.miPush.thread.MyTask;
 import com.zyfz.model.AppPushModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static com.zyfz.miPush.config.MiPushConfig.*;
 
@@ -83,6 +87,19 @@ public class MiPushUtils {
         Sender sender = new Sender(ANDROID_APP_SECRET);
         Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload());
         sender.broadcast(message, topic, 0); //根据topic，发送消息到指定一组设备上，不重试。
+    }
+
+    public void test(){
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 10, 200, TimeUnit.MILLISECONDS,
+                new ArrayBlockingQueue<Runnable>(5));
+
+        for(int i=0;i<15;i++){
+            MyTask myTask = new MyTask(i);
+            executor.execute(myTask);
+            System.out.println("线程池中线程数目："+executor.getPoolSize()+"，队列中等待执行的任务数目："+
+                    executor.getQueue().size()+"，已执行玩别的任务数目："+executor.getCompletedTaskCount());
+        }
+        executor.shutdown();
     }
 
 }

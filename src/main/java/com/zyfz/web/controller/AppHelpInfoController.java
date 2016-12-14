@@ -1,7 +1,11 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.alipay.util.UtilDate;
-import com.zyfz.domain.*;
+import com.zyfz.domain.HelpContract;
+import com.zyfz.domain.HelpInfo;
+import com.zyfz.domain.OrderRecord;
+import com.zyfz.domain.User;
+import com.zyfz.miPush.thread.ThreadPoolCore;
 import com.zyfz.model.AppHelpInfoModel;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
@@ -9,13 +13,15 @@ import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.crypto.Data;
 import java.util.*;
 
 /**
@@ -41,6 +47,12 @@ public class AppHelpInfoController extends BaseController{
 
     @Resource
     IOrderRecordService orderRecordService;
+
+    @Resource
+    IPushService pushService;
+
+    @Resource
+    IHelpInfoContractService helpInfoContractService;
 
 
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
@@ -167,5 +179,56 @@ public class AppHelpInfoController extends BaseController{
             super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
         }
 
+    }
+
+    @RequestMapping(value = "/api/v1/anon/test",method = RequestMethod.GET)
+    public void pushTest(){
+        System.out.print("++++++main+++");
+        ThreadPoolCore.pushPool(pushService.selectAll(),"test");
+        System.out.print("++++++main+++");
+    }
+
+
+    @RequestMapping(value = "/api/v1/anon/help/users",method = RequestMethod.GET)
+    public void getUserList(@RequestParam("emergencyId")Integer emergencyId,HttpServletResponse response){
+        try {
+            List<HelpContract> helpContracts = helpInfoContractService.selectByHelpInfo(emergencyId);
+            Datagrid datagrid = new Datagrid((long) helpContracts.size(),helpContracts);
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",datagrid),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
+
+    /**
+     * 愿意进行帮助的用户操作
+     * @param response
+     */
+    @RequestMapping(value = "/api/v1/help/visitor-handle",method = RequestMethod.POST)
+    public void visitorHandle(@RequestParam("emergencyId")Integer emergencyId,
+                              @RequestParam("userId")Integer userId,
+                              HttpServletResponse response){
+        try{
+            HelpContract helpContract = helpInfoContractService.selectByHelpInfoAndUserV1(new HelpContract(userId,emergencyId));
+            //订单为空,第一次请求帮助
+            if (helpContract == null){
+                HelpContract helpContract1 = new HelpContract(  0,
+                                                                userId,
+                                                                emergencyId,
+                                                                new Date());
+                helpInfoContractService.save(helpContract1);
+            } else if (helpContract.getStatus() == 1){
+                helpContract.setStatus(2);
+                helpInfoContractService.update(helpContract);
+            }
+
+            super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
     }
 }

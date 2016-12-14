@@ -21,6 +21,16 @@ public class Push {
 
     private String topic;
 
+    private String[] topics;
+
+    public String[] getTopics() {
+        if (topic != null){
+            return topic.split(",");
+        }else {
+            return null;
+        }
+    }
+
     public Integer getId() {
         return id;
     }
