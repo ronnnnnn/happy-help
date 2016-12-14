@@ -60,6 +60,14 @@ public class HelpInfo {
 
     private String categoryName;
 
+    public HelpInfo() {
+        super();
+    }
+
+    public HelpInfo(Integer id) {
+        this.id = id;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }

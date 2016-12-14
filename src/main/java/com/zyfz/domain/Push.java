@@ -31,6 +31,26 @@ public class Push {
         }
     }
 
+    public Push() {
+        super();
+    }
+
+    public Push(Integer id) {
+        this.id = id;
+    }
+
+    public Push(Integer hhUserId, String country, String province, String city, String area, String street, String alias, String regid, String topic) {
+        this.hhUserId = hhUserId;
+        this.country = country;
+        this.province = province;
+        this.city = city;
+        this.area = area;
+        this.street = street;
+        this.alias = alias;
+        this.regid = regid;
+        this.topic = topic;
+    }
+
     public Integer getId() {
         return id;
     }

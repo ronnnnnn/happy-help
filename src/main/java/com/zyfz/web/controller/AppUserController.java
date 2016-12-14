@@ -2,12 +2,14 @@ package com.zyfz.web.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.zyfz.domain.Captcha;
+import com.zyfz.domain.Push;
 import com.zyfz.domain.User;
 import com.zyfz.model.AppUserInfoModel;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.ICaptchaService;
+import com.zyfz.service.IPushService;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
 import org.apache.ibatis.annotations.Param;
@@ -36,6 +38,9 @@ public class AppUserController extends BaseController {
 
     @Resource
     ICaptchaService captchaService;
+
+    @Resource
+    IPushService pushService;
     /**
      * App注册用户
      * @param user
@@ -69,6 +74,20 @@ public class AppUserController extends BaseController {
 
                 passwordHelper.encryptPassword(user);
                 userservice.save(user);
+
+                User user1 = userservice.findByPhone(user.getPhone());
+                //设置默认推荐
+                Push push = new Push(   user1.getId(),
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        null,
+                                        String.valueOf(user1.getId()),
+                                        null,
+                                        "推荐");
+                pushService.save(push);
+
                 responseMessage.setCode(0);
                 responseMessage.setMessage("success");
                 responseMessage.setResult(user.getUsername());

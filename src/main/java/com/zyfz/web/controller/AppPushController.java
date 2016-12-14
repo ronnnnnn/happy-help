@@ -1,8 +1,10 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.Push;
+import com.zyfz.domain.User;
 import com.zyfz.model.ResponseMessage;
 import com.zyfz.service.IPushService;
+import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,12 +24,16 @@ public class AppPushController extends BaseController {
     @Resource
     IPushService pushService;
 
+    @Resource
+    IUserservice userservice;
+
     @RequestMapping(value = "/api/v1/anon/push",method = RequestMethod.POST)
     public void updatePush(Push push, HttpServletResponse response){
         try {
             Push mPush = new Push();
             String alias = push.getAlias();
-            if (alias != null){
+            User user = userservice.getOneById(new User(Integer.valueOf(alias)));
+            if (alias != null && user != null){
                 mPush.setHhUserId(Integer.valueOf(alias));
                 mPush.setAlias(alias);
                 if (push.getTopic() != null){

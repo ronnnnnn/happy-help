@@ -1,10 +1,7 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.alipay.util.UtilDate;
-import com.zyfz.domain.HelpContract;
-import com.zyfz.domain.HelpInfo;
-import com.zyfz.domain.OrderRecord;
-import com.zyfz.domain.User;
+import com.zyfz.domain.*;
 import com.zyfz.miPush.thread.ThreadPoolCore;
 import com.zyfz.model.AppHelpInfoModel;
 import com.zyfz.model.Datagrid;
@@ -50,6 +47,9 @@ public class AppHelpInfoController extends BaseController{
 
     @Resource
     IPushService pushService;
+
+    @Resource
+    IPlatformRecordService platformRecordService;
 
     @Resource
     IHelpInfoContractService helpInfoContractService;
@@ -121,6 +121,17 @@ public class AppHelpInfoController extends BaseController{
                                                         true,
                                                         null);
             orderRecordService.save(orderRecord);
+
+            //记录平台收入
+            PlatformRecord platformRecord = new PlatformRecord(  "helpInfo",
+                                                                 "收入",
+                                                                 helpInfoService.selectByUniq(mUser.getId(),date).getId(),
+                                                                 mUser.getId(),
+                                                                 Double.valueOf(appHelpInfoModel.getMoney()),
+                                                                 "推送消息服务费",
+                                                                 new Date(),
+                                                                 null);
+            platformRecordService.save(platformRecord);
 
 
             Map<String,String> map = new HashMap<String, String>();
@@ -224,6 +235,30 @@ public class AppHelpInfoController extends BaseController{
                 helpInfoContractService.update(helpContract);
             }
 
+            super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
+
+    @RequestMapping(value = "/api/v1/help/publish-handle",method = RequestMethod.POST)
+    public void pulishHandler(
+            @RequestParam("emergencyId")Integer emergencyId,
+            @RequestParam("userId")Integer userId,
+            HttpServletResponse response){
+        try {
+            HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(emergencyId));
+            HelpContract helpContract = helpInfoContractService.selectByHelpInfoAndUserV1(new HelpContract(userId,emergencyId));
+            if (helpContract.getStatus() == 0){
+                helpContract.setStatus(1);
+            } else if (helpContract.getStatus() == 2){
+                helpInfo.setIsCompeleted(true);
+                helpInfoService.update(helpInfo);
+                helpContract.setStatus(3);
+            }
+            helpInfoContractService.update(helpContract);
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
