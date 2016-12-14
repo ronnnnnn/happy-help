@@ -25,6 +25,12 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_push
+  </select>
+
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

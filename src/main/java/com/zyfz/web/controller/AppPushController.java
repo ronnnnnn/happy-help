@@ -6,6 +6,7 @@ import com.zyfz.service.IPushService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -59,5 +60,16 @@ public class AppPushController extends BaseController {
             super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
         }
 
+    }
+
+    @RequestMapping(value = "/api/v1/anon/topic",method = RequestMethod.GET)
+    public void getTopic(@RequestParam("userId")Integer userId, HttpServletResponse response){
+        try {
+            super.writeJson(new ResponseMessage<Push>(0,"success",pushService.selectByUserId(userId)),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
     }
 }
