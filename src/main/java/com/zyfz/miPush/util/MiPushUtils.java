@@ -63,7 +63,7 @@ public class MiPushUtils {
                 .passThrough(PASS_THROUGH)  //消息使用透传方式
                 .notifyType(NOTIFY_TYPE) // 使用默认提示音提示
                 .enableFlowControl(true)//控制消息是否需要进行平缓发送
-                .extra(Constants.EXTRA_PARAM_NOTIFY_EFFECT,Constants.NOTIFY_ACTIVITY)
+                .extra(Constants.EXTRA_PARAM_NOTIFY_FOREGROUND, "0") // 关闭前台通知
                 .extra("TargetId",extraValue)
                 .build();
         return message;
