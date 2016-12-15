@@ -94,12 +94,12 @@ public class MiPushUtils {
      * @param appPushModel 推送的内容
      * @throws Exception
      */
-    public void sendMessageToAliasesV2(List<Push> pushes,String targetPush, AppPushModel appPushModel,String extraValue) throws Exception {
+    public void sendMessageToAliasesV2(List<Push> pushes,String targetPush, AppPushModel appPushModel,String extraValue,Integer targetUserId) throws Exception {
         Constants.useOfficial();
         Sender sender = new Sender(ANDROID_APP_SECRET);
         List<String> aliasList = new ArrayList<String>();
         for (Push push : pushes){
-            if (StringArray.hasIntersectV2(push.getAlias().split(","),targetPush)){
+            if (StringArray.hasIntersectV2(push.getTopic().split(","),targetPush) && push.getAlias().intern() != String.valueOf(targetUserId).intern()){
                 aliasList.add(push.getAlias());  //alias非空白，不能包含逗号，长度小于128。
             }
         }

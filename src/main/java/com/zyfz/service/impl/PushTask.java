@@ -4,7 +4,6 @@ import com.zyfz.domain.Push;
 import com.zyfz.miPush.util.MiPushUtils;
 import com.zyfz.model.AppPushModel;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -22,6 +21,7 @@ public class PushTask implements Runnable {
     private AppPushModel appPushModel;
     private List<Push> pushes;
     private String extraValue;
+    private Integer targetUserId;
 
     public PushTask(String targetUser,String targetPush,String[] userTopic) {
         this.targetPush = targetPush;
@@ -29,18 +29,19 @@ public class PushTask implements Runnable {
         this.userTopic = userTopic;
     }
 
-    public PushTask(String targetPush, AppPushModel appPushModel, List<Push> pushes,String extraValue) {
+    public PushTask(String targetPush, AppPushModel appPushModel, List<Push> pushes,String extraValue,Integer targetUserId) {
         this.targetPush = targetPush;
         this.appPushModel = appPushModel;
         this.pushes = pushes;
         this.extraValue = extraValue;
+        this.targetUserId = targetUserId;
     }
 
     @Override
     public void run() {
         MiPushUtils miPushUtils = new MiPushUtils();
         try {
-            miPushUtils.sendMessageToAliasesV2(pushes,targetPush,appPushModel,extraValue);
+            miPushUtils.sendMessageToAliasesV2(pushes,targetPush,appPushModel,extraValue,targetUserId);
         } catch (Exception e) {
             e.printStackTrace();
             logger.info(e.toString());
