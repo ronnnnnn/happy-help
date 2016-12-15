@@ -60,7 +60,7 @@ public class AppHelpInfoController extends BaseController{
     @Resource
     ThreadPoolTaskExecutor threadPool;
 
-    @RequestMapping(value = "/api/v1/anon/helpInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
         try {
 
@@ -285,13 +285,15 @@ public class AppHelpInfoController extends BaseController{
         }
     }
 
-    @RequestMapping(value = "/api/v1/anon/test-pool",method = RequestMethod.GET)
-    public void mypool(){
-        System.out.print("====================mian=============");
-        for (int i = 0; i < 15;i ++ ){
-            threadPool.execute(new MyTask(i));
+
+    @RequestMapping(value = "/api/v1/anon/target/help-info",method = RequestMethod.GET)
+    public void getTargetHelpInfo(@RequestParam("TargetId")Integer TargetId, HttpServletResponse response){
+        try {
+            super.writeJson(new ResponseMessage<HelpInfo>(0,"success",helpInfoService.getOneById(new HelpInfo(TargetId))),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
         }
-        System.out.print("====================mian=============");
-        System.out.println("线程池中线程数目："+threadPool.getPoolSize());
     }
 }
