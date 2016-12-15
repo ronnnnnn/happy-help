@@ -70,10 +70,13 @@ public class RoleController extends BaseController {
             resourceModel.setParentId(myresource.getParentId());
             resourceModel.setCheck(false);
             for (String cid : checkResourceIds){
-
-               if(Integer.valueOf(cid) == myresource.getId()){
+               if (cid.intern() == String.valueOf(myresource.getId()).intern()){
                    resourceModel.setCheck(true);
                }
+
+//               if(Integer.valueOf(cid) == myresource.getId()){
+//                   resourceModel.setCheck(true);
+//               }
 
             }
             resourceList.add(resourceModel);

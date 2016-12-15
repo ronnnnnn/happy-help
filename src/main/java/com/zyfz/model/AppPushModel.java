@@ -9,6 +9,16 @@ public class AppPushModel {
     private String content;
     private String messagePayload;
 
+    public AppPushModel() {
+        super();
+    }
+
+    public AppPushModel(String title, String content, String messagePayload) {
+        this.title = title;
+        this.content = content;
+        this.messagePayload = messagePayload;
+    }
+
     public String getTitle() {
         return title;
     }

@@ -51,6 +51,13 @@ public class Push {
         this.topic = topic;
     }
 
+    public Push(String province, String city, String area, String street) {
+        this.province = province;
+        this.city = city;
+        this.area = area;
+        this.street = street;
+    }
+
     public Integer getId() {
         return id;
     }

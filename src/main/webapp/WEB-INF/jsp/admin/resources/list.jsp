@@ -73,7 +73,8 @@
             var txt = err;
         }
     });
-
+</script>
+<script>
     function  addEvent() {
 
         var lt = $('#lyout_center_tabs');

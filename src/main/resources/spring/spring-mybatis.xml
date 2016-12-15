@@ -126,4 +126,5 @@
 
     <import resource="classpath:spring/spring-config-cache.xml"/>
     <import resource="classpath:spring/spring-config-shiro.xml"/>
+    <import resource="classpath:spring/spring-config-threadPool.xml"/>
 </beans>  

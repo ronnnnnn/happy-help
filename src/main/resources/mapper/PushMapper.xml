@@ -38,6 +38,26 @@
     where hh_user_id = #{hhuserId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByRange" parameterType="com.zyfz.domain.Push" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_push
+    <where>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR}
+      </if>
+      <if test="city != null">
+        and city = #{city,jdbcType=VARCHAR}
+      </if>
+      <if test="area != null">
+        and area = #{area,jdbcType=VARCHAR}
+      </if>
+      <if test="street != null">
+        and street = #{street,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hh_push
     where id = #{id,jdbcType=INTEGER}

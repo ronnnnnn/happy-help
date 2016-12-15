@@ -20,5 +20,7 @@ public interface PushMapper {
 
     Push selectByUserId(Integer hhUserId);
 
+    List<Push> selectByRange(Push push);
+
     List<Push> selectAll();
 }

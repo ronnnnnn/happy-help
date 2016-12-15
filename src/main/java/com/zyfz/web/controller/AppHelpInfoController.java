@@ -2,12 +2,14 @@ package com.zyfz.web.controller;
 
 import com.zyfz.alipay.util.UtilDate;
 import com.zyfz.domain.*;
+import com.zyfz.miPush.thread.MyTask;
 import com.zyfz.miPush.thread.ThreadPoolCore;
-import com.zyfz.model.AppHelpInfoModel;
-import com.zyfz.model.Datagrid;
-import com.zyfz.model.PageModel;
-import com.zyfz.model.ResponseMessage;
+import com.zyfz.model.*;
 import com.zyfz.service.*;
+import com.zyfz.service.impl.PushTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,6 +56,8 @@ public class AppHelpInfoController extends BaseController{
     @Resource
     IHelpInfoContractService helpInfoContractService;
 
+    @Resource
+    ThreadPoolTaskExecutor threadPool;
 
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
@@ -94,7 +98,26 @@ public class AppHelpInfoController extends BaseController{
 
 
             //处理推送
-
+            Push push = null;
+            if (appHelpInfoModel.getRange().intern() == "全国".intern()){
+                push = new Push();
+            } else if (appHelpInfoModel.getRange().intern() == "省".intern()){
+                push = new Push(appHelpInfoModel.getProvince(),null,null,null);
+            } else if (appHelpInfoModel.getRange().intern() == "市".intern()){
+                push = new Push(appHelpInfoModel.getProvince(),appHelpInfoModel.getCity(),null,null);
+            } else if (appHelpInfoModel.getRange().intern() == "区".intern()){
+                push = new Push(appHelpInfoModel.getProvince(),appHelpInfoModel.getCity(),appHelpInfoModel.getArea(),null);
+            }
+            //推送的内容
+            AppPushModel appPushModel = new AppPushModel("紧急求助消息",appHelpInfoModel.getAssistanceContent(),"test");
+            //推送对象
+            List<Push> pushes = pushService.selectByRange(push);
+            //附带值
+            String helpInfoId = String.valueOf(helpInfoService.selectByUniq(mUser.getId(),date).getId());
+            //推送任务
+            PushTask pushTask = new PushTask(appHelpInfoModel.getCategoryName(),appPushModel,pushes,helpInfoId);
+            //加入线程池
+            threadPool.execute(pushTask);
 
             //处理转账
             if (mUser.getIsNew() != null && mUser.getIsNew() == true){//新用户不扣款
@@ -192,14 +215,6 @@ public class AppHelpInfoController extends BaseController{
 
     }
 
-    @RequestMapping(value = "/api/v1/anon/test",method = RequestMethod.GET)
-    public void pushTest(){
-        System.out.print("++++++main+++");
-        ThreadPoolCore.pushPool(pushService.selectAll(),"test");
-        System.out.print("++++++main+++");
-    }
-
-
     @RequestMapping(value = "/api/v1/anon/help/users",method = RequestMethod.GET)
     public void getUserList(@RequestParam("emergencyId")Integer emergencyId,HttpServletResponse response){
         try {
@@ -265,5 +280,15 @@ public class AppHelpInfoController extends BaseController{
             map.put("MSG","响应错误!");
             super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
         }
+    }
+
+    @RequestMapping(value = "/api/v1/anon/test-pool",method = RequestMethod.GET)
+    public void mypool(){
+        System.out.print("====================mian=============");
+        for (int i = 0; i < 15;i ++ ){
+            threadPool.execute(new MyTask(i));
+        }
+        System.out.print("====================mian=============");
+        System.out.println("线程池中线程数目："+threadPool.getPoolSize());
     }
 }

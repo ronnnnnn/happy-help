@@ -51,7 +51,7 @@ public class MiPushUtils {
      * @param content
      * @return
      */
-    private Message buildMessage(String title, String content,String messagePayload) throws Exception {
+    public Message buildMessage(String title, String content,String messagePayload,String extraValue) throws Exception {
         Message message = new Message.Builder()
                 .title(title)   //通知栏展示的通知的标题
                 .description(content).payload(content)  //通知栏展示的通知描述
@@ -60,6 +60,8 @@ public class MiPushUtils {
                 .passThrough(PASS_THROUGH)  //消息使用透传方式
                 .notifyType(NOTIFY_TYPE) // 使用默认提示音提示
                 .enableFlowControl(true)//控制消息是否需要进行平缓发送
+                .extra(Constants.EXTRA_PARAM_NOTIFY_EFFECT,Constants.NOTIFY_LAUNCHER_ACTIVITY)
+                .extra("TargetId",extraValue)
                 .build();
         return message;
     }
@@ -71,21 +73,41 @@ public class MiPushUtils {
      * @throws Exception
      */
 
-    private void sendMessageToAliases(List<Push> pushes, AppPushModel appPushModel) throws Exception {
+    public void sendMessageToAliases(List<Push> pushes, AppPushModel appPushModel,String extraValue) throws Exception {
         Constants.useOfficial();
         Sender sender = new Sender(ANDROID_APP_SECRET);
         List<String> aliasList = new ArrayList<String>();
         for (Push push : pushes){
             aliasList.add(push.getAlias());  //alias非空白，不能包含逗号，长度小于128。
         }
-        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload());
+        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload(),extraValue);
         sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。
     }
 
-    private void sendBroadcast(String topic,AppPushModel appPushModel) throws Exception {
+    /**
+     *
+     * @param pushes  根据范围过滤出的push信息
+     * @param targetPush  本次推送的主题
+     * @param appPushModel 推送的内容
+     * @throws Exception
+     */
+    public void sendMessageToAliasesV2(List<Push> pushes,String targetPush, AppPushModel appPushModel,String extraValue) throws Exception {
         Constants.useOfficial();
         Sender sender = new Sender(ANDROID_APP_SECRET);
-        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload());
+        List<String> aliasList = new ArrayList<String>();
+        for (Push push : pushes){
+            if (StringArray.hasIntersectV2(push.getAlias().split(","),targetPush)){
+                aliasList.add(push.getAlias());  //alias非空白，不能包含逗号，长度小于128。
+            }
+        }
+        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload(),extraValue);
+        sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。
+    }
+
+    public void sendBroadcast(String topic,AppPushModel appPushModel,String extraValue) throws Exception {
+        Constants.useOfficial();
+        Sender sender = new Sender(ANDROID_APP_SECRET);
+        Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload(),extraValue);
         sender.broadcast(message, topic, 0); //根据topic，发送消息到指定一组设备上，不重试。
     }
 

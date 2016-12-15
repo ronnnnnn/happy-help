@@ -12,4 +12,6 @@ public interface IPushService extends IBaseService<Push> {
 
     public List<Push> selectAll();
 
+    public List<Push> selectByRange(Push push);
+
 }

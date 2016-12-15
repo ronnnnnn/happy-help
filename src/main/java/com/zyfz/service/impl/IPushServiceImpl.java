@@ -57,4 +57,9 @@ public class IPushServiceImpl implements IPushService {
     public List<Push> selectAll() {
         return pushMapper.selectAll();
     }
+
+    @Override
+    public List<Push> selectByRange(Push push) {
+        return pushMapper.selectByRange(push);
+    }
 }
