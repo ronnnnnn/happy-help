@@ -4,6 +4,8 @@ import com.xiaomi.xmpush.server.*;
 import com.zyfz.domain.Push;
 import com.zyfz.miPush.thread.MyTask;
 import com.zyfz.model.AppPushModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,7 @@ public class MiPushUtils {
     public final static int TYPE_ANDROID = 0;
     public final static int TYPE_IOS = 1;
 
-
+    private static Logger logger = LoggerFactory.getLogger(MiPushUtils.class);
     /**
      * 构建android推送信息
      *
@@ -51,6 +53,7 @@ public class MiPushUtils {
      * @param content
      * @return
      */
+
     public Message buildMessage(String title, String content,String messagePayload,String extraValue) throws Exception {
         Message message = new Message.Builder()
                 .title(title)   //通知栏展示的通知的标题
@@ -101,7 +104,9 @@ public class MiPushUtils {
             }
         }
         Message message = this.buildMessage(appPushModel.getTitle(),appPushModel.getContent(),appPushModel.getMessagePayload(),extraValue);
-        sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。
+        Result result = sender.sendToAlias(message, aliasList, 0); //根据aliasList，发送消息到指定设备上，不重试。
+        logger.info("===result==="+result.toString());
+        logger.info("send down" + "==key==" + extraValue + "==appPushModel==" + appPushModel.getContent() + appPushModel.getTitle() );
     }
 
     public void sendBroadcast(String topic,AppPushModel appPushModel,String extraValue) throws Exception {
