@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AppUserInfoModel {
     private Integer id;
     private String username;
-    private MultipartFile avater;
+    private MultipartFile avatar;
     private String nickname;
     private String email;
     private String province;
@@ -57,12 +57,12 @@ public class AppUserInfoModel {
         this.username = username;
     }
 
-    public MultipartFile getAvater() {
-        return avater;
+    public MultipartFile getAvatar() {
+        return avatar;
     }
 
-    public void setAvater(MultipartFile avater) {
-        this.avater = avater;
+    public void setAvatar(MultipartFile avatar) {
+        this.avatar = avatar;
     }
 
     public String getNickname() {

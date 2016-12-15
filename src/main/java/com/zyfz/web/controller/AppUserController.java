@@ -1,6 +1,5 @@
 package com.zyfz.web.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.zyfz.domain.Captcha;
 import com.zyfz.domain.Push;
 import com.zyfz.domain.User;
@@ -12,17 +11,13 @@ import com.zyfz.service.ICaptchaService;
 import com.zyfz.service.IPushService;
 import com.zyfz.service.IUserservice;
 import com.zyfz.service.impl.PasswordHelper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -177,8 +172,8 @@ public class AppUserController extends BaseController {
 
         try {
             User user = new User();
-            if (appUserInfoModel.getAvater() != null){
-                String imageUrl = super.saveUploadFile(request,appUserInfoModel.getAvater(),"head","jpg");
+            if (appUserInfoModel.getAvatar() != null){
+                String imageUrl = super.saveUploadFile(request,appUserInfoModel.getAvatar(),"head","jpg");
                 user.setPhoto(imageUrl);
             }
             if (appUserInfoModel.getAddress() != null){
