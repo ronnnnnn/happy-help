@@ -32,6 +32,9 @@ public class AppPushController extends BaseController {
         try {
             Push mPush = new Push();
             String alias = push.getAlias();
+            if (alias == null){
+                alias = String.valueOf(push.getHhUserId());
+            }
             User user = userservice.getOneById(new User(Integer.valueOf(alias)));
             if (alias != null && user != null){
                 mPush.setHhUserId(Integer.valueOf(alias));
