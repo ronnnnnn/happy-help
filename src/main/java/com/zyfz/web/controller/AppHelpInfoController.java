@@ -118,7 +118,7 @@ public class AppHelpInfoController extends BaseController{
             //附带值
             String helpInfoId = String.valueOf(lastHelpInfoId);
             //推送任务
-            PushTask pushTask = new PushTask(appHelpInfoModel.getCategoryName(),appPushModel,pushes,helpInfoId);
+            PushTask pushTask = new PushTask(appHelpInfoModel.getCategoryName(),appPushModel,pushes,helpInfoId,mUser.getId());
             //加入线程池
             threadPool.execute(pushTask);
 
