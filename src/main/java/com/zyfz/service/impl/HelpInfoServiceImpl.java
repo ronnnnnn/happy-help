@@ -25,7 +25,8 @@ public class HelpInfoServiceImpl implements IHelpInfoService {
     @Override
     public Integer save(HelpInfo helpInfo) {
         helpInfo.setCreateTime(new Date());
-        return helpInfoMapper.insertSelective(helpInfo);
+        helpInfoMapper.insertSelective(helpInfo);
+        return helpInfo.getId();
     }
 
     @Override

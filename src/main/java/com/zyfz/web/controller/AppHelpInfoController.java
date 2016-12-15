@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -59,7 +60,7 @@ public class AppHelpInfoController extends BaseController{
     @Resource
     ThreadPoolTaskExecutor threadPool;
 
-    @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/anon/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
         try {
 
@@ -91,10 +92,12 @@ public class AppHelpInfoController extends BaseController{
             helpInfo.setPhome(appHelpInfoModel.getContactPhone());
             helpInfo.setNeedUserNumber(Integer.valueOf(appHelpInfoModel.getMaxPersons()));
             helpInfo.setAreaRange(appHelpInfoModel.getRange());
-            Date date = new Date();
+            SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            //Date date = new Date();
+            Date date = sim.parse(sim.format(new Date()));
             helpInfo.setCreateTime(date);
 
-            helpInfoService.save(helpInfo);
+            int lastHelpInfoId = helpInfoService.save(helpInfo);
 
 
             //处理推送
@@ -113,7 +116,7 @@ public class AppHelpInfoController extends BaseController{
             //推送对象
             List<Push> pushes = pushService.selectByRange(push);
             //附带值
-            String helpInfoId = String.valueOf(helpInfoService.selectByUniq(mUser.getId(),date).getId());
+            String helpInfoId = String.valueOf(lastHelpInfoId);
             //推送任务
             PushTask pushTask = new PushTask(appHelpInfoModel.getCategoryName(),appPushModel,pushes,helpInfoId);
             //加入线程池
@@ -138,7 +141,7 @@ public class AppHelpInfoController extends BaseController{
                                                         mUser.getUsername(),
                                                         "系统",
                                                         Double.valueOf(appHelpInfoModel.getMoney()),
-                                                        helpInfoService.selectByUniq(mUser.getId(),date).getId(),
+                                                        lastHelpInfoId,
                                                         "系统收入",
                                                         new Date(),
                                                         true,
@@ -148,7 +151,7 @@ public class AppHelpInfoController extends BaseController{
             //记录平台收入
             PlatformRecord platformRecord = new PlatformRecord(  "helpInfo",
                                                                  "收入",
-                                                                 helpInfoService.selectByUniq(mUser.getId(),date).getId(),
+                                                                 lastHelpInfoId,
                                                                  mUser.getId(),
                                                                  Double.valueOf(appHelpInfoModel.getMoney()),
                                                                  "推送消息服务费",
