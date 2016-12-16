@@ -269,7 +269,7 @@ public class HelpInfo {
     }
 
     public Boolean getIsImage(){
-        if (imageUrl == null || imageUrl.intern() == "none".intern()){
+        if (imageUrl == null || imageUrl.intern() == "none".intern() || imageUrl.intern() == "nono".intern()  ){
             return false;
         } else{
             return true;
