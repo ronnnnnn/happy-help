@@ -29,4 +29,6 @@ public interface TaskInfoMapper {
     TaskInfo selectTaskInfoById(Integer id);
 
     List<TaskInfo> selectMTaskInfoWithUser(Integer userId);
+
+    List<TaskInfo> selectByCategory(Integer cid);
 }

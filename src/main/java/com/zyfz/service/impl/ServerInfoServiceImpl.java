@@ -114,4 +114,9 @@ public class ServerInfoServiceImpl implements IServerInfoService{
         }
         return new Datagrid(pageInfo.getTotal(),mServerInfos);
     }
+
+    @Override
+    public List<ServerInfo> selectByCategory(Integer cid) {
+        return serverInfoMapper.selectByCategory(cid);
+    }
 }

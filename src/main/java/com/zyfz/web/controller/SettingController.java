@@ -37,6 +37,7 @@ public class SettingController extends BaseController {
         return "admin/setting/add";
     }
 
+
     /**
      * 查
      * @param pageModel

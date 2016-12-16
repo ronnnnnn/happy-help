@@ -84,4 +84,9 @@ public class HelpInfoServiceImpl implements IHelpInfoService {
     public HelpInfo selectByUniq(Integer usrId, Date createTime) {
         return helpInfoMapper.selectByUniq(usrId,createTime);
     }
+
+    @Override
+    public List<HelpInfo> selectByCategory(Integer cid) {
+        return helpInfoMapper.selectByCategory(cid);
+    }
 }

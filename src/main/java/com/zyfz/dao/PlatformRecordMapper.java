@@ -1,6 +1,9 @@
 package com.zyfz.dao;
 
 import com.zyfz.domain.PlatformRecord;
+import com.zyfz.model.AppPlatformModel;
+
+import java.util.List;
 
 public interface PlatformRecordMapper {
 
@@ -15,4 +18,10 @@ public interface PlatformRecordMapper {
     int updateByPrimaryKeySelective(PlatformRecord record);
 
     int updateByPrimaryKey(PlatformRecord record);
+
+    List<PlatformRecord> selectWithParam(AppPlatformModel record);
+
+    List<PlatformRecord> selectAll();
+
+    Double selectSumMoney(String incomeType);
 }

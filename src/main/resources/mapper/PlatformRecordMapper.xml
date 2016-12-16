@@ -12,6 +12,20 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="contract_id" jdbcType="INTEGER" property="contractId" />
   </resultMap>
+  <resultMap id="AddUserResultMap" type="PlatformRecord" extends="BaseResultMap">
+    <association property="user" javaType="User">
+      <id column="userid" property="id" jdbcType="INTEGER" />
+      <result column="username" property="username" jdbcType="VARCHAR" />
+      <result column="u_phone" property="phone" jdbcType="VARCHAR" />
+      <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+      <result column="real_name" property="realName" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="honer_score" property="honerScore" jdbcType="DOUBLE" />
+      <result column="grade_total" property="gradeTotal" jdbcType="VARCHAR" />
+      <result column="grade_times" property="gradeTimes" jdbcType="INTEGER" />
+      <result column="photo" property="photo" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
   <sql id="Base_Column_List">
     id, record_type, income_type, target_id, hh_user_id, money, description, create_time, 
     contract_id
@@ -22,6 +36,40 @@
     from hh_platform_record
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectAll" resultMap="AddUserResultMap">
+    select pr.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    from hh_platform_record pr left join hh_user u on pr.hh_user_id = u.id
+  </select>
+
+  <select id="selectWithParam" parameterType="com.zyfz.model.AppPlatformModel" resultMap="AddUserResultMap">
+    select pr.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    from hh_platform_record pr left join hh_user u on pr.hh_user_id = u.id
+    <where>
+      <if test="recordType != null">
+        pr.record_type = #{recordType,jdbcType=VARCHAR}
+      </if>
+      <if test="incomeType != null">
+        and pr.income_type = #{incomeType,jdbcType=VARCHAR}
+      </if>
+      <if test="hhUserId != null">
+        and pr.hh_user_id = #{hhUserId,jdbcType=INTEGER}
+      </if>
+      <if test="startTime != null ">
+        and pr.create_time &gt;= #{startTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null">
+        and  pr.create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+  </select>
+
+  <select id="selectSumMoney" parameterType="java.lang.String" resultType="java.lang.Double">
+    select sum(money)
+    from hh_platform_record
+    where income_type = #{incomeType,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hh_platform_record
     where id = #{id,jdbcType=INTEGER}

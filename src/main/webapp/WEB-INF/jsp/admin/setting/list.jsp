@@ -76,15 +76,15 @@
 		if (rows.length == 1) {
 			var d = $('<div/>').dialog({
 				width : 200,
-				height : 170,
-				href : '${pageContext.request.contextPath}/setting/add-panel',
+				height : 230,
+				href : '${pageContext.request.contextPath}/setting/edit-panel',
 				modal : true,
 				align : 'center',
 				title : '修改设置',
 				buttons : [ {
 					text : '修改',
 					handler : function() {
-						$('#admin_setting_addForm').form('submit', {
+						$('#admin_setting_editForm').form('submit', {
 							url : '${pageContext.request.contextPath}/setting/update',
 							success : function(data) {
 
@@ -110,7 +110,7 @@
 				},
 				onLoad : function() {
 
-					$('#admin_setting_addForm').form('load', rows[0]);
+					$('#admin_setting_editForm').form('load', rows[0]);
 
 				}
 			});

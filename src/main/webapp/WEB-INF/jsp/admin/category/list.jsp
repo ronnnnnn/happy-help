@@ -174,7 +174,7 @@
                 currTab.panel('refresh');
             },
             error: function() {
-                alert('错误!');
+                alert('此类别正在使用,不允许删除!');
             }
         });
     }

@@ -1,13 +1,24 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <body>
 <script type="text/javascript">
+
+	var feep = null;
 	$(function() {
 		var orderIniturl = '${pageContext.request.contextPath}/order/record-data';
-		orderInit(orderIniturl);
+
+		$.ajax({
+			type: 'get',
+			url : '${pageContext.request.contextPath}/api/v1/anon/service/fee',
+			dataType : 'json',
+			success : function(d) {
+				feep = d.result.typeValue;
+				orderInit(orderIniturl,feep/100);
+			}
+		});
 	});
 
 
-	function orderInit(myurl){
+	function orderInit(myurl,feep){
 		$('#admin_order_datagrid').datagrid({
 			url : myurl,
 			fit : true,
@@ -50,11 +61,25 @@
 				title : '收款方',
 				width : fixWidth(0.16),
 				align : 'center',
+				formatter : function(value, row, index) {
+					if (row.orderType == '普通求助消息' && row.secondType == '有偿求助'){
+						return value+'(平台收取手续费)';
+					} else {
+						return value;
+					}
+				}
 			},{
 				field : 'dealMoney',
 				title : '交易金额',
 				width : fixWidth(0.10),
 				align : 'center',
+				formatter : function(value, row, index) {
+                    if (row.orderType == '普通求助消息' && row.secondType == '有偿求助'){
+                    	return value+'元+(手续费:'+value*feep+'元)';
+					} else {
+						return value+'元';
+					}
+				}
 			},{
 				field : 'createTime',
 				title : '时间',

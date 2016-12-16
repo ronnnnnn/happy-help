@@ -78,7 +78,7 @@ public class AppHelpInfoController extends BaseController{
                 }
                 mimageUrl = StringUtils.collectionToDelimitedString(imageUrl,",");
             }else {
-                mimageUrl = "nono";
+                mimageUrl = "none";
             }
             User mUser = userservice.findByUsername(appHelpInfoModel.getUsername());
             helpInfo.setImageUrl(mimageUrl);
@@ -137,9 +137,9 @@ public class AppHelpInfoController extends BaseController{
             OrderRecord orderRecord = new OrderRecord(  null,
                                                         tradeNo,
                                                        "紧急求助",
-                                                        appHelpInfoModel.getArea(),
+                                                        appHelpInfoModel.getRange(),
                                                         mUser.getUsername(),
-                                                        "系统",
+                                                        "",
                                                         Double.valueOf(appHelpInfoModel.getMoney()),
                                                         lastHelpInfoId,
                                                         "系统收入",

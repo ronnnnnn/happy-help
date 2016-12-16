@@ -1,9 +1,11 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.Article;
+import com.zyfz.domain.UserClick;
 import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IArticleService;
+import com.zyfz.service.IUserClickService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ron on 16-10-26.
@@ -23,6 +26,9 @@ public class ArticleController extends BaseController {
 
     @Resource
     IArticleService articleService;
+
+    @Resource
+    IUserClickService userClickService;
 
     @RequiresPermissions("article:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
@@ -82,6 +88,14 @@ public class ArticleController extends BaseController {
             String mids[] = ids.split(",");
             int count = 0;
             for(String mid : mids){
+                //删除点赞
+                List<UserClick> userClicks = userClickService.getByArticle(Integer.valueOf(mid));
+                if (userClicks != null){
+                    for (UserClick userClick : userClicks){
+                        userClickService.deleteOneById(userClick);
+                    }
+                }
+                //删除文章
                 Article article = new Article();
                 article.setId(Integer.valueOf(mid));
                 articleService.deleteOneById(article);

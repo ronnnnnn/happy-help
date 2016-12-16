@@ -67,6 +67,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByCategory" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_server_info
+    where hh_category_id = #{cid,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByCIDWithUser" parameterType="java.lang.Integer" resultMap="ServerInfoWithUserMap">
      SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
      FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id

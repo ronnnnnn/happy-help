@@ -121,4 +121,9 @@ public class TaskInfoServiceImpl implements ITaskInfoService {
         Datagrid datagrid = new Datagrid(pageInfo.getTotal(),taskInfos);
         return datagrid;
     }
+
+    @Override
+    public List<TaskInfo> selectByCategory(Integer cid) {
+        return taskInfoMapper.selectByCategory(cid);
+    }
 }

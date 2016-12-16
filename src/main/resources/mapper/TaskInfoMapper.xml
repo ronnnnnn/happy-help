@@ -54,6 +54,13 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
 
+  <select id="selectByCategory" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_task_info
+    where hh_category_id = #{cid,jdbcType=INTEGER}
+  </select>
+
   <select id="selectAll"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

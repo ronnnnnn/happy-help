@@ -27,4 +27,6 @@ public interface ServerInfoMapper {
 
     List<ServerInfo> select4AppInMine(ServerContract serverContract);
 
+    List<ServerInfo> selectByCategory(Integer cid);
+
 }

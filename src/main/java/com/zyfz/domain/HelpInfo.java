@@ -277,7 +277,7 @@ public class HelpInfo {
     }
 
     public String[] getImageUrls(){
-        if(imageUrl == null || imageUrl.intern() == "none".intern()){
+        if(imageUrl == null || imageUrl.intern() == "none".intern()|| imageUrl.intern() == "nono".intern()){
             String[] strings = {"nono"};
             return strings;
         } else {

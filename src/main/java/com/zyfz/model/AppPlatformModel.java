@@ -1,8 +1,13 @@
-package com.zyfz.domain;
+package com.zyfz.model;
+
+import com.zyfz.domain.User;
 
 import java.util.Date;
 
-public class PlatformRecord {
+/**
+ * Created by ron on 16-12-16.
+ */
+public class AppPlatformModel {
     private Integer id;
 
     private String recordType; //收入或支出对应的模块,紧急求助推送服务费(helpInfo),普通求助置顶费(taskInfoTop),普通求助手续费(taskInfoFee),普通求助金额暂存收支(taskInfoTemp)
@@ -23,32 +28,9 @@ public class PlatformRecord {
 
     private User user;
 
-    public PlatformRecord() {
-        super();
-    }
+    private Date startTime;
 
-    public PlatformRecord(Integer id) {
-        this.id = id;
-    }
-
-    public PlatformRecord(String recordType, String incomeType, Integer targetId, Integer hhUserId, Double money, String description, Date createTime, Integer contractId) {
-        this.recordType = recordType;
-        this.incomeType = incomeType;
-        this.targetId = targetId;
-        this.hhUserId = hhUserId;
-        this.money = money;
-        this.description = description;
-        this.createTime = createTime;
-        this.contractId = contractId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    private Date endTime;
 
     public Integer getId() {
         return id;
@@ -120,5 +102,29 @@ public class PlatformRecord {
 
     public void setContractId(Integer contractId) {
         this.contractId = contractId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

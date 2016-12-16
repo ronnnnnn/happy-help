@@ -2,7 +2,10 @@ package com.zyfz.web.controller;
 
 import com.zyfz.domain.Resources;
 import com.zyfz.model.PageModel;
+import com.zyfz.service.IHelpInfoService;
 import com.zyfz.service.IResourceService;
+import com.zyfz.service.IServerContractService;
+import com.zyfz.service.ITaskInfoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ import java.util.List;
 public class ResourceController extends BaseController{
     @Resource
     IResourceService resourceService;
+
 
     @ModelAttribute("types")
     public Resources.ResourceType[] resourceTypes(){

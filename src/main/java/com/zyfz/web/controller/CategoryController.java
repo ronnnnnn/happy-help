@@ -1,7 +1,7 @@
 package com.zyfz.web.controller;
 
 import com.zyfz.domain.Category;
-import com.zyfz.service.ICategoryService;
+import com.zyfz.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +17,15 @@ import javax.annotation.Resource;
 public class CategoryController {
     @Resource
     ICategoryService categoryService;
+
+    @Resource
+    IHelpInfoService helpInfoService;
+
+    @Resource
+    ITaskInfoService taskInfoService;
+
+    @Resource
+    IServerInfoService serverInfoService;
 
     @RequiresPermissions("category:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
@@ -80,7 +89,13 @@ public class CategoryController {
     public Object delete(@PathVariable("id") Integer id) {
         Category category = new Category();
         category.setId(id);
-        categoryService.deleteOneById(category);
+        Boolean check1 = helpInfoService.selectByCategory(id) == null;
+        Boolean check2 = serverInfoService.selectByCategory(id) == null;
+        Boolean check3 = helpInfoService.selectByCategory(id) == null;
+
+        if (check1 && check2 && check3){
+            categoryService.deleteOneById(category);
+        }
 
         return true;
     }
