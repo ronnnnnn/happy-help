@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.zyfz.domain.MySession" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="cookie" property="cookie" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR"/>
   </resultMap>
   <resultMap id="ResultMapWithBLOBs" type="com.zyfz.domain.MySession" extends="BaseResultMap" >
     <result column="session" property="session" jdbcType="LONGVARBINARY" />
@@ -38,9 +39,9 @@
   </delete>
 
   <insert id="insert" parameterType="com.zyfz.domain.MySession" >
-    insert into hh_session (id, cookie, session
+    insert into hh_session (id, cookie, session,create_time
       )
-    values (#{id,jdbcType=BIGINT}, #{cookie,jdbcType=VARCHAR}, #{session,jdbcType=LONGVARBINARY}
+    values (#{id,jdbcType=BIGINT}, #{cookie,jdbcType=VARCHAR}, #{session,jdbcType=LONGVARBINARY}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.zyfz.domain.MySession" >
@@ -52,6 +53,9 @@
       <if test="cookie != null" >
         cookie,
       </if>
+      <if test="createTime">
+        create_time,
+      </if>
       <if test="session != null" >
         session,
       </if>
@@ -62,6 +66,9 @@
       </if>
       <if test="cookie != null" >
         #{cookie,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="session != null" >
         #{session,jdbcType=LONGVARBINARY},

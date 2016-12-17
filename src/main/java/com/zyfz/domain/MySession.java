@@ -1,5 +1,7 @@
 package com.zyfz.domain;
 
+import java.util.Date;
+
 /**
  * session持久化表
  */
@@ -9,6 +11,8 @@ public class MySession {
 
     private String cookie;
 
+    private Date createTime;
+
     private byte[] session;
 
     public Long getId() {
@@ -17,6 +21,14 @@ public class MySession {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getCookie() {

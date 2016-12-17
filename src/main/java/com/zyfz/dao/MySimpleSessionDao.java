@@ -37,6 +37,7 @@ public class MySimpleSessionDao extends EnterpriseCacheSessionDAO {
             e.printStackTrace();
         }
         mySession.setCookie(cookie.toString());
+        mySession.setCreateTime(new Date());
         mySessionMapper.insertSelective(mySession);
         mySession.setCookie(cookie.toString());
         return cookie;

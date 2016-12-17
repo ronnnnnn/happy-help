@@ -486,6 +486,12 @@ public class AppTaskInfoController extends BaseController{
                         Double fee = taskContract.getMoney()*((Double.valueOf(value))/100);
                         Double paidMoney =  taskContract.getMoney();
                         Double paidAccount = paidUser.getAccount() - paidMoney - fee;
+                        if (paidAccount < 0){
+                            Map<String,String> map = new HashMap<String, String>();
+                            map.put("msg","余额不足!");
+                            super.writeJson(new ResponseMessage<Map<String,String>>(0,"success",map),response);
+                            return;
+                        }
                         paidUser.setAccount(paidAccount);
                         userservice.update(paidUser);
 

@@ -35,32 +35,36 @@ public class AppPushController extends BaseController {
             if (alias == null){
                 alias = String.valueOf(push.getHhUserId());
             }
-            User user = userservice.getOneById(new User(Integer.valueOf(alias)));
-            if (alias != null && user != null){
+
+            Push push1 = pushService.selectByUserId(Integer.valueOf(alias));
+
+            if (push1 == null){
                 mPush.setHhUserId(Integer.valueOf(alias));
                 mPush.setAlias(alias);
                 if (push.getTopic() != null){
                     mPush.setTopic(push.getTopic());
                 }
                 pushService.save(mPush);
-            } else if (push.getHhUserId() != null){
-                Push mPush2 = pushService.selectByUserId(push.getHhUserId());
+            } else if (push1 != null){
+                if (push.getAlias() != null){
+                    push1.setAlias(push.getAlias());
+                }
                 if (push.getProvince() != null){
-                    mPush2.setProvince(push.getProvince());
+                    push1.setProvince(push.getProvince());
                 }
                 if (push.getCity() != null){
-                    mPush2.setCity(push.getCity());
+                    push1.setCity(push.getCity());
                 }
                 if (push.getArea() != null){
-                    mPush2.setArea(push.getArea());
+                    push1.setArea(push.getArea());
                 }
                 if (push.getStreet() != null){
-                    mPush2.setStreet(push.getStreet());
+                    push1.setStreet(push.getStreet());
                 }
                 if (push.getTopic() != null){
-                    mPush2.setTopic(push.getTopic());
+                    push1.setTopic(push.getTopic());
                 }
-                pushService.update(mPush2);
+                pushService.update(push1);
             }
             super.writeJson(new ResponseMessage<String>(0,"success!","null"),response);
         }catch (Exception e){

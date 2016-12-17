@@ -125,9 +125,15 @@ public class AppHelpInfoController extends BaseController{
             //处理转账
             if (mUser.getIsNew() != null && mUser.getIsNew() == true){//新用户不扣款
                 mUser.setIsNew(false);
-            } {
+            } else {
                 Double afterMoney = mUser.getAccount() - Double.valueOf(appHelpInfoModel.getMoney());
                 mUser.setAccount(afterMoney);
+                if (afterMoney < 0){
+                    Map<String,String> map = new HashMap<String, String>();
+                    map.put("MSG","余额不足!");
+                    super.writeJson(new ResponseMessage<Map<String,String>>(0,"success",map),response);
+                    return;
+                }
             }
             userservice.update(mUser);
 
