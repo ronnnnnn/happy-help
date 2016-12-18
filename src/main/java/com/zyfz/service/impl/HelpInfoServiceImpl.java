@@ -5,12 +5,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.zyfz.dao.HelpInfoMapper;
 import com.zyfz.domain.HelpInfo;
+import com.zyfz.domain.Setting;
 import com.zyfz.model.Datagrid;
 import com.zyfz.model.PageModel;
 import com.zyfz.service.IHelpInfoService;
+import com.zyfz.service.ISettingService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +24,9 @@ import java.util.List;
 public class HelpInfoServiceImpl implements IHelpInfoService {
     @Resource
     HelpInfoMapper helpInfoMapper;
+
+    @Resource
+    ISettingService settingService;
 
     @Override
     public Integer save(HelpInfo helpInfo) {
@@ -88,5 +94,22 @@ public class HelpInfoServiceImpl implements IHelpInfoService {
     @Override
     public List<HelpInfo> selectByCategory(Integer cid) {
         return helpInfoMapper.selectByCategory(cid);
+    }
+
+    @Override
+    public List<HelpInfo> selectByTime() {
+        Integer timeoutValue = 8;
+        try {
+            Setting setting = settingService.selectBySysTypeAndTypeName(new Setting("紧急求助","失效时间"));
+            timeoutValue = Integer.valueOf(setting.getTypeValue());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        HelpInfo helpInfo = new HelpInfo();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.HOUR_OF_DAY,-timeoutValue);
+        Date date = calendar.getTime();
+        helpInfo.setCreateTime(date);
+        return helpInfoMapper.selectByTime(helpInfo);
     }
 }

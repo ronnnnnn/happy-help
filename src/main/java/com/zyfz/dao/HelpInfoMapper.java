@@ -29,4 +29,6 @@ public interface HelpInfoMapper {
     HelpInfo selectByUniq(Integer usrId ,Date createTime);
 
     List<HelpInfo> selectByCategory(Integer cid);
+
+    List<HelpInfo> selectByTime(HelpInfo helpInfo);
 }

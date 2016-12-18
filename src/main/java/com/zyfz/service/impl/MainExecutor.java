@@ -5,8 +5,11 @@ package com.zyfz.service.impl;
  */
 import java.util.TimerTask;
 
+import com.zyfz.service.IHelpInfoService;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import javax.annotation.Resource;
 
 /**
  *
@@ -19,6 +22,9 @@ public class MainExecutor extends TimerTask {
 
     private ThreadPoolTaskExecutor threadPool;
 
+    @Resource
+    private Runnable helpInfoStatusChangeTask;
+
     @Override
     public void run() {
         // TODO Auto-generated method stub
@@ -28,9 +34,11 @@ public class MainExecutor extends TimerTask {
         }catch(Exception e){
             e.printStackTrace();
         }
-        threadPool.execute(new MyTask(10));
-        threadPool.execute(new MyTask(10));
-        threadPool.execute(new MyTask(10));
+//        threadPool.execute(new MyTask(10));
+//        threadPool.execute(new MyTask(10));
+//        threadPool.execute(new MyTask(10));
+        //处理超过设定时间的数据
+        threadPool.execute(helpInfoStatusChangeTask);
 
         //等待线程执行完毕
         while(threadPool.getActiveCount() > 0){

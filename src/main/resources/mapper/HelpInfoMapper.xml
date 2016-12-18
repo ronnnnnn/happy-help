@@ -43,6 +43,16 @@
     </association>
   </resultMap>
 
+  <resultMap id="HelpInfoWithContractMap" type="HelpInfo" extends="BaseResultMap">
+      <collection property="helpContracts" ofType="HelpContract">
+        <id column="contractId" property="id" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="c_user_id" property="hhUserId" jdbcType="INTEGER" />
+        <result column="hh_help_info_id" property="hhHelpInfoId" jdbcType="INTEGER" />
+        <result column="c_create_time" property="createTime" jdbcType="TIMESTAMP" />
+      </collection>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, title, context, image_url, phome, area_range, hh_area_range_id, hh_user_id, need_user_number, 
     apply_user_ids, use_user_ids, compeleted_user_ids, is_compeleted, is_deleted, hh_category_id, 
@@ -53,6 +63,12 @@
     SELECT hi.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_help_info hi left join happy_help.hh_user u on hi.hh_user_id = u.id
     where hi.id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByTime"  parameterType="com.zyfz.domain.HelpInfo" resultMap="HelpInfoWithContractMap">
+     SELECT hi.*,hc.id as contractId,hc.status,hc.hh_user_id as c_user_id,hc.hh_help_info_id,hc.create_time as c_create_time
+     FROM happy_help.hh_help_info hi left join happy_help.hh_help_contract hc on hi.id = hc.hh_help_info_id
+     where hi.is_deleted = false  and is_compeleted = false and  hi.create_time &lt;=  #{createTime,jdbcType=TIMESTAMP}
   </select>
 
   <select id="selectByUniq" resultMap="BaseResultMap">

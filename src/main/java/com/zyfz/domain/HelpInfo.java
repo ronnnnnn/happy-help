@@ -60,6 +60,8 @@ public class HelpInfo {
 
     private String categoryName;
 
+    private List<HelpContract> helpContracts;
+
     public HelpInfo() {
         super();
     }
@@ -74,6 +76,14 @@ public class HelpInfo {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<HelpContract> getHelpContracts() {
+        return helpContracts;
+    }
+
+    public void setHelpContracts(List<HelpContract> helpContracts) {
+        this.helpContracts = helpContracts;
     }
 
     public User getUser() {

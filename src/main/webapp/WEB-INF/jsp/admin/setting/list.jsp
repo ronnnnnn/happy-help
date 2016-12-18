@@ -123,7 +123,7 @@
 
 		var d = $('<div/>').dialog({
 			width : 200,
-			height : 170,
+			height : 230,
 			href : '${pageContext.request.contextPath}/setting/add-panel',
 			modal : true,
 			align : 'center',
