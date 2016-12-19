@@ -52,7 +52,12 @@ public class ServerInfoController extends BaseController{
         int count = 0;
         for (String mid:mids){
             ServerInfo serverInfo = new ServerInfo(Integer.valueOf(mid));
-            serverInfoService.deleteOneById(serverInfo);
+            try {
+                serverInfoService.deleteOneById(serverInfo);
+            }catch (Exception e){
+                return false;
+            }
+
             count++;
         }
         return count;

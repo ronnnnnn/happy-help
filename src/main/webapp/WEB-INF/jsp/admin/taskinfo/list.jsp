@@ -320,11 +320,17 @@
 							v.datagrid('reload');
 							v.datagrid('unselectAll');
 							v.datagrid('clearChecked');
-							$.messager.show({
-								title : '提示',
-								msg : '删除成功'
-							});
-
+							if(d){
+								$.messager.show({
+									title : '提示',
+									msg : '删除成功'
+								});
+							}else{
+								$.messager.show({
+									title : '提示',
+									msg : '删除消息中存在交易中的订单,不允许删除!'
+								});
+							}
                         }
                     });
 

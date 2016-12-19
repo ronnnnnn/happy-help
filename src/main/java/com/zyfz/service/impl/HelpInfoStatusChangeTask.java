@@ -1,6 +1,5 @@
 package com.zyfz.service.impl;
 
-import com.zyfz.domain.HelpContract;
 import com.zyfz.domain.HelpInfo;
 import com.zyfz.service.IHelpInfoService;
 import org.springframework.context.annotation.Scope;
@@ -19,12 +18,12 @@ public class HelpInfoStatusChangeTask implements Runnable{
     @Resource
     IHelpInfoService helpInfoService;
 
-    private int count;
+    private int count = 0;
 
 
     @Override
     public void run() {
-        // TODO Auto-generated method stub
+        //自动完结没有人接受的订单
 
         List<HelpInfo> helpInfos = helpInfoService.selectByTime();
         for (HelpInfo helpInfo : helpInfos){

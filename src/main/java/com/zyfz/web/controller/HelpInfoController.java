@@ -70,7 +70,12 @@ public class HelpInfoController extends BaseController {
         for (String mid : mids){
             HelpInfo helpInfo = new HelpInfo();
             helpInfo.setId(Integer.valueOf(mid));
-            helpInfoService.deleteOneById(helpInfo);
+            try {
+                helpInfoService.deleteOneById(helpInfo);
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
             count++;
         }
         return count;

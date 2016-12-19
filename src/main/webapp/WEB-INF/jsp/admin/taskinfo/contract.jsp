@@ -27,11 +27,6 @@
 				//hidden : true,
 				checkbox : true
 			}, {
-				field : 'content',
-				title : '附带信息',
-				width : fixWidth(0.30),
-				align : 'center',
-			}, {
 				field : 'money',
 				title : '金额',
 				width : fixWidth(0.30),
@@ -91,10 +86,63 @@
 					}
 				},
 			}] ],
-			toolbar : [ ]
+			toolbar : [ {
+				text : '同意终止交易',
+				iconCls : 'icon-edit',
+				handler : function() {
+					taskContractCompeleted();
+				}
+			}]
 		});
 	}
 
+
+	function taskContractCompeleted() {
+		var rows = $('#admin_taskContract_datagrid').datagrid('getChecked');
+		//	var rows=$('#admin_helpinfo_datagrid').datagrid('getSelected');
+		//	var rows=$('#admin_helpinfo_datagrid').datagrid('getSelecteds');
+		var ids = [];
+		if (rows.length == 1) {
+			$.messager.confirm('确认', '同意终止交易后,服务费将退还给发布者,是否继续？', function(r) {
+				if (r) {
+					for ( var i = 0; i < rows.length; i++) {
+						ids.push(rows[i].id);
+						ids.join(',')
+					}
+					$.ajax({
+						type: 'post',
+						url : '${pageContext.request.contextPath}/taskContract/compeleted/'+ids,
+						dataType : 'json',
+						success : function(d) {
+							if(d){
+								var v = $('#admin_helpinfo_datagrid');
+								v.datagrid('reload');
+								v.datagrid('unselectAll');
+								v.datagrid('clearChecked');
+								$.messager.show({
+									title : '提示',
+									msg : '操作成功!'
+								});
+							}else{
+								$.messager.show({
+									title : '提示',
+									msg : '用户操作阶段,不允许操作!'
+								})
+							}
+						}
+					});
+
+				}
+			});
+
+		} else {
+			$.messager.show({
+				title : '提示',
+				msg : '请勾选要一个选项！'
+			});
+		}
+
+	}
 
 
 </script>

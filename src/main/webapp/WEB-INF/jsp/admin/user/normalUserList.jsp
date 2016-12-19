@@ -78,13 +78,13 @@
 				width : fixWidth(0.04),
 				align : 'center',
 			},{
-				field : 'gradeTotal',
-				title : '评星总分',
+				field : 'grade',
+				title : '评星',
 				width : fixWidth(0.06),
 				align : 'center',
 			},{
-				field : 'gradeTimes',
-				title : '评星次数',
+				field : 'account',
+				title : '账户余额',
 				width : fixWidth(0.06),
 				align : 'center',
 			},{

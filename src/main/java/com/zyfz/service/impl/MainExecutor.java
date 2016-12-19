@@ -34,9 +34,7 @@ public class MainExecutor extends TimerTask {
         }catch(Exception e){
             e.printStackTrace();
         }
-//        threadPool.execute(new MyTask(10));
-//        threadPool.execute(new MyTask(10));
-//        threadPool.execute(new MyTask(10));
+
         //处理超过设定时间的数据
         threadPool.execute(helpInfoStatusChangeTask);
 

@@ -141,7 +141,7 @@
 							v.datagrid('clearChecked');
 							$.messager.show({
 								title : '提示',
-								msg : '删除成功'
+								msg : '开奖成功'
 							});
 						}
 					});
@@ -225,7 +225,7 @@
 						var userIds = [];
 						var userNames = [];
 						var hhPhones = [];
-						if (userRows.length > 0) {
+						if (userRows.length == 2) {
 							$.messager.confirm('确认', '您是选择当前用户为中奖用户？', function(r) {
 								if (r) {
 									for ( var i = 0; i < userRows.length; i++) {
@@ -265,7 +265,7 @@
 						} else {
 							$.messager.show({
 								title : '提示',
-								msg : '请选择中奖用户！'
+								msg : '请选择两个中奖用户！'
 							});
 						}
 
@@ -321,7 +321,7 @@
 						var userIds = [];
 						var userNames = [];
 						var hhPhones = [];
-						if (articleRows.length > 0) {
+						if (articleRows.length == 1) {
 							$.messager.confirm('确认', '您是选择当前用户为中奖用户？', function(r) {
 								if (r) {
 									var oldUserIds = rows[0].userIds.split(",");
@@ -361,7 +361,7 @@
 						} else {
 							$.messager.show({
 								title : '提示',
-								msg : '请选择中奖用户！'
+								msg : '请选择一个中奖用户！'
 							});
 						}
 

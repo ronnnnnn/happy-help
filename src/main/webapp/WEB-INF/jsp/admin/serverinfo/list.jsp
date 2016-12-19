@@ -290,14 +290,22 @@
 						url : '${pageContext.request.contextPath}/serverInfo/'+ids,
 						dataType : 'json',
 						success : function(d) {
-							var v = $('#admin_serverInfo_datagrid');
-							v.datagrid('reload');
-							v.datagrid('unselectAll');
-							v.datagrid('clearChecked');
-							$.messager.show({
-								title : '提示',
-								msg : '删除成功'
-							});
+							if(d){
+								var v = $('#admin_serverInfo_datagrid');
+								v.datagrid('reload');
+								v.datagrid('unselectAll');
+								v.datagrid('clearChecked');
+								$.messager.show({
+									title : '提示',
+									msg : '删除成功'
+								});
+							}else{
+								$.messager.show({
+									title : '提示',
+									msg : '不允许删除该公共服务,正在服务中!'
+								});
+							}
+
 						}
 					});
 

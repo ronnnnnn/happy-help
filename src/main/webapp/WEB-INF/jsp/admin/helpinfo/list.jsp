@@ -324,15 +324,21 @@
                         url : '${pageContext.request.contextPath}/helpInfo/'+ids,
                         dataType : 'json',
                         success : function(d) {
-							var v = $('#admin_helpinfo_datagrid');
-							v.datagrid('reload');
-							v.datagrid('unselectAll');
-							v.datagrid('clearChecked');
-							$.messager.show({
-								title : '提示',
-								msg : '删除成功'
-							});
-
+                        	if(d){
+								var v = $('#admin_helpinfo_datagrid');
+								v.datagrid('reload');
+								v.datagrid('unselectAll');
+								v.datagrid('clearChecked');
+								$.messager.show({
+									title : '提示',
+									msg : '删除成功'
+								});
+							}else{
+								$.messager.show({
+									title : '提示',
+									msg : '不允许删除紧急求助消息,紧急求助消息帮助中'
+								})
+							}
                         }
                     });
 

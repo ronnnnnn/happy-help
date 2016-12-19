@@ -1,10 +1,12 @@
 package com.zyfz.web.controller;
 
+import com.zyfz.domain.PlatformRecord;
+import com.zyfz.domain.TaskContract;
 import com.zyfz.domain.TaskInfo;
+import com.zyfz.domain.User;
 import com.zyfz.model.Json;
 import com.zyfz.model.PageModel;
-import com.zyfz.service.ICategoryService;
-import com.zyfz.service.ITaskInfoService;
+import com.zyfz.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * Created by ron on 16-10-28.
@@ -27,6 +30,16 @@ public class TaskInfoController extends BaseController {
 
     @Resource
     ICategoryService categoryService;
+
+    @Resource
+    ITaskContractService taskContractService;
+
+    @Resource
+    IUserservice userservice;
+
+    @Resource
+    IPlatformRecordService platformRecordService;
+
 
     @RequiresPermissions("task:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
@@ -82,7 +95,12 @@ public class TaskInfoController extends BaseController {
             for(String mid : mids){
                 TaskInfo taskInfo = new TaskInfo();
                 taskInfo.setId(Integer.valueOf(mid));
-                taskInfoService.deleteOneById(taskInfo);
+                try {
+                    taskInfoService.deleteOneById(taskInfo);
+                }catch (Exception e){
+                    return false;
+                }
+
                 count++;
             }
             return count;
@@ -144,5 +162,6 @@ public class TaskInfoController extends BaseController {
             json.setMsg(e.toString());
         }
     }
+
 
 }
