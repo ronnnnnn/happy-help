@@ -57,7 +57,7 @@
     FROM happy_help.hh_article a left join happy_help.hh_user u
     on a.hh_user_id = u.id
     where a.context LIKE #{key,jdbcType=VARCHAR}
-
+    order by a.create_time desc
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

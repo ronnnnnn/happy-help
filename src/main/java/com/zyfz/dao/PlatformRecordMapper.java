@@ -24,4 +24,6 @@ public interface PlatformRecordMapper {
     List<PlatformRecord> selectAll();
 
     Double selectSumMoney(String incomeType);
+
+    Double selectSumMoneyTemp(String incomeType);
 }

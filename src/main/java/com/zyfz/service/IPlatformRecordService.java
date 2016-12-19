@@ -15,4 +15,6 @@ public interface IPlatformRecordService extends IBaseService<PlatformRecord> {
     public Datagrid selectAll(PageModel pageModel);
 
     public Double selectSumMoney(String incomeType);
+
+    public Double selectSumMoneyTemp(String incomeType);
 }

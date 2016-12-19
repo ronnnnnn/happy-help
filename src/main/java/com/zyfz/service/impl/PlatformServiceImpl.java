@@ -66,4 +66,9 @@ public class PlatformServiceImpl implements IPlatformRecordService {
     public Double selectSumMoney(String incomeType) {
         return platformRecordMapper.selectSumMoney(incomeType);
     }
+
+    @Override
+    public Double selectSumMoneyTemp(String incomeType) {
+        return platformRecordMapper.selectSumMoneyTemp(incomeType);
+    }
 }

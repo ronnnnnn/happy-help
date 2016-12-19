@@ -32,16 +32,30 @@ public class PlatformServiceController extends BaseController {
     public String toPlatformRecord(Model model){
         Double in = 0d;
         Double out = 0d;
+        Double inTemp = 0d;
+        Double outTemp = 0d;
         Double inMoney = platformRecordService.selectSumMoney("收入");
         Double outMoney = platformRecordService.selectSumMoney("支出");
+        Double inMoneyTemp = platformRecordService.selectSumMoneyTemp("收入");
+        Double outMoneyTemp = platformRecordService.selectSumMoneyTemp("支出");
         if (inMoney != null){
             in = inMoney;
         }
         if (outMoney != null){
             out = outMoney;
         }
+        if (inMoneyTemp != null){
+            inTemp = inMoneyTemp;
+        }
+        if (outMoneyTemp != null){
+            outTemp = outMoneyTemp;
+        }
+
         model.addAttribute("in",in);
         model.addAttribute("out",out);
+        model.addAttribute("inTemp",inTemp);
+        model.addAttribute("outTemp",outTemp);
+
         return "admin/record/platform-record-list";
     }
 

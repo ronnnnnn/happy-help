@@ -101,7 +101,7 @@
 </script>
 
 <div id="admin_platform_layout" class="easyui-layout" data-options="fit:true,border:false">
-	<div data-options="region:'north',title:'查询条件',border:false" style="height: 110px;">
+	<div data-options="region:'north',title:'查询条件',border:false" style="height: 115px;">
 
 		<div style="float: left;width: 70%">
 			<form id="admin_platform_searchForm" method="post">
@@ -121,7 +121,10 @@
 			</form>
 		</div>
 		<div style="float: right;width: 30%">
-			<p style="margin-top: 7px;color: green;font-size: 20px;font-weight: bolder">总收入:$${in}</p>  <p style="margin-top: 7px;color: red;font-size: 20px;font-weight: bolder">总支出:$${out}</p>
+			<p style="margin-top: 0px;color: green;font-size: 10px;font-weight: bolder">总收入:$${in}</p>
+			<p style="margin-top: 0px;color: red;font-size: 10px;font-weight: bolder">总支出:$${out}</p>
+			<p style="margin-top: 0px;color: green;font-size: 10px;font-weight: bolder">普通求助服务费暂放平台金额收入:$${inTemp}</p>
+			<p style="margin-top: 0px;color: red;font-size: 10px;font-weight: bolder">普通求助服务费暂放平台金额支出:$${outTemp}</p>
 
 		</div>
 	</div>

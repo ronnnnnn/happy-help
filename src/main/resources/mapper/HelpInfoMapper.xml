@@ -89,6 +89,7 @@
     SELECT hi.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_help_info hi left join happy_help.hh_user u on hi.hh_user_id = u.id
     where hi.hh_category_id = #{0} and  hi.create_time &gt;= #{1} and  hi.create_time &lt;= #{2}
+    order by hi.create_time desc
   </select>
 
   <select id="selectAllWithParam" resultMap="HelpInfoWithUserMap" parameterType="com.zyfz.domain.HelpInfo">
@@ -130,7 +131,7 @@
   <select id="selectWithUserByKey"  resultMap="HelpInfoWithUserMap">
     SELECT hi.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_help_info hi left join happy_help.hh_user u on hi.hh_user_id = u.id
-    where hi.context like #{key,jdbcType=VARCHAR}
+    where hi.context like #{key,jdbcType=VARCHAR}  order by hi.create_time desc
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
