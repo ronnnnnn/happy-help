@@ -36,7 +36,7 @@
             </tr>
             <tr>
                 <th>优先级</th>
-                <td><input id="rs-priority" name="priority" class="easyui-validatebox" style="width: 100%"/></td>
+                <td><input id="rs-priority" name="priority" class="easyui-validatebox" style="width: 100%" data-options="required:true"/></td>
             </tr>
 
             <tr align="center">
