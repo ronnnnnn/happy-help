@@ -37,7 +37,7 @@
 
   <select id="selectByHelpInfo" resultMap="ResultWithUserMap" parameterType="java.lang.Integer" >
     select
-    hc.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    hc.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     from hh_help_contract hc left join hh_user u on hc.hh_user_id = u.id
     where hh_help_info_id = #{helpINfoId,jdbcType=INTEGER} order by create_time desc
   </select>
@@ -52,7 +52,7 @@
 
   <select id="selectByHelpInfoAndUserV2" resultMap="ResultWithUserMap" parameterType="com.zyfz.domain.HelpContract" >
     select
-    hc.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    hc.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     from hh_help_contract hc left join hh_user u on hc.hh_user_id = u.id
     where hh_help_info_id = #{hhHelpInfoId,jdbcType=INTEGER}
     and hh_user_id = #{hhUserId,jdbcType=INTEGER}

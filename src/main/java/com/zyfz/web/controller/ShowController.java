@@ -131,10 +131,12 @@ public class ShowController extends BaseController{
      * @param request
      */
     @RequestMapping(value = "/image",method = RequestMethod.POST)
-    public void importImage(MultipartFile file, HttpServletResponse response, HttpServletRequest request){
+    @ResponseBody
+    public Object importImage(MultipartFile file, HttpServletResponse response, HttpServletRequest request){
         Json json = new Json();
+        String imageName = null;
         try {
-            String imageName = super.saveUploadFile(request,file, "show", "jpg");
+            imageName = super.saveUploadFile(request,file, "show", "jpg");
             logger.info(imageName);
             json.setObj(imageName);
             json.setSuccess(true);
@@ -143,6 +145,7 @@ public class ShowController extends BaseController{
             json.setMsg(e.toString());
         }
 
-        super.writeJson(json,response);
+        //super.writeJson(json,response);
+        return imageName;
     }
 }

@@ -1,8 +1,10 @@
 package com.zyfz.web.controller;
 
-import com.zyfz.dao.UserWithdrawMapper;
+import com.zyfz.domain.User;
 import com.zyfz.domain.UserWithdraw;
 import com.zyfz.model.ResponseMessage;
+import com.zyfz.service.IUserWithdrawServiceImpl;
+import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,18 +21,34 @@ import java.util.Map;
 @Controller
 public class AppUserWithdrawController extends BaseController {
     @Resource
-    UserWithdrawMapper userWithdrawMapper;
+    IUserWithdrawServiceImpl userWithdrawService;
+
+    @Resource
+    IUserservice userservice;
 
     @RequestMapping(value = "/api/v1/withdraw/requset",method = RequestMethod.POST)
     public void withdrawRequest(UserWithdraw userWithdraw,
                                 HttpServletResponse response){
         try {
-            if (userWithdraw.getWithdrawAccountType() == null && userWithdraw.getWithdrawAccountType().intern() == "null"){
-                userWithdraw.setWithdrawAccountType("支付宝");
+            User user = userservice.getOneById(new User(userWithdraw.getHhUserId()));
+            if (user.getAccount() > userWithdraw.getMoney()){
+                Double finalMoney = user.getAccount() - userWithdraw.getMoney();
+                user.setAccount(finalMoney);
+                userservice.update(user);
+            } else {
+                Map<String,String> map = new HashMap<String, String>();
+                map.put("errMsg","账户金额不足");
+                super.writeJson(new ResponseMessage<Map<String,String>>(41000,"请求失败",map),response);
+                return;
+            }
+
+            if (userWithdraw.getWithdrawAccountType() == null || userWithdraw.getWithdrawAccountType().intern() == ""){
+                    userWithdraw.setWithdrawAccountType("支付宝");
             }
             userWithdraw.setIsHande(false);
             userWithdraw.setCreateTime(new Date());
-            userWithdrawMapper.insertSelective(userWithdraw);
+            userWithdrawService.save(userWithdraw);
+
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();

@@ -46,7 +46,7 @@ public class LoginController extends BaseController {
             error = "密码错误";
             errorCode = 40104;//密码错误
         } else if(exceptionClassName != null) {
-            error = "其他错误：" + exceptionClassName;
+            error = "其他错误" ;
             errorCode =  40105;//其他错误
         }
 

@@ -46,7 +46,7 @@
 		<tr>
 			<th>图片</th>
 			<td>
-			    <input  id="sh-imageUrl" name="imageUrl" style="width:100%" class="easyui-validatebox" data-options="required:true" />
+			    <input  id="msh-imageUrl" name="imageUrl" style="width:100%" class="easyui-validatebox" data-options="required:true" />
 			</td>
 		</tr>
 	</table>

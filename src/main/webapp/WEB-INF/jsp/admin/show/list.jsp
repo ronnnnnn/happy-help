@@ -258,15 +258,53 @@
 				dataType : 'text',//服务器返回的数据类型
 				success : function(data) {
 					$('#admin_show_pic_rollingDialog').dialog('close');
-					var obj = jQuery.parseJSON(data);
-					if (obj.success) {
-						//$('#admin_bookManage_importDialog').dialog('close');
-						$('#sh-imageUrl').val(obj.obj);
-						//alert(obj.obj);
-					}
+					$('#msh-imageUrl').val(data);
+					//var obj = jQuery.parseJSON(data);
+					//var obj = JSON.parse(data);
+			       // alert(obj.obj);
+//					if (data.success) {
+//						$('#msh-imageUrl').val(data.obj)
+//					}
 					$.messager.show({
 						title : '提示',
-						msg : obj.msg,
+						msg : "图片上传成功",
+					});
+				},
+				error : function(data, status, e) {
+					$.messager.show({
+						title : '提示',
+						msg : '服务中断或连接超时导致通信失败！' ,
+					});
+				}
+			});
+		}
+	}
+
+	function xsImport4update() {
+		if ($('#uuploadfile').val() == '') {
+			$.messager.show({
+				title : '提示',
+				msg : '请选择一个jpg文件',
+			});
+		} else {
+			$('#admin_show_pic_rollingDialog').dialog('open');
+			$.ajaxFileUpload({
+				url : '${pageContext.request.contextPath}/show/image',//用于文件上传的服务器端请求地址
+				secureuri : true,//是否启用安全提交，一般设置为false
+				fileElementId : 'uuploadfile',//文件上传控件的id
+				dataType : 'text',//服务器返回的数据类型
+				success : function(data) {
+					$('#admin_show_pic_rollingDialog').dialog('close');
+					$('#ush-imageUrl').val(data);
+					//var obj = jQuery.parseJSON(data);
+					//var obj = JSON.parse(data);
+					// alert(obj.obj);
+//					if (data.success) {
+//						$('#msh-imageUrl').val(data.obj)
+//					}
+					$.messager.show({
+						title : '提示',
+						msg : "图片上传成功",
 					});
 				},
 				error : function(data, status, e) {

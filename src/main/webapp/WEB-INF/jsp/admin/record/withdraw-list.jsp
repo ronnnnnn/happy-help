@@ -52,7 +52,7 @@
 				width : fixWidth(0.10),
 				align : 'center',
 			},{
-				field : 'isHandle',
+				field : 'isHande',
 				title : '是否完成转账',
 				width : fixWidth(0.08),
 				align : 'center',
@@ -80,9 +80,60 @@
 					return withdrawtag;
 				},
 			}] ],
+			toolbar : [{
+				text : '确认完成转账',
+				iconCls : 'icon-remove',
+				handler : function() {
+					compeltedRequest();
+				}
+			}]
 
 		});
 	}
+
+	function compeltedRequest() {
+		var rows = $('#admin_withdraw_datagrid').datagrid('getChecked');
+		//	var rows=$('#admin_normal_user_datagrid').datagrid('getSelected');
+		//	var rows=$('#admin_normal_user_datagrid').datagrid('getSelecteds');
+		var ids = [];
+		if (rows.length == 1) {
+			$.messager.confirm('确认', '您是否要确认已转账？', function(r) {
+				if (r) {
+					for ( var i = 0; i < rows.length; i++) {
+						ids.push(rows[i].id);
+						ids.join(',')
+					}
+					$.ajax({
+						type: 'post',
+						url : '${pageContext.request.contextPath}/withdraw/'+ids,
+						data : {
+							ids : ids.join(',')
+						},
+						dataType : 'json',
+						success : function(d) {
+							var v = $('#admin_withdraw_datagrid');
+							v.datagrid('reload');
+							v.datagrid('unselectAll');
+							v.datagrid('clearChecked');
+							$.messager.show({
+								title : '提示',
+								msg : '更新成功'
+							});
+						}
+					});
+
+				}
+			});
+
+		} else {
+			$.messager.show({
+				title : '提示',
+				msg : '请勾选一个要确认的选项！'
+			});
+		}
+
+	}
+
 
 	function withdrawshowMore(infos) {
 		var minfos = infos.split(",");
@@ -129,8 +180,8 @@
 			<form id="admin_withdraw_searchForm" method="post">
 				 用户帐号:  <input id="wt-username" class="easyui-validatebox" />
 				是否以充值：	<select  id="wt-handle"  class="esayui-combobox"  name="incomeType"  style="width: 70px" data-options="required:true">
-								<option  value='false'>未充值</option>
-								<option  value='true'>已充值</option>
+								<option  value='false'>未转账</option>
+								<option  value='true'>已转账</option>
 							</select>
 				<br/>
 				开始时间：<input id="wt-startTime" class="easyui-datetimebox" name="wt-startTime"

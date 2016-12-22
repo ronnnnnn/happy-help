@@ -6,9 +6,7 @@ import com.zyfz.model.PageModel;
 import com.zyfz.service.IUserWithdrawServiceImpl;
 import com.zyfz.service.IUserservice;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +58,18 @@ public class UserWithdrawController extends BaseController {
             userWithdraw.setIsHande(isHandle);
         }
         super.writeJson(userWithdrawService.selectBySelective(userWithdraw,pageModel),response);
+    }
+
+    @RequestMapping(value = "/withdraw/{ids}",method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateRecord(@PathVariable String ids){
+        String mids[] = ids.split(",");
+        for (String mid : mids){
+            UserWithdraw userWithdraw = userWithdrawService.getOneById(new UserWithdraw(Integer.valueOf(mid)));
+            userWithdraw.setIsHande(true);
+            userWithdrawService.update(userWithdraw);
+        }
+        return true;
     }
 
 }

@@ -59,7 +59,7 @@
 		<tr>
 			<th>图片</th>
 			<td>
-			    <input  id="sh-imageUrl" name="imageUrl" style="width:100%" class="easyui-validatebox" data-options="required:true" />
+			    <input  id="ush-imageUrl" name="imageUrl" style="width:100%" class="easyui-validatebox" data-options="required:true" />
 			</td>
 		</tr>
 	</table>
@@ -71,7 +71,7 @@
 	        <td width="80px"></td>	
 			<td style="word-break:break-all;padding-left: 10px;">
 			  <form id="admin_show_pic_importDialog">
-			    <input type="file" id="uploadfile" name="file" /><a id="btn" href="#" class="easyui-linkbutton" onclick="xsImport()" data-options="iconCls:'icon-add'">导入</a>
+			    <input type="file" id="uuploadfile" name="file" /><a id="btn" href="#" class="easyui-linkbutton" onclick="xsImport4update()" data-options="iconCls:'icon-add'">导入</a>
 			  </form>
 			</td>	
 		</tr>
