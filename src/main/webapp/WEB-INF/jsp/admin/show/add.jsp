@@ -62,4 +62,5 @@
 			  </form>
 			</td>	
 		</tr>
+		<p style="margin-left: 10%;margin-right: 10%">说明:闪屏页像素要求320*800;轮播图像素要求320*240</p>
 </table>

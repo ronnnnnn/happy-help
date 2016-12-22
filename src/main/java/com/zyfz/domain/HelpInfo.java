@@ -279,7 +279,7 @@ public class HelpInfo {
     }
 
     public Boolean getIsImage(){
-        if (imageUrl == null || imageUrl.intern() == "none".intern() || imageUrl.intern() == "nono".intern()  ){
+        if (imageUrl == null || imageUrl.intern() == "none".intern() || imageUrl.intern() == "nono".intern() || imageUrl.intern() == "".intern() ){
             return false;
         } else{
             return true;
@@ -287,7 +287,7 @@ public class HelpInfo {
     }
 
     public String[] getImageUrls(){
-        if(imageUrl == null || imageUrl.intern() == "none".intern()|| imageUrl.intern() == "nono".intern()){
+        if(imageUrl == null || imageUrl.intern() == "none".intern()|| imageUrl.intern() == "nono".intern()|| imageUrl.intern() == "".intern()){
             String[] strings = {"nono"};
             return strings;
         } else {

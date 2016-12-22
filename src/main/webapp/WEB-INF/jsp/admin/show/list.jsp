@@ -113,11 +113,11 @@
 		if (rows.length == 1) {
 			var d = $('<div/>').dialog({
 				width : 300,
-				height : 300,
+				height : 339,
 				href : '${pageContext.request.contextPath}/show/edit-panel',
 				modal : true,
 				align : 'center',
-				title : '修改用户',
+				title : '修改图片',
 				buttons : [ {
 					text : '修改',
 					handler : function() {
@@ -160,7 +160,7 @@
 
 		var d = $('<div/>').dialog({
 			width : 300,
-			height : 300,
+			height : 339,
 			href : '${pageContext.request.contextPath}/show/add-panel',
 			modal : true,
 			align : 'center',

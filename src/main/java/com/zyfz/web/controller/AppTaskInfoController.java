@@ -797,4 +797,74 @@ public class AppTaskInfoController extends BaseController{
             super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
         }
     }
+
+
+    /**
+     * 置顶
+     */
+    @RequestMapping(value = "/api/v1/taskInfo/top",method = RequestMethod.POST)
+    public void topTaskInfo( @RequestParam("userId")Integer userId,
+                            @RequestParam("taskInfoId")Integer taskInfoId,
+                            @RequestParam("money")Double money,
+                            @RequestParam("time")String time,
+                            HttpServletResponse response){
+
+        try {
+            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(taskInfoId));
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            calendar.add(Calendar.DATE,Integer.valueOf(time));
+            taskInfo.setEndTime(calendar.getTime());
+            taskInfo.setIsTop(true);
+
+            User user = userservice.getOneById(new User(userId));
+            Double finalMoney = user.getAccount() - money;
+            if (finalMoney > 0){
+                user.setAccount(finalMoney);
+                //更新用户帐号
+                userservice.update(user);
+                //更新内容
+                taskInfoService.update(taskInfo);
+                //记录订单
+                //平台收出记录
+                PlatformRecord platformRecordTop = new PlatformRecord( "taskInfoTemp",
+                        "收入",
+                        taskInfo.getId(),
+                        user.getId(),
+                        money,
+                        "普通求助置顶收入,置顶"+time+"天",
+                        new Date(),
+                        null);
+                platformRecordService.save(platformRecordTop);
+
+                String tradeNo = UtilDate.getOrderNum();
+                OrderRecord orderRecord = new OrderRecord(
+                        null,
+                        tradeNo,
+                        "普通求助消息",
+                        "置顶费用",
+                        user.getUsername(),
+                        "平台",
+                        money,
+                        taskInfo.getId(),
+                        null,
+                        new Date(),
+                        true,
+                        null
+                );
+                orderRecordService.save(orderRecord);
+            } else {
+                Map<String,String> map = new HashMap<String, String>();
+                map.put("errMsg","余额不足");
+                super.writeJson(new ResponseMessage<Map<String,String>>(40401,"请求失败!",map),response);
+                return;
+            }
+
+            super.writeJson(new ResponseMessage<String>(0,"success!",""),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
 }

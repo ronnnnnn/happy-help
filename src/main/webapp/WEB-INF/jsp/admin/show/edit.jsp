@@ -73,6 +73,7 @@
 			  <form id="admin_show_pic_importDialog">
 			    <input type="file" id="uuploadfile" name="file" /><a id="btn" href="#" class="easyui-linkbutton" onclick="xsImport4update()" data-options="iconCls:'icon-add'">导入</a>
 			  </form>
-			</td>	
+			</td>
+			<p style="margin-left: 10%;margin-right: 10%">说明:闪屏页像素要求320*800;轮播图像素要求320*240</p>
 		</tr>
 </table>

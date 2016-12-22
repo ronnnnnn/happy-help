@@ -54,7 +54,7 @@ public class Article {
     }
 
     public Boolean getIsImage(){
-        if (imageUrl == null || imageUrl.intern() == "none".intern()){
+        if (imageUrl == null || imageUrl.intern() == "none".intern()|| imageUrl.intern() == "".intern()){
             return false;
         } else{
             return true;

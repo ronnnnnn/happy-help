@@ -75,7 +75,7 @@
   </select>
 
   <select id="selectByCIDWithUser" parameterType="java.lang.Integer" resultMap="ServerInfoWithUserMap">
-     SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+     SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
      FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
      where si.hh_category_id = #{categoryId,jdbcType=INTEGER}
      order by si.create_time desc
@@ -130,7 +130,7 @@
   </select>
 
   <select id="selectByCIDWithUserWithKey" parameterType="java.lang.String" resultMap="ServerInfoWithUserMap">
-    SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times
+    SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
     where  si.context like #{key,jdbcType=VARCHAR}
     order by si.create_time desc

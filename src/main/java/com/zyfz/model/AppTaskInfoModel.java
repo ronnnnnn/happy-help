@@ -19,6 +19,8 @@ public class AppTaskInfoModel {
     private String area;  //区
     private String street;  //街道
     private String categoryName;
+//    private Boolean isTop;
+//    private String topTime;
 
     public String getCategoryName() {
         return categoryName;
@@ -115,4 +117,20 @@ public class AppTaskInfoModel {
     public void setStreet(String street) {
         this.street = street;
     }
+
+//    public Boolean getIsTop() {
+//        return isTop;
+//    }
+//
+//    public void setIsTop(Boolean isTop) {
+//        this.isTop = isTop;
+//    }
+//
+//    public String getTopTime() {
+//        return topTime;
+//    }
+//
+//    public void setTopTime(String topTime) {
+//        this.topTime = topTime;
+//    }
 }
