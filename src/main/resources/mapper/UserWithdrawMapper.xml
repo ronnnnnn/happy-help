@@ -41,6 +41,30 @@
     FROM happy_help.hh_user_withdraw ud left join happy_help.hh_user u on ud.hh_user_id = u.id
     order by create_time DESC
   </select>
+
+  <select id="selectBySelective" resultMap="WithdrawWithUserMap" parameterType="com.zyfz.domain.UserWithdraw" >
+    SELECT ud.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_user_withdraw ud left join happy_help.hh_user u on ud.hh_user_id = u.id
+    <where>
+      <if test="hhUserId != null" >
+        hh_user_id = #{hhUserId,jdbcType=INTEGER}
+      </if>
+      <if test="withdrawAccountType != null" >
+        and withdraw_account_type = #{withdrawAccountType,jdbcType=VARCHAR}
+      </if>
+      <if test="isHande != null" >
+        and is_hande = #{isHande,jdbcType=TINYINT}
+      </if>
+      <if test="createTime != null" >
+        and create_time &gt;=  #{createTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endTime != null" >
+        and create_time &lt;= #{endTime,jdbcType=TIMESTAMP}
+      </if>
+    </where>
+    order by create_time DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from hh_user_withdraw
     where id = #{id,jdbcType=INTEGER}

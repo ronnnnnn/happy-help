@@ -22,4 +22,6 @@ public interface UserWithdrawMapper {
     int updateByPrimaryKey(UserWithdraw record);
 
     List<UserWithdraw> selectAll();
+
+    List<UserWithdraw> selectBySelective(UserWithdraw userWithdraw);
 }

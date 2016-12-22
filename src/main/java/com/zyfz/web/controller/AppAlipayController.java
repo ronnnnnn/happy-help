@@ -98,6 +98,8 @@ public class AppAlipayController {
                     Boolean step1 = String.valueOf(moneyRecord.getMoney()).intern() == total_amount.intern();
                     Boolean step2 = PID.intern() == seller_id.intern();
                     Boolean step3 = APPID.intern() == app_id.intern();
+                    logger.info("pay666666" + app_id + seller_id);
+                    logger.info(step1+"===="+step2+"===="+step3+"");
                     if ( step1&& step2 && step3 ){
                         //给用户账户加钱
                         User user = userservice.getOneById(new User(moneyRecord.getHhUserId()));
@@ -108,6 +110,7 @@ public class AppAlipayController {
                         moneyRecordService.update(moneyRecord);
                         if (printWriter != null) {
                             printWriter.print("success");//请不要修改或删除
+                            logger.info("all done 666666");
                         }
                     }
                 }

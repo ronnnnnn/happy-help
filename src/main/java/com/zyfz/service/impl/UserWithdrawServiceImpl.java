@@ -47,4 +47,12 @@ public class UserWithdrawServiceImpl implements IUserWithdrawServiceImpl {
     public Integer deleteOneById(UserWithdraw userWithdraw) {
         return userWithdrawMapper.deleteByPrimaryKey(userWithdraw.getId());
     }
+
+    @Override
+    public Datagrid selectBySelective(UserWithdraw userWithdraw, PageModel pageModel) {
+        PageHelper.startPage(pageModel.getPage(),pageModel.getRows());
+        List<UserWithdraw> userWithdraws = userWithdrawMapper.selectBySelective(userWithdraw);
+        PageInfo pageInfo = new PageInfo(userWithdraws);
+        return new Datagrid(pageInfo.getTotal(),userWithdraws);
+    }
 }

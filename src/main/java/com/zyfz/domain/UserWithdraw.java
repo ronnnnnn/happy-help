@@ -15,9 +15,11 @@ public class UserWithdraw {
 
     private String withdrawAccountName;
 
-    private Byte isHande;
+    private Boolean isHande;
 
     private Date createTime;
+
+    private Date endTime;
 
     private User user;
 
@@ -29,7 +31,7 @@ public class UserWithdraw {
         this.id = id;
     }
 
-    public UserWithdraw(Double money, Integer hhUserId, String withdrawAccount, String withdrawAccountType, String withdrawAccountName, Byte isHande, Date createTime, User user) {
+    public UserWithdraw(Double money, Integer hhUserId, String withdrawAccount, String withdrawAccountType, String withdrawAccountName, Boolean isHande, Date createTime, User user) {
         this.money = money;
         this.hhUserId = hhUserId;
         this.withdrawAccount = withdrawAccount;
@@ -38,6 +40,19 @@ public class UserWithdraw {
         this.isHande = isHande;
         this.createTime = createTime;
         this.user = user;
+    }
+
+    public UserWithdraw(Date endTime) {
+        this.endTime = endTime;
+    }
+
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public User getUser() {
@@ -96,12 +111,12 @@ public class UserWithdraw {
         this.withdrawAccountName = withdrawAccountName;
     }
 
-    public Byte getIsHande() {
+    public Boolean getIsHande() {
         return isHande;
     }
 
-    public void setIsHande(Byte isHande) {
-        this.isHande = isHande;
+    public void setIsHande(Boolean hande) {
+        isHande = hande;
     }
 
     public Date getCreateTime() {

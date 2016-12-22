@@ -66,6 +66,7 @@ public class MiPushUtils {
                 .extra(Constants.EXTRA_PARAM_NOTIFY_FOREGROUND, "0") // 关闭前台通知
                 .extra("TargetId",extraValue)
                 .build();
+        logger.info("push");
         return message;
     }
 
