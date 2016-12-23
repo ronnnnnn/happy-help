@@ -3,16 +3,22 @@ package com.zyfz.web.controller;
 import com.zyfz.domain.*;
 import com.zyfz.model.*;
 import com.zyfz.service.*;
+import com.zyfz.service.impl.LuceneHelper;
+import com.zyfz.service.impl.LuceneIndexUpdateTask;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -47,6 +53,11 @@ public class AppServerController extends BaseController {
     @Resource
     ISystemMessageService systemMessageService;
 
+    @Resource
+    LuceneHelper luceneHelper;
+
+    @Resource
+    ThreadPoolTaskExecutor threadPool;
 
     /**
      * 添加服务
@@ -55,7 +66,7 @@ public class AppServerController extends BaseController {
      * @param request
      */
 
-    @RequestMapping(value = "/api/v1/server",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/anon/server",method = RequestMethod.POST)
     public void addServer(AppServerModel appServerModel, HttpServletResponse response, HttpServletRequest request){
        try {
            ServerInfo serverInfo = new ServerInfo();
@@ -103,7 +114,11 @@ public class AppServerController extends BaseController {
            Date mEndTime = sim.parse(times[1]);
            serverInfo.setServerTimeStart(mStartTime);
            serverInfo.setServerTimeEnd(mEndTime);
-           serverInfoService.save(serverInfo);
+           Integer serverInfoId = serverInfoService.save(serverInfo);
+           //添加lucene索引
+           serverInfo.setId(serverInfoId);
+           LuceneIndexUpdateTask luceneIndexUpdateTask = new LuceneIndexUpdateTask(serverInfo,luceneHelper);
+           threadPool.execute(luceneIndexUpdateTask);
            Map<String,String> map = new HashMap<String, String>();
            map.put("MSG","添加成功！");
            super.writeJson(new ResponseMessage<Map<String,String>>(0,"success",map),response);
@@ -323,5 +338,29 @@ public class AppServerController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/api/v1/anon/server/search",method = RequestMethod.GET)
+    @ResponseBody
+    public void getSearch(@RequestParam("key")String key,HttpServletResponse response){
+        try {
+            long start = System.currentTimeMillis();
+            //luceneHelper.index();
+            //List<String> ids = luceneHelper.searchByTerm("context",key,5);
+            Set<String> ids = luceneHelper.searchIndexFile(key);
+            List<ServerInfo> serverInfos = new ArrayList<ServerInfo>();
+            for (String id : ids ){
+                serverInfos.add(serverInfoService.getOneById(new ServerInfo(Integer.valueOf(id))));
+            }
+            Long size = Long.valueOf(serverInfos.size());
+            Datagrid datagrid = new Datagrid(size,serverInfos);
+
+            System.out.println(" Spend time:"+(System.currentTimeMillis() - start) + " ms");
+            super.writeJson(new ResponseMessage<Datagrid>(0,"success",datagrid),response);
+        }  catch (Exception e) {
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
+    }
 
 }

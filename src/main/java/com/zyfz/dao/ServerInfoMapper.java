@@ -29,4 +29,6 @@ public interface ServerInfoMapper {
 
     List<ServerInfo> selectByCategory(Integer cid);
 
+    List<ServerInfo> selectAll();
+
 }

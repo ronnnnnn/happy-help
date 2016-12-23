@@ -36,7 +36,8 @@ public class ServerInfoServiceImpl implements IServerInfoService{
     @Override
     public Integer save(ServerInfo serverInfo) {
         serverInfo.setCreateTime(new Date());
-        return serverInfoMapper.insertSelective(serverInfo);
+        serverInfoMapper.insertSelective(serverInfo);
+        return serverInfo.getId();
     }
 
     @Override

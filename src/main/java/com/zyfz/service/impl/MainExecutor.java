@@ -25,6 +25,9 @@ public class MainExecutor extends TimerTask {
     @Resource
     private Runnable helpInfoStatusChangeTask;
 
+    @Resource
+    private Runnable luceneIndexAllTask;
+
     @Override
     public void run() {
         // TODO Auto-generated method stub
@@ -37,6 +40,7 @@ public class MainExecutor extends TimerTask {
 
         //处理超过设定时间的数据
         threadPool.execute(helpInfoStatusChangeTask);
+        threadPool.execute(luceneIndexAllTask);
 
         //等待线程执行完毕
         while(threadPool.getActiveCount() > 0){

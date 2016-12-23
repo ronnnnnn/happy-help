@@ -16,6 +16,7 @@
     <!-- log4j日志文件管理包版本 -->
     <slf4j.version>1.7.7</slf4j.version>
     <log4j.version>1.2.17</log4j.version>
+    <lucene.version> 4.4.0</lucene.version>
   </properties>
 
   <dependencies>
@@ -339,6 +340,31 @@
       <version>20161129201425</version>
       <scope>system</scope>
       <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20161129201425.jar</systemPath>
+    </dependency>
+
+    <!--lucene-->
+    <dependency>
+      　　<groupId>org.apache.lucene</groupId>
+      　　<artifactId>lucene-core</artifactId>
+      　　<version>${lucene.version}</version>
+    </dependency>
+    <dependency>
+      　　<groupId>org.apache.lucene</groupId>
+      　　<artifactId>lucene-analyzers-common</artifactId>
+      　　<version>${lucene.version}</version>
+    </dependency>
+    <dependency>
+      　　<groupId>org.apache.lucene</groupId>
+      　　<artifactId>lucene-queryparser</artifactId>
+      　　<version>${lucene.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.wltea</groupId>
+      <artifactId>ikAnalyzer</artifactId>
+      <version>2012</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/IKAnalyzer2012FF_u1.jar</systemPath>
     </dependency>
 
   </dependencies>

@@ -60,11 +60,17 @@
     country, province, city, area, street, address,image_url,server_time_start,server_time_end
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ServerInfoWithUserMap">
+    SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
+    FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
+    where id = #{id,jdbcType=INTEGER}
+    order by si.create_time desc
+  </select>
+
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from hh_server_info
-    where id = #{id,jdbcType=INTEGER}
   </select>
 
   <select id="selectByCategory" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -155,7 +161,7 @@
       #{area,jdbcType=VARCHAR}, #{street,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},#{imageUrl,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.zyfz.domain.ServerInfo">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.zyfz.domain.ServerInfo">
     insert into hh_server_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
