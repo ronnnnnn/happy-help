@@ -95,11 +95,12 @@ public class AppAlipayController {
                 MoneyRecord moneyRecord = moneyRecordService.getByTradeOrderNoUniq(out_trade_no);
 
                 if (moneyRecord != null){
-                    Boolean step1 = String.valueOf(moneyRecord.getMoney()).intern() == total_amount.intern();
+                    Boolean step1 = moneyRecord.getMoney() == Double.valueOf(total_amount);
                     Boolean step2 = PID.intern() == seller_id.intern();
                     Boolean step3 = APPID.intern() == app_id.intern();
                     logger.info("pay666666" + app_id + seller_id);
                     logger.info(step1+"===="+step2+"===="+step3+"");
+                    logger.info( moneyRecord.getMoney() +"=="+ Double.valueOf(total_amount));
                     if ( step1&& step2 && step3 ){
                         //给用户账户加钱
                         User user = userservice.getOneById(new User(moneyRecord.getHhUserId()));

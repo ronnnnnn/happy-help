@@ -63,7 +63,7 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ServerInfoWithUserMap">
     SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
-    where id = #{id,jdbcType=INTEGER}
+    where si.id = #{id,jdbcType=INTEGER}
     order by si.create_time desc
   </select>
 
