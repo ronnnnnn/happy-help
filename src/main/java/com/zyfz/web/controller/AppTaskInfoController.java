@@ -639,8 +639,24 @@ public class AppTaskInfoController extends BaseController{
                         new Date(),
                         taskContract.getHhTaskInfoId());
                 taskTradeRecordService.save(taskTradeRecord);
+                /**
+                 * 荣誉值加分
+                 */
 
-
+                Double addScore = 1d;
+                try {
+                    if (status == 3){
+                        addScore = Double.valueOf(settingService.selectBySysTypeAndTypeName(new Setting("荣誉榜分数","无偿帮助")).getTypeValue());
+                    } else if (status == 12){
+                        addScore = Double.valueOf(settingService.selectBySysTypeAndTypeName(new Setting("荣誉榜分数","有偿帮助")).getTypeValue());
+                    }
+                    User user = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
+                    Double finalScore = user.getHonerScore() + addScore;
+                    user.setAccount(finalScore);
+                    userservice.update(user);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
             }
@@ -827,7 +843,7 @@ public class AppTaskInfoController extends BaseController{
                 taskInfoService.update(taskInfo);
                 //记录订单
                 //平台收出记录
-                PlatformRecord platformRecordTop = new PlatformRecord( "taskInfoTemp",
+                PlatformRecord platformRecordTop = new PlatformRecord( "taskInfoTop",
                         "收入",
                         taskInfo.getId(),
                         user.getId(),
@@ -847,7 +863,7 @@ public class AppTaskInfoController extends BaseController{
                         "平台",
                         money,
                         taskInfo.getId(),
-                        null,
+                        "普通求助置顶收入,置顶"+time+"天",
                         new Date(),
                         true,
                         null

@@ -38,7 +38,7 @@
   <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select
     <include refid="Base_Column_List" />
-    from hh_setting
+    from hh_setting order by  convert(sys_type using gbk)
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

@@ -95,7 +95,7 @@ public class AppAlipayController {
                 MoneyRecord moneyRecord = moneyRecordService.getByTradeOrderNoUniq(out_trade_no);
 
                 if (moneyRecord != null){
-                    Boolean step1 = moneyRecord.getMoney() == Double.valueOf(total_amount);
+                    Boolean step1 = String.valueOf(moneyRecord.getMoney()).intern() == String.valueOf(Double.valueOf(total_amount)).intern();
                     Boolean step2 = PID.intern() == seller_id.intern();
                     Boolean step3 = APPID.intern() == app_id.intern();
                     logger.info("pay666666" + app_id + seller_id);

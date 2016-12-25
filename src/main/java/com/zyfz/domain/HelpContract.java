@@ -17,6 +17,7 @@ public class HelpContract {
      * 1表示紧急求助者接受其帮助，
      * 2表示提供帮助的人完成任务，
      * 3表示紧急求助着确认任务完成
+     * 4表示求助者取消求助
      */
     private Integer status;
 

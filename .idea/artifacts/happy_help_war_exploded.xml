@@ -50,6 +50,12 @@
           <element id="library" level="project" name="Maven: com.paly:json:1.0" />
           <element id="library" level="project" name="Maven: com.paly:ueditor:1.1.2" />
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:4.4.0" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:4.4.0" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queryparser:4.4.0" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:4.4.0" />
+          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:4.4.0" />
+          <element id="library" level="project" name="Maven: jakarta-regexp:jakarta-regexp:1.4" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-core:1.2.2" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.3" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-ehcache:1.2.2" />
@@ -68,12 +74,6 @@
           <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
           <element id="library" level="project" name="Maven: jaxen:jaxen:1.1.6" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-core:4.4.0" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-analyzers-common:4.4.0" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queryparser:4.4.0" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-queries:4.4.0" />
-          <element id="library" level="project" name="Maven: org.apache.lucene:lucene-sandbox:4.4.0" />
-          <element id="library" level="project" name="Maven: jakarta-regexp:jakarta-regexp:1.4" />
         </element>
       </element>
       <element id="directory" name="META-INF">

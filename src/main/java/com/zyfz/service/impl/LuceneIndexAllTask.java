@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -27,16 +28,8 @@ public class LuceneIndexAllTask implements Runnable {
 
     @Override
     public void run() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(oldDate);
-        int oth = calendar.get(Calendar.HOUR);
-        int otm = calendar.get(Calendar.MINUTE);
-        calendar.setTime(new Date());
-        int nth = calendar.get(Calendar.HOUR);
-        int ntm = calendar.get(Calendar.MINUTE);
-
         try {
-            if ((ntm - otm) > 2){
+            if ((new Date().getTime() - oldDate.getTime()) > 360000){
                 System.out.print("开始重新构建索引");
                 //删除所有索引
                 luceneHelper.deleteAllIndex();

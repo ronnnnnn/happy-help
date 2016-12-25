@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.zyfz.global.SystemMessageString.REJECT_CONTENT;
+import static com.zyfz.global.SystemMessageString.REQUEST_TITLE;
+
 /**
  * Created by ron on 16-11-19.
  */
@@ -59,6 +62,9 @@ public class AppHelpInfoController extends BaseController{
 
     @Resource
     ThreadPoolTaskExecutor threadPool;
+
+    @Resource
+    ISystemMessageService systemMessageService;
 
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
@@ -267,6 +273,12 @@ public class AppHelpInfoController extends BaseController{
         }
     }
 
+    /**
+     * 发布者操作
+     * @param emergencyId
+     * @param userId    帮助者ID
+     * @param response
+     */
     @RequestMapping(value = "/api/v1/help/publish-handle",method = RequestMethod.POST)
     public void pulishHandler(
             @RequestParam("emergencyId")Integer emergencyId,
@@ -281,6 +293,18 @@ public class AppHelpInfoController extends BaseController{
                 helpInfo.setIsCompeleted(true);
                 helpInfoService.update(helpInfo);
                 helpContract.setStatus(3);
+
+                //
+                Double addScore = 1d;
+                try {
+                    addScore = Double.valueOf(settingService.selectBySysTypeAndTypeName(new Setting("荣誉榜分数","紧急求助")).getTypeValue());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                User user = userservice.getOneById(new User(userId));
+                Double finalScore = user.getHonerScore() + addScore;
+                user.setHonerScore(finalScore);
+                userservice.update(user);
             }
             helpInfoContractService.update(helpContract);
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
@@ -302,4 +326,131 @@ public class AppHelpInfoController extends BaseController{
             super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
         }
     }
+
+    @RequestMapping(value = "/api/v1/help-info",method = RequestMethod.DELETE)
+    public void deleteHelpInfo(@RequestParam("id") Integer id,HttpServletResponse response){
+        try {
+            HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(id));
+            helpInfo.setIsDeleted(true);
+            helpInfo.setIsCompeleted(true);
+            helpInfoService.update(helpInfo);
+
+            List<HelpContract> helpContracts = helpInfoContractService.selectByHelpInfo(id);
+            if (helpContracts != null) {
+                for (HelpContract helpContract : helpContracts) {
+                    helpContract.setStatus(4);
+                    helpInfoContractService.update(helpContract);
+
+                    //处理消息
+                    SystemMessage systemMessage = new SystemMessage("helpinfo",
+                            helpContract.getHhUserId(),
+                            new Date(),
+                            "紧急求助消息状态",
+                            "您帮助的:\"" + helpInfo.getContext() + "\",已经被取消",
+                            String.valueOf(helpContract.getHhHelpInfoId()));
+                    systemMessageService.save(systemMessage);
+                }
+            }
+            //进行退款
+            Setting setting = settingService.selectBySysTypeAndTypeName(new Setting("紧急求助","扣款比例"));
+            Setting fee1 = settingService.selectBySysTypeAndTypeName(new Setting("推送范围","全国"));
+            Setting fee2 = settingService.selectBySysTypeAndTypeName(new Setting("推送范围","省"));
+            Setting fee3 = settingService.selectBySysTypeAndTypeName(new Setting("推送范围","市"));
+            Setting fee4 = settingService.selectBySysTypeAndTypeName(new Setting("推送范围","区"));
+            Double percent = 0d;
+            if (setting != null){
+                percent = Double.valueOf(setting.getTypeValue());
+            }
+            User user = userservice.getOneById(new User(helpInfo.getHhUserId()));
+            Double myFeere = 0d;
+            if ( fee1 != null && helpInfo.getAreaRange().intern()=="全国".intern() ){
+                myFeere = Double.valueOf(fee1.getTypeValue());
+            }else if (fee2 != null && helpInfo.getAreaRange().intern()=="省".intern() ){
+                myFeere = Double.valueOf(fee2.getTypeValue());
+            }else if (helpInfo.getAreaRange().intern()=="市".intern() && fee3 != null){
+                myFeere = Double.valueOf(fee3.getTypeValue());
+            }else if (helpInfo.getAreaRange().intern()=="区".intern() && fee4 != null){
+                myFeere = Double.valueOf(fee4.getTypeValue());
+            }
+            Double returnMoney = ((100-percent)/100)*myFeere;
+            Double finalMoney = returnMoney + user.getAccount();
+            user.setAccount(finalMoney);
+            userservice.update(user);
+            //记录平台收支情况
+            PlatformRecord platformRecord = new PlatformRecord( "helpInfoReturn",
+                    "支出",
+                    helpInfo.getId(),
+                    user.getId(),
+                    returnMoney,
+                    "紧急求助失败,退还金额",
+                    new Date(),
+                    null);
+            platformRecordService.save(platformRecord);
+
+            super.writeJson(new ResponseMessage<String>(0,"success",""),response);
+        }catch (Exception e){
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
+
+    @RequestMapping(value = "/api/v1/republish",method = RequestMethod.PATCH)
+    public void republishHelpInfo(@RequestParam("id")Integer id,HttpServletResponse response){
+        try {
+            HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(id));
+            helpInfo.setIsDeleted(false);
+            helpInfo.setIsCompeleted(false);
+            Integer republishTime = helpInfo.getRepublishTimes() + 1;
+            helpInfo.setRepublishTimes(republishTime);
+            helpInfo.setCreateTime(new Date());
+            helpInfoService.update(helpInfo);
+            List<HelpContract> helpContracts = helpInfoContractService.selectByHelpInfo(id);
+            for (HelpContract helpContract : helpContracts){
+                helpInfoContractService.deleteOneById(helpContract);
+                //处理消息
+                SystemMessage systemMessage = new SystemMessage("helpinfo",
+                        helpContract.getHhUserId(),
+                        new Date(),
+                        "紧急求助消息状态",
+                        "您帮助的:\"" + helpInfo.getContext() + "\",已经被取消",
+                        String.valueOf(helpContract.getHhHelpInfoId()));
+                systemMessageService.save(systemMessage);
+            }
+
+            //再次进行推送
+            //推送的内容
+            AppPushModel appPushModel = new AppPushModel("紧急求助消息",helpInfo.getContext(),"test");
+            //推送对象
+            //处理推送
+            Push push = null;
+            if (helpInfo.getAreaRange().intern() == "全国".intern()){
+                push = new Push();
+            } else if (helpInfo.getAreaRange().intern() == "省".intern()){
+                push = new Push(helpInfo.getProvince(),null,null,null);
+            } else if (helpInfo.getAreaRange().intern() == "市".intern()){
+                push = new Push(helpInfo.getProvince(),helpInfo.getCity(),null,null);
+            } else if (helpInfo.getAreaRange().intern() == "区".intern()){
+                push = new Push(helpInfo.getProvince(),helpInfo.getCity(),helpInfo.getArea(),null);
+            }
+            List<Push> pushes = pushService.selectByRange(push);
+            //附带值
+            String helpInfoId = String.valueOf(id);
+            //推送任务
+            Category category = new Category();
+            category.setId(helpInfo.getHhCategoryId());
+            String categoryName = categoryService.getOneById(category).getCategoryName();
+            PushTask pushTask = new PushTask(categoryName,appPushModel,pushes,helpInfoId,helpInfo.getHhUserId());
+            //加入线程池
+            threadPool.execute(pushTask);
+            super.writeJson(new ResponseMessage<String>(0,"success",""),response);
+        }catch (Exception e){
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
+
 }

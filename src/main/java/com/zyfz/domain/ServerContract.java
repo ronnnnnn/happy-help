@@ -11,6 +11,7 @@ public class ServerContract {
      * 1表示服务发布者接单
      * 2表示服务发布者完成订单
      * 3表示用户确认完成
+     *
      */
     private Integer status;
 
