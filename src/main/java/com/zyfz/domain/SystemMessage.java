@@ -5,7 +5,7 @@ import java.util.Date;
 public class SystemMessage {
     private Integer id;
 
-    private String type;
+    private String type;//taskinfo(普通求助消息),serverinfo(公共服务),helpinfo(紧急求助)
 
     private Integer hhuserid;
 

@@ -227,7 +227,7 @@ public class AppTaskInfoController extends BaseController{
                 *处理消息,推送给发布人
                 */
                if (taskContract.getStatus() == 6){ //提价才进行帮助,第一次提价,消息提醒,让用户进行同意或者还价(根据taskinfo的status进行判断显示)
-                   SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
+                   SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
                    systemMessageService.save(systemMessage);
 
                    //如果无偿转化为有偿修改taskinfo信息
@@ -235,7 +235,7 @@ public class AppTaskInfoController extends BaseController{
                    taskInfoService.update(mtaskInfo);
 
                }else { //其他情况进行帮助,无偿和有偿接受,消息提醒,让用户进行同意
-                   SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.ACCEPT_MESSAGE,pageMessage);
+                   SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.ACCEPT_MESSAGE,pageMessage);
                    systemMessageService.save(systemMessage);
                }
                /**
@@ -256,7 +256,7 @@ public class AppTaskInfoController extends BaseController{
                /**
                 * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
+               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
                systemMessageService.save(systemMessage);
                /**
                 * 记录交易过程
@@ -282,7 +282,7 @@ public class AppTaskInfoController extends BaseController{
                /**
                 * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.ING_MESSAGE,pageMessage);
+               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.ING_MESSAGE,pageMessage);
                systemMessageService.save(systemMessage);
 
                /**
@@ -305,7 +305,7 @@ public class AppTaskInfoController extends BaseController{
                /**
                 * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskInfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.COMPELETE_MESSAGE,pageMessage);
+               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.COMPELETE_MESSAGE,pageMessage);
                systemMessageService.save(systemMessage);
 
                /**

@@ -29,8 +29,11 @@
 			}, {
 				field : 'money',
 				title : '申请提现金额',
-				width : fixWidth(0.06),
+				width : fixWidth(0.26),
 				align : 'center',
+				formatter : function(value, row, index) {
+					return "申请金额"+value+"元(需转账" + value * 0.985 + "元/服务费"+value * 0.015+"元)"
+				}
 			},{
 				field : 'withdrawAccount',
 				title : '提现帐号',
@@ -66,7 +69,7 @@
 			},{
 				field : 'user',
 				title : '用户信息',
-				width : fixWidth(0.25),
+				width : fixWidth(0.08),
 				align : 'center',
 				formatter : function(value, row, index) {
 //					var mstrig = "";
