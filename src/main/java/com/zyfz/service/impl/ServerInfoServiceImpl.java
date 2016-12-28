@@ -120,4 +120,12 @@ public class ServerInfoServiceImpl implements IServerInfoService{
     public List<ServerInfo> selectByCategory(Integer cid) {
         return serverInfoMapper.selectByCategory(cid);
     }
+
+    @Override
+    public ServerInfo selectByUniq(Integer id) {
+        ServerInfo serverInfo = serverInfoMapper.selectByPrimaryKey(id);
+        List<ServerContract> serverContracts = serverContractMapper.selectByServerId(serverInfo.getId());
+        serverInfo.setServerContracts(serverContracts);
+        return serverInfo;
+    }
 }

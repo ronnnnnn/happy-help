@@ -64,7 +64,6 @@
     SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id
     where si.id = #{id,jdbcType=INTEGER}
-    order by si.create_time desc
   </select>
 
   <select id="selectAll"  resultMap="BaseResultMap">
@@ -87,7 +86,7 @@
      order by si.create_time desc
   </select>
 
-  <select id="select4App"  parameterType="com.zyfz.domain.ServerInfo" resultMap="ServerInfoWithUserMap" flushCache="false">
+  <select id="select4App"  parameterType="com.zyfz.domain.ServerInfo" resultMap="ServerInfoWithUserMap">
     select siu.*, c.category_name from (SELECT si.*,u.id as userid, u.phone as u_phone,u.username,u.real_name,u.nickname,u.email,u.honer_score,u.grade_total,u.grade_times,u.photo
     FROM happy_help.hh_server_info si left join happy_help.hh_user u on si.hh_user_id = u.id) siu left join happy_help.hh_category c on siu.hh_category_id = c.id
     <where>

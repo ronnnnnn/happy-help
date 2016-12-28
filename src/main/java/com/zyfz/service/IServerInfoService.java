@@ -22,4 +22,6 @@ public interface IServerInfoService extends IBaseService<ServerInfo>{
 
     public List<ServerInfo> selectByCategory(Integer cid);
 
+    public ServerInfo selectByUniq(Integer id);
+
 }

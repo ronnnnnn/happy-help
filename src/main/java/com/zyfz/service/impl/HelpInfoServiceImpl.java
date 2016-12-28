@@ -3,7 +3,9 @@ package com.zyfz.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.zyfz.dao.HelpContractMapper;
 import com.zyfz.dao.HelpInfoMapper;
+import com.zyfz.domain.HelpContract;
 import com.zyfz.domain.HelpInfo;
 import com.zyfz.domain.Setting;
 import com.zyfz.model.Datagrid;
@@ -24,6 +26,9 @@ import java.util.List;
 public class HelpInfoServiceImpl implements IHelpInfoService {
     @Resource
     HelpInfoMapper helpInfoMapper;
+
+    @Resource
+    HelpContractMapper helpContractMapper;
 
     @Resource
     ISettingService settingService;
@@ -111,5 +116,13 @@ public class HelpInfoServiceImpl implements IHelpInfoService {
         Date date = calendar.getTime();
         helpInfo.setCreateTime(date);
         return helpInfoMapper.selectByTime(helpInfo);
+    }
+
+    @Override
+    public HelpInfo selectByUniq(Integer id) {
+        HelpInfo helpInfo = helpInfoMapper.selectByPrimaryKey(id);
+        List<HelpContract> helpContracts = helpContractMapper.selectByHelpInfo(helpInfo.getId());
+        helpInfo.setHelpContracts(helpContracts);
+        return helpInfo;
     }
 }

@@ -23,4 +23,6 @@ public interface IHelpInfoService extends IBaseService<HelpInfo> {
     public List<HelpInfo> selectByCategory(Integer cid);
 
     public List<HelpInfo> selectByTime();
+
+    public HelpInfo selectByUniq(Integer id);
 }

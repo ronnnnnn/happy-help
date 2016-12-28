@@ -517,4 +517,16 @@ public class AppHelpInfoController extends BaseController{
         }
     }
 
+    @RequestMapping(value = "/api/v1/anon/helpinfo/detail",method = RequestMethod.GET)
+    public void getHelpInfoDetail(@RequestParam("messageId")Integer messageId,HttpServletResponse response){
+        try {
+            super.writeJson(new ResponseMessage<HelpInfo>(0,"success",helpInfoService.selectByUniq(messageId)),response);
+        } catch (Exception e){
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
+
 }

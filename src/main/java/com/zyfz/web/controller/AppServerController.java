@@ -375,4 +375,16 @@ public class AppServerController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "/api/v1/anon/server/detail",method=RequestMethod.GET)
+    public void getDetailMsg(@RequestParam("messageId")Integer messageId,HttpServletResponse response){
+        try {
+            super.writeJson(new ResponseMessage<ServerInfo>(0,"success",serverInfoService.selectByUniq(messageId)),response);
+        }catch (Exception e){
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
+    }
+
 }

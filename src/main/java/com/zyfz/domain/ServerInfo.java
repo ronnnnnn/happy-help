@@ -71,6 +71,8 @@ public class ServerInfo {
 
     private Date serverTimeEnd;
 
+    private List<ServerContract> serverContracts;
+
     public ServerInfo() {
         super();
     }
@@ -101,6 +103,14 @@ public class ServerInfo {
 
     public void setServerContract(ServerContract serverContract) {
         this.serverContract = serverContract;
+    }
+
+    public List<ServerContract> getServerContracts() {
+        return serverContracts;
+    }
+
+    public void setServerContracts(List<ServerContract> serverContracts) {
+        this.serverContracts = serverContracts;
     }
 
     public String getCategoryName() {
