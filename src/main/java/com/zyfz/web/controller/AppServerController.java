@@ -208,7 +208,7 @@ public class AppServerController extends BaseController {
      */
     @RequestMapping(value = "/api/v1/custom/serverInfo",method = RequestMethod.POST)
     public void updateContract(AppServerContractModel appServerContractModel,HttpServletResponse response){
-
+        User visitorUser = userservice.getOneById(new User(appServerContractModel.getUserId()));
         try {
             ServerContract serverContractts = new ServerContract();
             serverContractts.setHhServerInfoId(appServerContractModel.getServiceId());
@@ -229,7 +229,7 @@ public class AppServerController extends BaseController {
                         serverInfo.getHhUserId(),
                         new Date(),
                         SERVER_REQUEST_TITLE,
-                        SERVER_REQUEST_CONTENT,
+                        "您提供的服务,"+visitorUser.getNickname()+"("+visitorUser.getUsername()+")已预约",
                         StringUtils.collectionToDelimitedString(pageMessage,","));
                 systemMessageService.save(systemMessage);
             } else if (mServerContract.getStatus() == 2){
@@ -263,7 +263,7 @@ public class AppServerController extends BaseController {
                         serverInfo.getHhUserId(),
                         new Date(),
                         SERVER_REQUEST_TITLE,
-                        SERVER_REQUEST_CONTENT2,
+                        "您提供的服务,"+visitorUser.getNickname()+"("+visitorUser.getUsername()+")已确认完成",
                         StringUtils.collectionToDelimitedString(pageMessage,","));
                 systemMessageService.save(systemMessage);
             }
@@ -301,13 +301,25 @@ public class AppServerController extends BaseController {
             mServerContract.setStatus(status);
             serverContractService.update(mServerContract);
 
+            ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(serviceId));
             //处理消息,发送服务预约者 pageMessage serverInfoId
+            List<Integer> pageMsg = new ArrayList<Integer>();
+            pageMsg.add(serviceId);
+            pageMsg.add(userIdOfBespeak);
+
+            String contentMsg = null;
+            if (status == 1){
+                contentMsg = "您预约的服务("+serverInfo.getContext()+")"+"商家已接单";
+            } else if(status == 2){
+                contentMsg = "您预约的服务("+serverInfo.getContext()+")"+"商家已完成";
+            }
+
             SystemMessage systemMessage = new SystemMessage("serverinfo",
                     userIdOfBespeak,
                     new Date(),
                     SERVER_CHECK_TITLE,
-                    SERVER_CHECK_CONTENT,
-                   String.valueOf(serviceId));
+                    contentMsg,
+                   StringUtils.collectionToDelimitedString(pageMsg,","));
             systemMessageService.save(systemMessage);
 
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);

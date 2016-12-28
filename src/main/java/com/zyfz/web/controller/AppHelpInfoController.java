@@ -171,6 +171,24 @@ public class AppHelpInfoController extends BaseController{
                                                                  null);
             platformRecordService.save(platformRecord);
 
+            //处理消息,
+            SystemMessage systemMessage = new SystemMessage("helpinfo",
+                    mUser.getId(),
+                    new Date(),
+                    "紧急求助消息",
+                    "您发布的紧急求助("+appHelpInfoModel.getAssistanceContent()+")已经推送成功",
+                    helpInfoId);
+            systemMessageService.save(systemMessage);
+
+            //处理消息,金额变动提醒
+            SystemMessage systemMessage2 = new SystemMessage("userAccount",
+                    mUser.getId(),
+                    new Date(),
+                    REQUEST_TITLE,
+                    REJECT_CONTENT,
+                    helpInfoId);
+            systemMessageService.save(systemMessage2);
+
 
             Map<String,String> map = new HashMap<String, String>();
             map.put("MSG","成功返回!");
@@ -183,7 +201,7 @@ public class AppHelpInfoController extends BaseController{
     }
 
     @RequestMapping(value = "/api/v1/anon/helpInfo-list",method = RequestMethod.GET)
-    public void getHelpInfoList(@RequestParam(value = "userId",required = false)Integer userId,
+    public void getHelpInfoList(@RequestParam(value ="userId",required = false)Integer userId,
                                 @RequestParam(value ="pn",required = false)Integer pn,
                                 @RequestParam(value ="categoryName",required = false)String categoryName,
                                 @RequestParam(value ="isCompeleted",required = false)Boolean isCompeleted,
@@ -251,6 +269,11 @@ public class AppHelpInfoController extends BaseController{
     public void visitorHandle(@RequestParam("emergencyId")Integer emergencyId,
                               @RequestParam("userId")Integer userId,
                               HttpServletResponse response){
+        HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(emergencyId));
+        User user = userservice.getOneById(new User(userId));
+        List<Integer> pageMsg = new ArrayList<Integer>();
+        pageMsg.add(emergencyId);
+        pageMsg.add(userId);
         try{
             HelpContract helpContract = helpInfoContractService.selectByHelpInfoAndUserV1(new HelpContract(userId,emergencyId));
             //订单为空,第一次请求帮助
@@ -260,9 +283,25 @@ public class AppHelpInfoController extends BaseController{
                                                                 emergencyId,
                                                                 new Date());
                 helpInfoContractService.save(helpContract1);
+                //处理消息,
+                SystemMessage systemMessage = new SystemMessage("helpinfo",
+                        helpInfo.getHhUserId(),
+                        new Date(),
+                        "紧急求助消息",
+                        "您发布的紧急求助("+helpInfo.getContext()+"),"+user.getNickname()+"("+user.getUsername()+")"+"请求进行帮助.",
+                        StringUtils.collectionToDelimitedString(pageMsg,","));
+                systemMessageService.save(systemMessage);
             } else if (helpContract.getStatus() == 1){
                 helpContract.setStatus(2);
                 helpInfoContractService.update(helpContract);
+                //处理消息,
+                SystemMessage systemMessage = new SystemMessage("helpinfo",
+                        helpInfo.getHhUserId(),
+                        new Date(),
+                        "紧急求助消息",
+                        "您发布的紧急求助("+helpInfo.getContext()+"),"+user.getNickname()+"("+user.getUsername()+")"+"已经完成任务.",
+                        StringUtils.collectionToDelimitedString(pageMsg,","));
+                systemMessageService.save(systemMessage);
             }
 
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
@@ -284,15 +323,40 @@ public class AppHelpInfoController extends BaseController{
             @RequestParam("emergencyId")Integer emergencyId,
             @RequestParam("userId")Integer userId,
             HttpServletResponse response){
+
+        HelpInfo mHelpInfo = helpInfoService.getOneById(new HelpInfo(emergencyId));
+        User publishUser = userservice.getOneById(new User(mHelpInfo.getHhUserId()));
+        User visitorUser = userservice.getOneById(new User(userId));
+        List<Integer> pageMsg = new ArrayList<Integer>();
+        pageMsg.add(emergencyId);
+        pageMsg.add(userId);
+
         try {
             HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(emergencyId));
             HelpContract helpContract = helpInfoContractService.selectByHelpInfoAndUserV1(new HelpContract(userId,emergencyId));
             if (helpContract.getStatus() == 0){
                 helpContract.setStatus(1);
+                //处理消息,推给帮助者
+                SystemMessage systemMessage = new SystemMessage("helpinfo",
+                        visitorUser.getId(),
+                        new Date(),
+                        "紧急求助消息",
+                        "您愿意帮助紧急求助("+mHelpInfo.getContext()+"),"+publishUser.getNickname()+"("+publishUser.getUsername()+")"+"同意您进行帮助.",
+                        StringUtils.collectionToDelimitedString(pageMsg,","));
+                systemMessageService.save(systemMessage);
             } else if (helpContract.getStatus() == 2){
                 helpInfo.setIsCompeleted(true);
                 helpInfoService.update(helpInfo);
                 helpContract.setStatus(3);
+
+                //处理消息,推给帮助者
+                SystemMessage systemMessage = new SystemMessage("helpinfo",
+                        visitorUser.getId(),
+                        new Date(),
+                        "紧急求助消息",
+                        "您愿意帮助紧急求助("+mHelpInfo.getContext()+"),"+publishUser.getNickname()+"("+publishUser.getUsername()+")"+"已确认完成.",
+                        StringUtils.collectionToDelimitedString(pageMsg,","));
+                systemMessageService.save(systemMessage);
 
                 //
                 Double addScore = 1d;

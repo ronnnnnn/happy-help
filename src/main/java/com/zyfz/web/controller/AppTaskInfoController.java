@@ -197,7 +197,7 @@ public class AppTaskInfoController extends BaseController{
     @RequestMapping(value = "/api/v1/taskInfo/accept",method = RequestMethod.POST)
     public void acceptTask(@RequestBody TaskContract taskContract, HttpServletResponse response){
        try {
-
+           User user = userservice.getOneById(new User(taskContract.getHhUserId()));
            /**
             * 存储pageMeassge
             */
@@ -227,7 +227,8 @@ public class AppTaskInfoController extends BaseController{
                 *处理消息,推送给发布人
                 */
                if (taskContract.getStatus() == 6){ //提价才进行帮助,第一次提价,消息提醒,让用户进行同意或者还价(根据taskinfo的status进行判断显示)
-                   SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
+                   String content = "您发布的普通求助消息,"+ user.getNickname() + "("+user.getUsername()+")"+"愿意进行帮助,但要求提价,快去看看吧!" ;
+                   SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,content,pageMessage);
                    systemMessageService.save(systemMessage);
 
                    //如果无偿转化为有偿修改taskinfo信息
@@ -235,7 +236,8 @@ public class AppTaskInfoController extends BaseController{
                    taskInfoService.update(mtaskInfo);
 
                }else { //其他情况进行帮助,无偿和有偿接受,消息提醒,让用户进行同意
-                   SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,SystemMessageString.ACCEPT_MESSAGE,pageMessage);
+                   String content = "您发布的普通求助消息,"+ user.getNickname() + "("+user.getUsername()+")"+"愿意进行帮助,快去看看吧!" ;
+                   SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(), SystemMessageString.ALL_USE_TITLE,content,pageMessage);
                    systemMessageService.save(systemMessage);
                }
                /**
@@ -256,7 +258,8 @@ public class AppTaskInfoController extends BaseController{
                /**
                 * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.UP_PRICE_MESSAGE,pageMessage);
+               String content = "您发布的普通求助消息,"+ user.getNickname() + "("+user.getUsername()+")"+"愿意进行帮助,但坚决要求提价,快去看看吧!";
+               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,content,pageMessage);
                systemMessageService.save(systemMessage);
                /**
                 * 记录交易过程
@@ -282,7 +285,8 @@ public class AppTaskInfoController extends BaseController{
                /**
                 * 处理消息,推送给发布者
                 */
-               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.ING_MESSAGE,pageMessage);
+               String content = "您发布的普通求助消息,"+ user.getNickname() + "("+user.getUsername()+")"+"愿意接受,帮助已开始,快去看看吧!";
+               SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,content,pageMessage);
                systemMessageService.save(systemMessage);
 
                /**
@@ -305,6 +309,7 @@ public class AppTaskInfoController extends BaseController{
                /**
                 * 处理消息,推送给发布者
                 */
+               String content = "您发布的普通求助消息,"+ user.getNickname() + "("+user.getUsername()+")"+"完成了,快去看看吧!";
                SystemMessage systemMessage = new SystemMessage("taskinfo",mtaskInfo.getHhUserId(),new Date(),SystemMessageString.ALL_USE_TITLE,SystemMessageString.COMPELETE_MESSAGE,pageMessage);
                systemMessageService.save(systemMessage);
 
@@ -443,11 +448,12 @@ public class AppTaskInfoController extends BaseController{
                         taskContract1.setStatus(13);
                         taskContractService.update(taskContract1);
                         //发送消息
+                        String rejectMSG = "您帮助中的求助消息("+taskInfo.getContext()+")"+",被抢先一步完成了,快去看看吧";
                         SystemMessage systemMessage = new SystemMessage("taskinfo",
                                 taskContract1.getHhUserId(),
                                 new Date(),
                                 REQUEST_TITLE,
-                                REJECT_CONTENT,
+                                rejectMSG,
                                 String.valueOf(taskContract.getHhTaskInfoId()));
                         systemMessageService.save(systemMessage);
                     }
@@ -460,11 +466,12 @@ public class AppTaskInfoController extends BaseController{
                 }
                 taskContractService.update(taskContract);
                 //发布消息给当前请求者
+                String agreeMsg= "您愿意进行帮助的求助消息("+taskInfo.getContext()+")"+",请您去帮忙,快去看看吧";
                 SystemMessage systemMessage = new SystemMessage("taskinfo",
                         taskContract.getHhUserId(),
                         new Date(),
                         REQUEST_TITLE,
-                        AGREE_CONTENT,
+                        agreeMsg,
                         String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage);
 
@@ -494,6 +501,16 @@ public class AppTaskInfoController extends BaseController{
                         }
                         paidUser.setAccount(paidAccount);
                         userservice.update(paidUser);
+                        //处理消息,金钱变动提醒,服务方金额增加
+                        String accountMsg = "您的帐户金额变动,账户支出" + taskContract.getMoney() + "元(普通求助服务费)";
+                        SystemMessage systemMessageA = new SystemMessage("userAccount",
+                                paidUser.getId(),
+                                new Date(),
+                                DEAL_MESSAGE_TITLE,
+                                accountMsg,
+                                String.valueOf(taskContract.getHhTaskInfoId()));
+                        systemMessageService.save(systemMessageA);
+
 
                         //处理平台收支记录
                         //手续费收入
@@ -606,11 +623,12 @@ public class AppTaskInfoController extends BaseController{
                 platformRecordService.save(platformRecord4TempOut);
 
                //处理消息,金钱变动提醒,服务方金额增加
-                SystemMessage systemMessage2 = new SystemMessage("taskinfo",
+                String accountMsg = "您的帐户金额变动,账户增加" + taskContract.getMoney() + "元(普通求助服务费)";
+                SystemMessage systemMessage2 = new SystemMessage("userAccount",
                             serviceUser.getId(),
                             new Date(),
                             DEAL_MESSAGE_TITLE,
-                            DEAL_MESSAGE_CONTENT_ADD,
+                            accountMsg,
                             String.valueOf(taskContract.getHhTaskInfoId()));
                 systemMessageService.save(systemMessage2);
 
