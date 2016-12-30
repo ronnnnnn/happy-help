@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,9 @@ public class LoginController extends BaseController {
 
 
     @RequestMapping(value = "/login")
-    public ModelAndView showLoginForm(HttpServletRequest req, HttpServletResponse rep) {
+    public ModelAndView showLoginForm(@RequestParam(value = "kickout",required = false)String kickout, HttpServletRequest req, HttpServletResponse rep) {
         String exceptionClassName = (String)req.getAttribute("shiroLoginFailure");
+        logger.info(kickout);
         String error = null;
         int errorCode = 50101;
         if(UnknownAccountException.class.getName().equals(exceptionClassName)) {
@@ -48,6 +50,9 @@ public class LoginController extends BaseController {
         } else if(exceptionClassName != null) {
             error = "登录密码错误次数太多,您的帐号帐号暂时不能登录" ;
             errorCode =  40105;//其他错误
+        } else if(kickout != null) {
+            error = "您的帐号已在异地登录,如有异常及时更改密码" ;
+            errorCode =  40106;//其他错误
         }
 
         //web端管理登录成功后不允许退回到登录界面，app则返回登录成功

@@ -17,12 +17,12 @@ public class AlipayConfig {
 	/**
 	 * 支付宝支付业务：入参app_id
 	 */
-	public static final String APPID = "2016120103710069";
+	public static final String APPID = "2016121904425820";
 
-	public static final String PID = "2088812779503152";
+	public static final String PID = "2088521478612514";
 
 	//合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串，查看地址：https://openhome.alipay.com/platform/keyManage.htm?keyType=partner
-	public static String PARTNER = "2088812779503152";
+	public static String PARTNER = "2088521478612514";
 
 	//商户的私钥,需要PKCS8格式，RSA公私钥生成：https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.nBDxfy&treeId=58&articleId=103242&docType=1
 	public static final String RSA_PRIVATE = "MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAJIFf0TZ5ZVbVj+RTmvirfWzUdi88q0jPRZqT5fMXdxQAsBy5ISv7IG/Ja/G+CDAXWyhtSPsZhDi/Ago2JcOM4NDPrZydqKm8i8aMXzLqbWYG1MlfQHu6rufP8a1voK6NlV+8A4wFAV17yQVI+IEqKc50SH1hojtk8KwwILlinSLAgMBAAECgYBUh/AkOIvqiaSFSiX+2IviJ7vi34cQ6cxsVIDdHIbdikf9hsV5dqpQdgpoFqP/ubybrYVCVZDEh9JlGtg/og35ODKF9P8icL3et9FpqYuN5asRkAw8CQMfoLdLsiTp359QI4PK8GEcqOOHSm9CKB83Kp5vZIWUo6QUDPVhAjCBMQJBAMIHrQ1znq4iwaN5lqCA4LEdY67YDaTaX9RKz+wUzBdaP58Ut6MVDaf4cN+qPEYe23K3tJOi31TNZ3VP9iSSzDMCQQDAqInMnydbiIwDN7CnL+FGqtz8z0nhw5e7xLVoFKn3mIJUuhpMtCt1PnXYhbOYPiHkhZliXlq3CIaxlqkw/t5JAkEAk3uwL5Rd3jEvDOqD8vZjVF1pguJY5KDUzJIdH27jfzCrQWlG+KAtJCs06N4GOKqF1doLWVko9tW2uTYRe9VVfwJBAJjs7zzaVE5m6+Sd7v42llYWyIVwMRAgxq+ILArq5COiDkoc00VxelF9e+Ob9XvyTcrsdV1M0isZfHk4wyIeHOkCQQCVBi2z7xfUmxZxGJBpRr7xGtR4/ddaQvFazFu2BwG6yvm2KPvsqfDZxOjK8aWtjTUW/+RkLmPkNKG1Tu7TrZyK";

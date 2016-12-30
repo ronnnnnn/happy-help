@@ -109,6 +109,16 @@
     <!--用于根据当前登录用户身份获取User信息放入request；然后就可以通过request获取User-->
     <bean id="sysUserFilter" class="com.zyfz.web.filter.SysUserFilter"/>
 
+    <!--控制并发人数-->
+    <bean id="kickoutSessionControlFilter"
+          class="com.zyfz.web.filter.KickoutSessionControlFilter">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="kickoutAfter" value="false"/>
+        <property name="maxSession" value="1"/>
+        <property name="kickoutUrl" value="/login?kickout=out"/>
+    </bean>
+
     <!-- Shiro的Web过滤器 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -117,6 +127,7 @@
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <entry key="sysUser" value-ref="sysUserFilter"/>
+                <entry key="kickout" value-ref="kickoutSessionControlFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
@@ -125,6 +136,7 @@
                 /css/** = anon
                 /jslib/** = anon
                 /ueditor/** = anon
+                /static/** = anon
                 /jquery-treetable/** = anon
                 /test = anon
                 /productImages/** = anon
@@ -136,7 +148,7 @@
                 /login = authc
                 /logout = logout
                 /authenticated = authc
-                /** = user,sysUser
+                /** = kickout,user,sysUser
             </value>
         </property>
     </bean>
