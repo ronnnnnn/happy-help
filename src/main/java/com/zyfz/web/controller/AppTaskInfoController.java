@@ -165,6 +165,7 @@ public class AppTaskInfoController extends BaseController{
             taskInfo.setArea(appTaskInfoModel.getArea());
             taskInfo.setStreet(appTaskInfoModel.getStreet());
             taskInfo.setContext(appTaskInfoModel.getAssistanceContent());
+            taskInfo.setDetailPosition(appTaskInfoModel.getContactLocation());
             if(appTaskInfoModel.getAssistanceType() == 0){
                 taskInfo.setIsFree(false);
             }
@@ -622,15 +623,17 @@ public class AppTaskInfoController extends BaseController{
                         taskContract.getId());
                 platformRecordService.save(platformRecord4TempOut);
 
-               //处理消息,金钱变动提醒,服务方金额增加
-                String accountMsg = "您的帐户金额变动,账户增加" + taskContract.getMoney() + "元(普通求助服务费)";
-                SystemMessage systemMessage2 = new SystemMessage("userAccount",
-                            serviceUser.getId(),
-                            new Date(),
-                            DEAL_MESSAGE_TITLE,
-                            accountMsg,
-                            String.valueOf(taskContract.getHhTaskInfoId()));
-                systemMessageService.save(systemMessage2);
+                if (oldStatus == 11){
+                   //处理消息,金钱变动提醒,服务方金额增加
+                    String accountMsg = "您的帐户金额变动,账户增加" + taskContract.getMoney() + "元(普通求助服务费)";
+                    SystemMessage systemMessage2 = new SystemMessage("userAccount",
+                                serviceUser.getId(),
+                                new Date(),
+                                DEAL_MESSAGE_TITLE,
+                                accountMsg,
+                                String.valueOf(taskContract.getHhTaskInfoId()));
+                    systemMessageService.save(systemMessage2);
+                }
 
                 //处理消息,任务完结
                 SystemMessage systemMessage = new SystemMessage("taskinfo",

@@ -46,4 +46,21 @@ public class AppSystemMessageController extends BaseController{
         }
     }
 
+    /**
+     * 处理无点击事件消息
+     */
+
+    @RequestMapping(value = "/api/v1/anon/read",method = RequestMethod.PATCH)
+    public void updateIsRead(@RequestParam("messageId")Integer messageId,HttpServletResponse response){
+        try {
+            SystemMessage systemMessage = systemMessageService.getOneById(new SystemMessage(messageId));
+            systemMessage.setIsRead(true);
+            systemMessageService.update(systemMessage);
+            super.writeJson(new ResponseMessage<String>(0,"success",""),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50701,"请求失败!",map),response);
+        }
+    }
 }

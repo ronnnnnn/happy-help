@@ -5,7 +5,7 @@ import java.util.Date;
 public class PlatformRecord {
     private Integer id;
 
-    private String recordType; //收入或支出对应的模块,紧急求助推送服务费(helpInfo),紧急求助推送服务费退还(helpInfoReturn),普通求助置顶费(taskInfoTop),普通求助手续费(taskInfoFee),普通求助金额暂存收支(taskInfoTemp)
+    private String recordType; //收入或支出对应的模块,紧急求助推送服务费(helpInfo),紧急求助推送服务费退还(helpInfoReturn),普通求助置顶费(taskInfoTop),普通求助手续费(taskInfoFee),普通求助金额暂存收支(taskInfoTemp),z中奖(prize)
 
     private String incomeType; //记录平台收入或支出
 

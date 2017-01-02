@@ -1,8 +1,14 @@
 package com.zyfz.web.controller;
 
+import com.zyfz.domain.PlatformRecord;
 import com.zyfz.domain.Prize;
+import com.zyfz.domain.SystemMessage;
+import com.zyfz.domain.User;
 import com.zyfz.model.PageModel;
+import com.zyfz.service.IPlatformRecordService;
 import com.zyfz.service.IPrizeService;
+import com.zyfz.service.ISystemMessageService;
+import com.zyfz.service.IUserservice;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.zyfz.global.SystemMessageString.DEAL_MESSAGE_TITLE;
 
 /**
  * Created by ron on 16-10-23.
@@ -23,6 +33,15 @@ import java.util.Date;
 public class PrizeController extends BaseController {
     @Resource
     IPrizeService prizeService;
+
+    @Resource
+    IUserservice userservice;
+
+    @Resource
+    IPlatformRecordService platformRecordService;
+
+    @Resource
+    ISystemMessageService systemMessageService;
 
     @RequiresPermissions("prize:view")
     @RequestMapping(value = "/list-panel",method = RequestMethod.GET)
@@ -142,16 +161,44 @@ public class PrizeController extends BaseController {
     @ResponseBody
     public Object updatePrizeStatus(@PathVariable String ids){
         try {
-            int count = 0;
-            String mids[] = ids.split(",");
-            for (String mid : mids){
-                Prize prize = new Prize();
-                prize.setId(Integer.valueOf(mid));
-                prize.setIsLottery(true);
-                prizeService.update(prize);
-                count++;
+            Prize myPrice = prizeService.getOneById(new Prize(Integer.valueOf(ids)));
+            List<User> users = new ArrayList<>();
+            myPrice.setIsLottery(true);
+            prizeService.update(myPrice);
+            //中奖金额转与中奖用户
+            users.add(userservice.findByPhone(myPrice.getArticlePhones()));
+            String[] userPhones = myPrice.getHhPhones().split(",");
+            for (String phone : userPhones){
+                users.add(userservice.findByPhone(phone));
             }
-            return count;
+
+            for (User user : users){
+                Double finalMoney = user.getAccount() + myPrice.getPrizeMoney();
+                user.setAccount(finalMoney);
+                userservice.update(user);
+
+                //平台支出记录
+                PlatformRecord platformRecord4TempOut = new PlatformRecord( "prize",
+                            "支出",
+                            null,
+                            user.getId(),
+                            myPrice.getPrizeMoney(),
+                            "",
+                            new Date(),
+                            null);
+                platformRecordService.save(platformRecord4TempOut);
+
+                    //消息推送
+                SystemMessage systemMessage2 = new SystemMessage("userAccount",
+                            user.getId(),
+                            new Date(),
+                            "恭喜您中奖了",
+                            "恭喜您,中奖了!"+myPrice.getPrizeMoney() +"元已经转到您的帐号了.",
+                            null);
+                systemMessageService.save(systemMessage2);
+                }
+
+            return true;
         }catch (Exception e){
             e.printStackTrace();
             return false;

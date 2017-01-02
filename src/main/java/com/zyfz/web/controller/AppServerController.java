@@ -17,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -66,7 +64,7 @@ public class AppServerController extends BaseController {
      * @param request
      */
 
-    @RequestMapping(value = "/api/v1/anon/server",method = RequestMethod.POST)
+    @RequestMapping(value = "/api/v1/server",method = RequestMethod.POST)
     public void addServer(AppServerModel appServerModel, HttpServletResponse response, HttpServletRequest request){
        try {
            ServerInfo serverInfo = new ServerInfo();
@@ -378,7 +376,11 @@ public class AppServerController extends BaseController {
     @RequestMapping(value = "/api/v1/anon/server/detail",method=RequestMethod.GET)
     public void getDetailMsg(@RequestParam("messageId")Integer messageId,HttpServletResponse response){
         try {
-            super.writeJson(new ResponseMessage<ServerInfo>(0,"success",serverInfoService.selectByUniq(messageId)),response);
+            SystemMessage systemMessage = systemMessageService.getOneById(new SystemMessage(messageId));
+            systemMessage.setIsRead(true);
+            systemMessageService.update(systemMessage);
+            String[] pageMSG = systemMessage.getPagemessage().split(",");
+            super.writeJson(new ResponseMessage<ServerInfo>(0,"success",serverInfoService.selectByUniq(Integer.valueOf(pageMSG[0]))),response);
         }catch (Exception e){
             e.printStackTrace();
             Map<String,String> map = new HashMap<String, String>();

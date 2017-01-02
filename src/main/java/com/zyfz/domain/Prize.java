@@ -29,6 +29,13 @@ public class Prize {
 
     private String[] userPhones;
 
+    public Prize(Integer id) {
+        this.id = id;
+    }
+    public Prize() {
+        super();
+    }
+
     public List<String> getUserPhones() {
         List<String> users =  new ArrayList<String>();
         if (hhPhones != null){

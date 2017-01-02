@@ -284,19 +284,19 @@ public class TaskInfo {
         if (country != null){
             da.add(country);
         }
-        if (province != null){
+        if (province != null && province.intern() != "P".intern()){
             da.add(province);
         }
-        if (city != null){
+        if (city != null && city.intern() != "C"){
             da.add(city);
         }
-        if (area != null){
+        if (area != null && area.intern() != "A"){
             da.add(area);
         }
-        if (street != null){
+        if (street != null && street.intern() != "S"){
             da.add(street);
         }
-        if (detailPosition != null){
+        if (detailPosition != null && detailPosition.intern() != "D"){
             da.add(detailPosition);
         }
         return StringUtils.collectionToDelimitedString(da,",");

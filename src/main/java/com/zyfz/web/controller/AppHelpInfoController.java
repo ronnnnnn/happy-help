@@ -24,8 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.zyfz.global.SystemMessageString.REJECT_CONTENT;
-import static com.zyfz.global.SystemMessageString.REQUEST_TITLE;
+
 
 /**
  * Created by ron on 16-11-19.
@@ -65,6 +64,7 @@ public class AppHelpInfoController extends BaseController{
 
     @Resource
     ISystemMessageService systemMessageService;
+
 
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
@@ -172,7 +172,7 @@ public class AppHelpInfoController extends BaseController{
             platformRecordService.save(platformRecord);
 
             //处理消息,
-            SystemMessage systemMessage = new SystemMessage("helpinfo",
+            SystemMessage systemMessage = new SystemMessage("helpinfo-push",
                     mUser.getId(),
                     new Date(),
                     "紧急求助消息",
@@ -184,8 +184,8 @@ public class AppHelpInfoController extends BaseController{
             SystemMessage systemMessage2 = new SystemMessage("userAccount",
                     mUser.getId(),
                     new Date(),
-                    REQUEST_TITLE,
-                    REJECT_CONTENT,
+                    "金额变动",
+                    "账户金额变动(紧急求助扣款)",
                     helpInfoId);
             systemMessageService.save(systemMessage2);
 
@@ -404,6 +404,9 @@ public class AppHelpInfoController extends BaseController{
                 for (HelpContract helpContract : helpContracts) {
                     helpContract.setStatus(4);
                     helpInfoContractService.update(helpContract);
+                    List<Integer> pageMsg = new ArrayList<>();
+                    pageMsg.add(helpInfo.getId());
+                    pageMsg.add(helpContract.getHhUserId());
 
                     //处理消息
                     SystemMessage systemMessage = new SystemMessage("helpinfo",
@@ -411,7 +414,7 @@ public class AppHelpInfoController extends BaseController{
                             new Date(),
                             "紧急求助消息状态",
                             "您帮助的:\"" + helpInfo.getContext() + "\",已经被取消",
-                            String.valueOf(helpContract.getHhHelpInfoId()));
+                            StringUtils.collectionToDelimitedString(pageMsg,","));
                     systemMessageService.save(systemMessage);
                 }
             }
@@ -474,12 +477,15 @@ public class AppHelpInfoController extends BaseController{
             for (HelpContract helpContract : helpContracts){
                 helpInfoContractService.deleteOneById(helpContract);
                 //处理消息
+                List<Integer> pageMSG = new ArrayList<>();
+                pageMSG.add(helpInfo.getId());
+                pageMSG.add(helpContract.getHhUserId());
                 SystemMessage systemMessage = new SystemMessage("helpinfo",
                         helpContract.getHhUserId(),
                         new Date(),
                         "紧急求助消息状态",
                         "您帮助的:\"" + helpInfo.getContext() + "\",已经被取消",
-                        String.valueOf(helpContract.getHhHelpInfoId()));
+                        StringUtils.collectionToDelimitedString(pageMSG,","));
                 systemMessageService.save(systemMessage);
             }
 
@@ -520,7 +526,12 @@ public class AppHelpInfoController extends BaseController{
     @RequestMapping(value = "/api/v1/anon/helpinfo/detail",method = RequestMethod.GET)
     public void getHelpInfoDetail(@RequestParam("messageId")Integer messageId,HttpServletResponse response){
         try {
-            super.writeJson(new ResponseMessage<HelpInfo>(0,"success",helpInfoService.selectByUniq(messageId)),response);
+            SystemMessage systemMessage = systemMessageService.getOneById(new SystemMessage(messageId));
+            systemMessage.setIsRead(true);
+            systemMessageService.update(systemMessage);
+
+            String[] pageMsg = systemMessage.getPagemessage().split(",");
+            super.writeJson(new ResponseMessage<HelpInfo>(0,"success",helpInfoService.selectByUniq(Integer.valueOf(pageMsg[0]))),response);
         } catch (Exception e){
             e.printStackTrace();
             Map<String,String> map = new HashMap<String, String>();

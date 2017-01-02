@@ -119,20 +119,14 @@
 		var rows = $('#admin_prize_datagrid').datagrid('getChecked');
 		//	var rows=$('#admin_prize_datagrid').datagrid('getSelected');
 		//	var rows=$('#admin_prize_datagrid').datagrid('getSelecteds');
-		var ids = [];
-		if (rows.length > 0 && rows[0].isLottery == false) {
+
+		if (rows.length = 1 && rows[0].isLottery == false && rows[0] != null && rows[0].hhPhones != null ) {
 			$.messager.confirm('确认', '您是否确认开奖？', function(r) {
 				if (r) {
-					for ( var i = 0; i < rows.length; i++) {
-						ids.push(rows[i].id);
-						ids.join(',')
-					}
+
 					$.ajax({
 						type: 'patch',
-						url : '${pageContext.request.contextPath}/prize/lottery/'+ids,
-						data : {
-							ids : ids.join(',')
-						},
+						url : '${pageContext.request.contextPath}/prize/lottery/'+rows[0].id,
 						dataType : 'json',
 						success : function(d) {
 							var v = $('#admin_prize_datagrid');
@@ -152,7 +146,7 @@
 		} else {
 			$.messager.show({
 				title : '提示',
-				msg : '请勾选要开奖的选项并确认改记录未开奖！'
+				msg : '请勾选一个要开奖的选项并确认改记录未开奖,和确认开奖信息的完整！'
 			});
 		}
 	}
@@ -165,7 +159,7 @@
 			var d = $('<div/>').dialog({
 				width : 1200,
 				height : 500,
-				href : '${pageContext.request.contextPath}/prize/user-panel/'+ rows[0].hhPhones,
+				href : '${pageContext.request.contextPath}/prize/user-panel/'+ rows[0].hhPhones+","+rows[0].articlePhones,
 				modal : true,
 				align : 'center',
 				title : '当期中奖用户',
@@ -324,7 +318,7 @@
 						if (articleRows.length == 1) {
 							$.messager.confirm('确认', '您是选择当前用户为中奖用户？', function(r) {
 								if (r) {
-									var oldUserIds = rows[0].userIds.split(",");
+//
 									for ( var i = 0; i < articleRows.length; i++) {
 										userIds.push(articleRows[i].user.id);
 										userIds.join(',');
@@ -447,6 +441,11 @@
 			align : 'center',
 			title : '添加期数',
 			buttons : [ {
+				text : '随机生成期数',
+				handler : function() {
+					prizeRandom();
+				}
+			} ,{
 				text : '添加',
 				handler : function() {
 					$('#admin_prize_editForm').form('submit', {
@@ -469,13 +468,12 @@
 						}
 					});
 				}
-			} ],
+			}],
 			onClose : function() {
-				$(this).dailog('destroy');
+				$(this).dialog('destroy');
 			},
 			onLoad : function() {
 				$('#admin_prize_datagrid').form('load', '');
-
 			}
 		});
 
@@ -547,6 +545,12 @@
 		$('#admin_prize_layout input[name=prizekey]').val('');
 		var initurl = '${pageContext.request.contextPath}/prize/list';
 		prizeInit(initurl);
+	}
+
+	function prizeRandom() {
+		var date = new Date();
+		var num = date.getFullYear()+""+(date.getMonth()+1)+""+date.getDate()+""+date.getHours()+""+date.getMinutes()+"";
+		$('#prizeNum').val(num);
 	}
 
 </script>
