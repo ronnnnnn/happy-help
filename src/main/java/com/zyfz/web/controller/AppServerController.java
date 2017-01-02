@@ -389,4 +389,23 @@ public class AppServerController extends BaseController {
         }
     }
 
+
+    @RequestMapping(value = "/api/v1/server/status",method = RequestMethod.PATCH)
+    public void updateServerInfoStatus(@RequestParam("id")Integer id,HttpServletResponse response){
+        try {
+            ServerInfo serverInfo = serverInfoService.getOneById(new ServerInfo(id));
+            if(serverInfo.getIsDeleted()){
+                serverInfo.setIsDeleted(false);
+            }else {
+                serverInfo.setIsDeleted(true);
+            }
+            serverInfoService.update(serverInfo);
+            super.writeJson(new ResponseMessage<String>(0,"success!",""),response);
+        }catch (Exception e){
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+        }
+    }
 }

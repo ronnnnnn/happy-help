@@ -345,8 +345,8 @@ public class AppHelpInfoController extends BaseController{
                         StringUtils.collectionToDelimitedString(pageMsg,","));
                 systemMessageService.save(systemMessage);
             } else if (helpContract.getStatus() == 2){
-                helpInfo.setIsCompeleted(true);
-                helpInfoService.update(helpInfo);
+//                helpInfo.setIsCompeleted(true);
+//                helpInfoService.update(helpInfo);
                 helpContract.setStatus(3);
 
                 //处理消息,推给帮助者
@@ -529,7 +529,6 @@ public class AppHelpInfoController extends BaseController{
             SystemMessage systemMessage = systemMessageService.getOneById(new SystemMessage(messageId));
             systemMessage.setIsRead(true);
             systemMessageService.update(systemMessage);
-
             String[] pageMsg = systemMessage.getPagemessage().split(",");
             super.writeJson(new ResponseMessage<HelpInfo>(0,"success",helpInfoService.selectByUniq(Integer.valueOf(pageMsg[0]))),response);
         } catch (Exception e){
@@ -540,4 +539,26 @@ public class AppHelpInfoController extends BaseController{
         }
     }
 
+
+    @RequestMapping(value = "/api/v1/helpInfo/compeleted",method = RequestMethod.PATCH)
+    public void compeleteHelpInfo(@RequestParam("id")Integer id,HttpServletResponse response){
+        try {
+            HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(id));
+            helpInfo.setIsCompeleted(true);
+            helpInfoService.update(helpInfo);
+            List<HelpContract> helpContracts = helpInfoContractService.selectByHelpInfo(id);
+            for (HelpContract helpContract : helpContracts){
+                if (helpContract.getStatus() == 2){
+                    helpContract.setStatus(3);
+                    helpInfoContractService.update(helpContract);
+                }
+            }
+            super.writeJson(new ResponseMessage<String>(0,"success",""),response);
+        }catch (Exception e){
+            e.printStackTrace();
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","响应错误!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
 }

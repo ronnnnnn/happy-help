@@ -904,4 +904,38 @@ public class AppTaskInfoController extends BaseController{
             super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
         }
     }
+
+    @RequestMapping(value = "/api/v1/taskinfo/status",method = RequestMethod.PATCH)
+    public void updateTaskInfoStatus(@RequestParam("id")Integer id,HttpServletResponse response){
+        try {
+            Boolean flag = false;
+            List<TaskContract> taskContracts = taskContractMapper.selectByTaskInfoId(id);
+            if (taskContracts != null){
+                for (TaskContract taskContract : taskContracts){
+                    if ((taskContract.getStatus() >=1 && taskContract.getStatus() <= 3) || taskContract.getStatus() >= 8){
+                        flag = true;
+                    }
+                }
+                if (flag){
+                    Map<String,String> map = new HashMap<String, String>();
+                    map.put("errMsg","您发布的任务进行中,不能删除!");
+                    super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+                    return;
+                }
+            }
+
+            TaskInfo taskInfo = taskInfoService.getOneById(new TaskInfo(id));
+            if (taskInfo.getIsDeleted()){
+                taskInfo.setIsDeleted(false);
+            }else {
+                taskInfo.setIsDeleted(true);
+            }
+            taskInfoService.update(taskInfo);
+            super.writeJson(new ResponseMessage<String>(0,"success!",""),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
 }
