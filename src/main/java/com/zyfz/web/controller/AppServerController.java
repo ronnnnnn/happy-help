@@ -212,6 +212,16 @@ public class AppServerController extends BaseController {
             serverContractts.setHhServerInfoId(appServerContractModel.getServiceId());
             serverContractts.setHhUserId(appServerContractModel.getUserId());
             ServerContract mServerContract = serverContractService.getByUserAndServer(serverContractts);
+
+            ServerInfo checkServerInfo = serverInfoService.getOneById(new ServerInfo(mServerContract.getHhServerInfoId()));
+
+            if (checkServerInfo.getIsDeleted() == true){
+                Map<String,String> map = new HashMap<String, String>();
+                map.put("errMsg","该服务已下架!");
+                super.writeJson(new ResponseMessage<Map<String,String>>(50801,"请求失败!",map),response);
+                return;
+            }
+
             if (mServerContract == null){
                 ServerContract serverContract = new ServerContract();
                 serverContract.setStatus(0);

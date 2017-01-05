@@ -236,8 +236,6 @@ public class AppHelpInfoController extends BaseController{
             }
             if (isDeleted != null){
                 helpInfo.setIsDeleted(isDeleted);
-            } else {
-                helpInfo.setIsDeleted(false);
             }
             super.writeJson(new ResponseMessage<Datagrid>(0,"success",helpInfoService.selectAllWithParam(pageModel,helpInfo)),response);
         }catch (Exception e){
@@ -270,6 +268,12 @@ public class AppHelpInfoController extends BaseController{
                               @RequestParam("userId")Integer userId,
                               HttpServletResponse response){
         HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(emergencyId));
+        if(helpInfo.getIsDeleted() == true){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("MSG","改求助已下架!");
+            super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+            return;
+        }
         User user = userservice.getOneById(new User(userId));
         List<Integer> pageMsg = new ArrayList<Integer>();
         pageMsg.add(emergencyId);
@@ -559,6 +563,31 @@ public class AppHelpInfoController extends BaseController{
             Map<String,String> map = new HashMap<String, String>();
             map.put("MSG","响应错误!");
             super.writeJson(new ResponseMessage<Map<String,String>>(501201,"请求失败!",map),response);
+        }
+    }
+
+    @RequestMapping(value = "/api/v1/helpinfo/charge",method = RequestMethod.POST)
+    public void chargeHelper(@RequestParam(value = "userId",required = false)Integer userId,
+                             @RequestParam("userIdOfBagaining")Integer userIdOfBagaining,
+                             @RequestParam("starCount")Integer starCount,
+                             HttpServletResponse  response){
+        try {
+            Setting setting = settingService.selectBySysTypeAndTypeName(new Setting("紧急求助","评星分数"));
+            Double value = 2d;
+            if (setting != null){
+                value = Double.valueOf(setting.getTypeValue());
+            }
+            User helper = userservice.getOneById(new User(userIdOfBagaining));
+            Double fianlScore = helper.getHonerScore() + starCount*value;
+            helper.setHonerScore(fianlScore);
+            helper.setGradeTotal(helper.getGradeTotal()+Double.valueOf(starCount));
+            helper.setGradeTimes(helper.getGradeTimes()+1);
+            userservice.update(helper);
+            super.writeJson(new ResponseMessage<String>(0,"success!",""),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
         }
     }
 }

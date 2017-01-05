@@ -214,6 +214,13 @@ public class AppTaskInfoController extends BaseController{
            taskInfo.setId(taskContract.getHhTaskInfoId());
            TaskInfo mtaskInfo = taskInfoService.getOneById(taskInfo);
 
+           if(mtaskInfo.getIsDeleted() == true){
+               Map<String,String> map = new HashMap<String, String>();
+               map.put("errMsg","该求助已下架!");
+               super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+               return;
+           }
+
            //处理订单
            TaskContract taskContract1 = taskContractService.getByHhUserIdAndTaskInfoId(taskContract);
            if ( taskContract1 == null){  //0,5      //有偿无偿接受(有偿不提价)
@@ -905,6 +912,11 @@ public class AppTaskInfoController extends BaseController{
         }
     }
 
+    /**
+     * 用户可对消息进行删除
+     * @param id
+     * @param response
+     */
     @RequestMapping(value = "/api/v1/taskinfo/status",method = RequestMethod.PATCH)
     public void updateTaskInfoStatus(@RequestParam("id")Integer id,HttpServletResponse response){
         try {
@@ -912,7 +924,7 @@ public class AppTaskInfoController extends BaseController{
             List<TaskContract> taskContracts = taskContractMapper.selectByTaskInfoId(id);
             if (taskContracts != null){
                 for (TaskContract taskContract : taskContracts){
-                    if ((taskContract.getStatus() >=1 && taskContract.getStatus() <= 3) || taskContract.getStatus() >= 8){
+                    if ((taskContract.getStatus() >=1 && taskContract.getStatus() <= 3) || (taskContract.getStatus() >= 8 && taskContract.getStatus() <=12)){
                         flag = true;
                     }
                 }
@@ -938,4 +950,30 @@ public class AppTaskInfoController extends BaseController{
             super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
         }
     }
+
+    @RequestMapping(value = "/api/v1/taskinfo/charge",method = RequestMethod.POST)
+    public void chargeHelper(@RequestParam(value = "userId",required = false)Integer userId,
+                             @RequestParam("userIdOfBagaining")Integer userIdOfBagaining,
+                             @RequestParam("starCount")Integer starCount,
+                             HttpServletResponse  response){
+        try {
+            Setting setting = settingService.selectBySysTypeAndTypeName(new Setting("普通求助","评星分数"));
+            Double value = 2d;
+            if (setting != null){
+                value = Double.valueOf(setting.getTypeValue());
+            }
+            User helper = userservice.getOneById(new User(userIdOfBagaining));
+            Double fianlScore = helper.getHonerScore() + starCount*value;
+            helper.setHonerScore(fianlScore);
+            helper.setGradeTotal(helper.getGradeTotal()+Double.valueOf(starCount));
+            helper.setGradeTimes(helper.getGradeTimes()+1);
+            userservice.update(helper);
+            super.writeJson(new ResponseMessage<String>(0,"success!",""),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(50401,"请求失败!",map),response);
+        }
+    }
+
 }

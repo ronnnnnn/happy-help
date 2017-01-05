@@ -57,9 +57,9 @@
 				align : 'center',
 				formatter : function(value, row, index) {
 					if (value == true){
-						return "已校验";
+						return "支付成功";
 					} else {
-						return "未校验";
+						return "支付失败";
 					}
 				}
 			},{
