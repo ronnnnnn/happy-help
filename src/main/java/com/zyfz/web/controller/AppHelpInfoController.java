@@ -471,6 +471,13 @@ public class AppHelpInfoController extends BaseController{
     public void republishHelpInfo(@RequestParam("id")Integer id,HttpServletResponse response){
         try {
             HelpInfo helpInfo = helpInfoService.getOneById(new HelpInfo(id));
+            if(helpInfo.getRepublishTimes() >= 2){
+                Map<String,String> map = new HashMap<String, String>();
+                map.put("MSG","您可以重新发布的次数已用完!!");
+                super.writeJson(new ResponseMessage<Map<String,String>>(0,"请求失败!",map),response);
+                return;
+            }
+
             helpInfo.setIsDeleted(false);
             helpInfo.setIsCompeleted(false);
             Integer republishTime = helpInfo.getRepublishTimes() + 1;

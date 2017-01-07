@@ -213,7 +213,7 @@ public class AppServerController extends BaseController {
             serverContractts.setHhUserId(appServerContractModel.getUserId());
             ServerContract mServerContract = serverContractService.getByUserAndServer(serverContractts);
 
-            ServerInfo checkServerInfo = serverInfoService.getOneById(new ServerInfo(mServerContract.getHhServerInfoId()));
+            ServerInfo checkServerInfo = serverInfoService.getOneById(new ServerInfo(appServerContractModel.getServiceId()));
 
             if (checkServerInfo.getIsDeleted() == true){
                 Map<String,String> map = new HashMap<String, String>();
