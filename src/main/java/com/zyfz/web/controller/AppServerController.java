@@ -322,14 +322,15 @@ public class AppServerController extends BaseController {
                 contentMsg = "您预约的服务("+serverInfo.getContext()+")"+"商家已完成";
             }
 
-            SystemMessage systemMessage = new SystemMessage("serverinfo",
-                    userIdOfBespeak,
-                    new Date(),
-                    SERVER_CHECK_TITLE,
-                    contentMsg,
-                   StringUtils.collectionToDelimitedString(pageMsg,","));
-            systemMessageService.save(systemMessage);
-
+            if (contentMsg != null) {
+                SystemMessage systemMessage = new SystemMessage("serverinfo",
+                        userIdOfBespeak,
+                        new Date(),
+                        SERVER_CHECK_TITLE,
+                        contentMsg,
+                        StringUtils.collectionToDelimitedString(pageMsg, ","));
+                systemMessageService.save(systemMessage);
+            }
             super.writeJson(new ResponseMessage<String>(0,"success","null"),response);
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();

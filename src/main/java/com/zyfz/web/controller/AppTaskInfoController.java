@@ -7,6 +7,8 @@ import com.zyfz.global.SystemMessageString;
 import com.zyfz.global.TaskTrade;
 import com.zyfz.model.*;
 import com.zyfz.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,8 @@ import static com.zyfz.global.SystemMessageString.*;
  */
 @Controller
 public class AppTaskInfoController extends BaseController{
+
+    private Logger logger = LoggerFactory.getLogger(AppTaskInfoController.class);
 
     @Resource
     ITaskInfoService taskInfoService;
@@ -433,8 +437,8 @@ public class AppTaskInfoController extends BaseController{
      13终止
 
      */
-    @RequestMapping(value = "/api/v1/contract/handle",method = RequestMethod.POST)
-    public void handleContract(@RequestBody AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/anon/contract/handle",method = RequestMethod.POST)
+    public void handleContract( AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
 
         try {
             TaskContract taskContract = taskContractService.getOneById(new TaskContract(appTaskHandleModel.getBargainingId()));
@@ -444,7 +448,7 @@ public class AppTaskInfoController extends BaseController{
             /**
              * 表示任务发布者同意其完成任务(无偿任务和有偿)
              */
-            if (((status == 1 && oldStatus == 0)|| (status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5)) && status != oldStatus){
+            if (((status == 1 && oldStatus == 0)|| (status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5) || (status == 10 && oldStatus == 8)) && status != oldStatus){
                 //处理普通消息
                 taskInfo.setIsAccept(true);
                 taskInfoService.update(taskInfo);
@@ -484,7 +488,7 @@ public class AppTaskInfoController extends BaseController{
                 systemMessageService.save(systemMessage);
 
                 //当是有偿任务进行扣款
-                if((status == 9 && oldStatus == 6) || (status == 10 && oldStatus ==5)){
+                if((status == 9 && oldStatus == 6) || (status == 10 &&( oldStatus ==5 || oldStatus == 8))){
                     User paidUser = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfAssistance ()));
                     if ( taskContract.getMoney()!=null && taskContract.getMoney() > 0){
 
@@ -615,10 +619,16 @@ public class AppTaskInfoController extends BaseController{
 
                 //付款给服务方
                 User serviceUser = userservice.getOneById(new User(taskContract.getHhUserId()));
+                logger.info("===========7777777=========");
+                logger.info(serviceUser.getId()+"======userId=======" + appTaskHandleModel.getUserIdOfBargaining());
+                logger.info(serviceUser.getAccount()+"========userAcconut==========");
+                logger.info(taskContract.getMoney()+"===========contractMoney=========");
                 Double finalAccount = serviceUser.getAccount() + taskContract.getMoney();
+                logger.info(finalAccount+"======finalMoney========");
                 serviceUser.setAccount(finalAccount);
                 userservice.update(serviceUser);
-
+                logger.info(serviceUser.getAccount()+"======finaluseracconut=====");
+                logger.info("============================");
                 //平台支出记录
                 PlatformRecord platformRecord4TempOut = new PlatformRecord( "taskInfoTemp",
                         "支出",
@@ -653,8 +663,10 @@ public class AppTaskInfoController extends BaseController{
 
                 //订单记录设为完成态
                 OrderRecord orderRecord = orderRecordService.selectByContactId(appTaskHandleModel.getBargainingId());
-                orderRecord.setIsCompeleted(true);
-                orderRecordService.update(orderRecord);
+                if (orderRecord != null) {
+                    orderRecord.setIsCompeleted(true);
+                    orderRecordService.update(orderRecord);
+                }
 
                 /**
                  * 记录交易过程
