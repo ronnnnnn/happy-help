@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -437,8 +434,8 @@ public class AppTaskInfoController extends BaseController{
      13终止
 
      */
-    @RequestMapping(value = "/api/v1/anon/contract/handle",method = RequestMethod.POST)
-    public void handleContract( AppTaskHandleModel appTaskHandleModel,HttpServletResponse response){
+    @RequestMapping(value = "/api/v1/contract/handle",method = RequestMethod.POST)
+    public void handleContract(@RequestBody AppTaskHandleModel appTaskHandleModel, HttpServletResponse response){
 
         try {
             TaskContract taskContract = taskContractService.getOneById(new TaskContract(appTaskHandleModel.getBargainingId()));
