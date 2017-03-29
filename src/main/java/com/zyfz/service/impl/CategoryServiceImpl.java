@@ -61,4 +61,19 @@ public class CategoryServiceImpl implements ICategoryService {
     public Category getByCategoryName(String categoryName) {
         return categoryMapper.selectByCategoryName(categoryName);
     }
+
+    @Override
+    public Category selectByCategoryNameInServer(String categoryName) {
+        return categoryMapper.selectByCategoryNameInServer(categoryName);
+    }
+
+    @Override
+    public List<Category> selectAllInServer() {
+        return categoryMapper.selectAllInServer();
+    }
+
+    @Override
+    public List<Category> selectAllInHelp() {
+        return categoryMapper.selectAllInHelp();
+    }
 }

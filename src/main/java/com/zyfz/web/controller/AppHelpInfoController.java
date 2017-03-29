@@ -65,7 +65,7 @@ public class AppHelpInfoController extends BaseController{
     @Resource
     ISystemMessageService systemMessageService;
 
-
+    //添加紧急求助
     @RequestMapping(value = "/api/v1/helpInfo",method = RequestMethod.POST)
     public void addHelpInfo(@ModelAttribute  AppHelpInfoModel appHelpInfoModel, HttpServletRequest request, HttpServletResponse response){
         try {

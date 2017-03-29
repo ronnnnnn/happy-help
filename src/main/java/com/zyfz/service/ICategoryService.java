@@ -11,4 +11,10 @@ public interface ICategoryService extends IBaseService<Category> {
     public List<Category> getAllWithList();
 
     public  Category getByCategoryName(String categoryName);
+
+    Category selectByCategoryNameInServer(String categoryName);
+
+    List<Category> selectAllInServer();
+
+    List<Category> selectAllInHelp();
 }

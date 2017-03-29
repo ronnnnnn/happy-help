@@ -28,13 +28,37 @@
     select
     <include refid="Base_Column_List" />
     from hh_category
-    where category_name = #{categoryName,jdbcType=INTEGER}
+    where category_name = #{categoryName,jdbcType=INTEGER} and topic = '0'
+  </select>
+
+  <select id="selectByCategoryNameInServer" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from hh_category
+    where category_name = #{categoryName,jdbcType=INTEGER} and topic = '1'
   </select>
 
   <select id="selectAll" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from hh_category ORDER BY category_code
+    from hh_category
+    ORDER BY category_code
+  </select>
+
+  <select id="selectAllInHelp" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_category
+    where topic = '0'
+    ORDER BY category_code
+  </select>
+
+  <select id="selectAllInServer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hh_category
+    where topic = '1'
+    ORDER BY category_code
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

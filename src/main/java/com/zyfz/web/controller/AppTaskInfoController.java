@@ -689,7 +689,7 @@ public class AppTaskInfoController extends BaseController{
                     }
                     User user = userservice.getOneById(new User(appTaskHandleModel.getUserIdOfBargaining()));
                     Double finalScore = user.getHonerScore() + addScore;
-                    user.setAccount(finalScore);
+                    user.setHonerScore(finalScore);
                     userservice.update(user);
                 }catch (Exception e){
                     e.printStackTrace();

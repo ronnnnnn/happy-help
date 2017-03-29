@@ -31,7 +31,7 @@ public class AppCategoryController extends BaseController {
     @RequestMapping(value = "/api/v1/anon/category",method = RequestMethod.GET)
     public void getCategory(HttpServletResponse response){
         try {
-            List<Category> categories = categoryService.getAllWithList();
+            List<Category> categories = categoryService.selectAllInHelp();
             List<Category> categoryList = new ArrayList<Category>();
             for (Category category : categories){
                 if (category.getCategoryCode().intern() != "0".intern()){
@@ -42,7 +42,30 @@ public class AppCategoryController extends BaseController {
         }catch (Exception e){
             Map<String,String> map = new HashMap<String, String>();
             map.put("errMsg",e.toString());
-            super.writeJson(new ResponseMessage<Map<String,String>>(500301,"请求失败",map),response);
+            super.writeJson(new ResponseMessage<Map<String,String>>(500303,"请求失败",map),response);
+        }
+    }
+
+
+    /**
+     * 获取乐助圈分类
+     * @param response
+     */
+    @RequestMapping(value = "/api/v1/anon/server/category",method = RequestMethod.GET)
+    public void getCategoryInServer(HttpServletResponse response){
+        try {
+            List<Category> categories = categoryService.selectAllInServer();
+            List<Category> categoryList = new ArrayList<Category>();
+            for (Category category : categories){
+                if (category.getCategoryCode().intern() != "0".intern()){
+                    categoryList.add(category);
+                }
+            }
+            super.writeJson(new ResponseMessage<List<Category>>(0,"success",categoryList),response);
+        }catch (Exception e){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("errMsg",e.toString());
+            super.writeJson(new ResponseMessage<Map<String,String>>(500302,"请求失败",map),response);
         }
     }
 

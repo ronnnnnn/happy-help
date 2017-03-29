@@ -21,4 +21,10 @@ public interface CategoryMapper {
     int updateByPrimaryKey(Category record);
 
     Category selectByCategoryName(String categoryName);
+
+    Category selectByCategoryNameInServer(String categoryName);
+
+    List<Category> selectAllInServer();
+
+    List<Category> selectAllInHelp();
 }

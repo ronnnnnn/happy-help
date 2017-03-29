@@ -104,7 +104,7 @@ public class AppServerController extends BaseController {
                serverInfo.setTitle(appServerModel.getTitle());
            }
            serverInfo.setImageUrl(StringUtils.collectionToDelimitedString(mImages,","));
-           serverInfo.setHhCategoryId(categoryService.getByCategoryName(appServerModel.getCategory()).getId());
+           serverInfo.setHhCategoryId(categoryService.selectByCategoryNameInServer(appServerModel.getCategory()).getId());
            //处理服务时间段
            String[] times = appServerModel.getTimeRange().split(",");
            SimpleDateFormat sim=new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -151,7 +151,7 @@ public class AppServerController extends BaseController {
                 serverInfo.setIsDeleted(Boolean.valueOf((String) resultMap.get("isDeleted")));
             }
             if (resultMap.get("hhCategoryName") != null){
-                Integer categoryId = categoryService.getByCategoryName((String)resultMap.get("hhCategoryName")).getId();
+                Integer categoryId = categoryService.selectByCategoryNameInServer((String)resultMap.get("hhCategoryName")).getId();
                 serverInfo.setHhCategoryId(categoryId);
             }
             if (resultMap.get("province") != null){
