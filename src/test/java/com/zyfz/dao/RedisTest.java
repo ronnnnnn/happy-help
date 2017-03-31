@@ -100,7 +100,7 @@ public class RedisTest {
 //        SimpleSession simpleSession = SessionConvertUtil.byteToSession(redisDbUtil.getObjectData("81fb382c-6ca3-49e3-ba45-27cf2549dee1".toString().getBytes()));
 //        logger.info("=====info====="+simpleSession.getId()+simpleSession.getStopTimestamp()+simpleSession.getLastAccessTime());
         try (ShardedJedis shardedJedis = shardedJedisPool.getResource()){
-            long time =shardedJedis.ttl("494bc9bd-c254-4fcb-9a27-2e1fc9c80635".toString().getBytes());
+            long time =shardedJedis.ttl("20c4c176-c626-4525-9fbc-0cf8d38df537".toString().getBytes());
             logger.info("============="+ time + "&&&" + time/3600 +"===============");
         }
     }
