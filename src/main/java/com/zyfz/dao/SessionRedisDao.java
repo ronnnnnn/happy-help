@@ -42,6 +42,8 @@ public class SessionRedisDao extends EnterpriseCacheSessionDAO {
             byte[] bytes = redisDbUtil.getObjectData(sessionId.toString().getBytes());
             if (bytes != null) {
                 session = SessionConvertUtil.byteToSession(bytes);
+                //更新过期时间
+                redisDbUtil.updateObjectData(sessionId.toString().getBytes());
             }
         }
         return session;
@@ -51,8 +53,8 @@ public class SessionRedisDao extends EnterpriseCacheSessionDAO {
     protected void doUpdate(Session session) {
         logger.info("=========redisDao(updateSession)===========" + "sessionId:" + session.getId());
         super.doUpdate(session);
-        //更新过期时间
-        redisDbUtil.updateObjectData(session.getId().toString().getBytes());
+        //更新session
+        redisDbUtil.setObjectData(session.getId().toString().getBytes(),SessionConvertUtil.sessionToByte(session));
     }
 
     @Override

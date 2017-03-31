@@ -13,6 +13,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import redis.clients.jedis.*;
 
+import java.util.Date;
+
 /**
  * Created by ron on 17-3-30.
  */
@@ -95,11 +97,11 @@ public class RedisTest {
 
     @Test
     public void getObjectTest(){
-        SimpleSession simpleSession = SessionConvertUtil.byteToSession(redisDbUtil.getObjectData("81fb382c-6ca3-49e3-ba45-27cf2549dee1".toString().getBytes()));
-        logger.info("=====info====="+simpleSession.getId()+simpleSession.getStopTimestamp()+simpleSession.getLastAccessTime());
+//        SimpleSession simpleSession = SessionConvertUtil.byteToSession(redisDbUtil.getObjectData("81fb382c-6ca3-49e3-ba45-27cf2549dee1".toString().getBytes()));
+//        logger.info("=====info====="+simpleSession.getId()+simpleSession.getStopTimestamp()+simpleSession.getLastAccessTime());
         try (ShardedJedis shardedJedis = shardedJedisPool.getResource()){
-            Boolean b =shardedJedis.exists("81fb382c-6ca3-49e3-ba45-27cf2549dee1".toString().getBytes());
-            logger.info("============="+b+"===============");
+            long time =shardedJedis.ttl("494bc9bd-c254-4fcb-9a27-2e1fc9c80635".toString().getBytes());
+            logger.info("============="+ time + "&&&" + time/3600 +"===============");
         }
     }
 }

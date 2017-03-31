@@ -21,7 +21,7 @@ public class RedisDbUtil {
 
 
     // session 在redis过期时间是30分钟30*60
-    private  int expireTime = 60*60*12;
+    private  int expireTime = 86400;
     // 计数器的过期时间默认2天
     private  int countExpireTime = 2*24*3600;
 
@@ -51,9 +51,9 @@ public class RedisDbUtil {
     //设置byte类型的数据
     public void setObjectData(byte[] key,byte[] value){
         try (ShardedJedis shardedJedis = shardedJedisPool.getResource()){
-            if (!shardedJedis.exists(key)){
+            //if (!shardedJedis.exists(key)){
                 shardedJedis.set(key,value);
-            }
+            //}
             //设置过期时间
             shardedJedis.expire(key,expireTime);
         }
