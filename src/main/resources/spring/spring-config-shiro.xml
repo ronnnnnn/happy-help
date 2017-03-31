@@ -60,12 +60,18 @@
         <!--<property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>-->
         <!--<property name="sessionIdGenerator" ref="sessionIdGenerator"/>-->
     <!--</bean>-->
-    <!-- 自定义会话DAO，持久化session -->
-    <bean id="sessionDAO" class="com.zyfz.dao.MySimpleSessionDao">
+
+    <!-- 自定义会话DAO，mysql持久化session -->
+    <!--<bean id="sessionDAO" class="com.zyfz.dao.MySimpleSessionDao">-->
+        <!--<property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>-->
+        <!--<property name="sessionIdGenerator" ref="sessionIdGenerator"/>-->
+    <!--</bean>-->
+
+    <!-- 自定义会话DAO，redis持久化session,方便控制会话过期时间,集群共享会话,提高存取效率 -->
+    <bean id="sessionDAO" class="com.zyfz.dao.SessionRedisDao">
         <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
     </bean>
-
 
     <!-- 会话验证调度器 -->
     <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">

@@ -16,6 +16,8 @@ import java.util.Date;
 
 /**
  * Created by ron on 16-11-5.
+ *
+ * 将session交由mybatis进行持久化
  */
 public class MySimpleSessionDao extends EnterpriseCacheSessionDAO {
     @Resource

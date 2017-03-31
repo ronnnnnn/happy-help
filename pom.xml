@@ -376,6 +376,18 @@
       <!--<version>${tk-mapper.version}</version>-->
     <!--</dependency>-->
 
+    <!--jedis-->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+      <version>1.7.0.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>2.8.0</version>
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>happy-help</finalName>
