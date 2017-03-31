@@ -3,12 +3,14 @@ package com.zyfz.dao;
 import com.zyfz.web.util.RedisDbUtil;
 import com.zyfz.web.util.SessionConvertUtil;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.mgt.SimpleSession;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by ron on 17-3-30.
@@ -41,7 +43,12 @@ public class SessionRedisDao extends EnterpriseCacheSessionDAO {
         if (session == null){
             byte[] bytes = redisDbUtil.getObjectData(sessionId.toString().getBytes());
             if (bytes != null) {
-                session = SessionConvertUtil.byteToSession(bytes);
+                SimpleSession simpleSession = SessionConvertUtil.byteToSession(bytes);
+                //恢复过期会话
+                simpleSession.setExpired(false);
+                simpleSession.setStopTimestamp(null);
+                simpleSession.setLastAccessTime(new Date());
+                session = simpleSession;
                 //更新过期时间
                 redisDbUtil.updateObjectData(sessionId.toString().getBytes());
             }
@@ -61,6 +68,6 @@ public class SessionRedisDao extends EnterpriseCacheSessionDAO {
     protected void doDelete(Session session) {
         logger.info("=========redisDao(deleteSession)===========" + "sessionId:" + session.getId());
         super.doDelete(session);
-        redisDbUtil.delObjectData(session.getId().toString().getBytes());
+       // redisDbUtil.delObjectData(session.getId().toString().getBytes());
     }
 }
